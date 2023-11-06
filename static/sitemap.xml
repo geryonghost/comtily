@@ -9,13 +9,38 @@
 
 <url>
   <loc>https://comtily.com/</loc>
-  <lastmod>2023-10-26T00:25:26+00:00</lastmod>
+  <lastmod>2023-11-06T00:17:36+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://comtily.com/howtocontribute.html</loc>
-  <lastmod>2023-10-26T00:25:27+00:00</lastmod>
+  <lastmod>2023-11-06T00:17:36+00:00</lastmod>
   <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://comtily.com/autoadaggregator.html</loc>
+  <lastmod>2023-11-06T00:17:36+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://comtily.com/smbcybersecurity.html</loc>
+  <lastmod>2023-11-06T00:17:36+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://comtily.com/weatherapp.html</loc>
+  <lastmod>2023-11-06T00:17:36+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://comtily.com/autoinsurance.html</loc>
+  <lastmod>2023-11-06T00:17:36+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://comtily.com/index.html</loc>
+  <lastmod>2023-11-06T00:17:36+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 
 
