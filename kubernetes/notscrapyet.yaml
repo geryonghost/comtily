@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: not-scrap-yet
+   namespace: comtily
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         app: not-scrap-yet
+   template:
+      metadata:
+         labels:
+            app: not-scrap-yet
+      spec:
+         containers:
+            - name: not-scrap-yet
+              image: localhost:5000/not-scrap-yet
+              imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: not-scrap-yet
+   namespace: comtily
+spec:
+   type: LoadBalancer
+   selector:
+      app: not-scrap-yet
+   ports:
+      - port: 3000
+        targetPort: 3000

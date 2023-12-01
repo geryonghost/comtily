@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: adminer
+   namespace: comtily
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         bb: adminer
+   template:
+      metadata:
+         labels:
+            bb: adminer
+      spec:
+         containers:
+            - name: adminer
+              image: adminer
+              # imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: adminer
+   namespace: comtily
+spec:
+   type: LoadBalancer
+   selector:
+      bb: adminer
+   ports:
+      - port: 8080
+        targetPort: 8080
