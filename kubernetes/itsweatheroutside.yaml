@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: its-weather-outside
+   namespace: comtily
+spec:
+   replicas: 1
+   selector:
+      matchLabels:
+         app: its-weather-outside
+   template:
+      metadata:
+         labels:
+            app: its-weather-outside
+      spec:
+         containers:
+            - name: its-weather-outside
+              image: localhost:5000/its-weather-outside
+              imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: its-weather-outside
+   namespace: comtily
+spec:
+   type: LoadBalancer
+   selector:
+      app: its-weather-outside
+   ports:
+      - port: 3000
+        targetPort: 3000
+        # nodePort: 30001

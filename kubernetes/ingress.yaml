@@ -1,0 +1,58 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/clusterissuer: letsencrypt-staging
+  name: comtily
+  namespace: comtily
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - notscrapyet.comtily.com
+    secretName: notscrapyet-comtily-com
+  - hosts:
+    - weather.comtily.com
+    secretName: weather-comtily-com
+  rules:
+  # - host: demo1.comtily.com
+  #   http:
+  #     paths:
+  #     - pathType: Prefix
+  #       path: "/"
+  #       backend:
+  #         service:
+  #           name: demo1
+  #           port:
+  #             number: 80
+  # - host: demo2.comtily.com
+  #   http:
+  #     paths:
+  #     - pathType: Prefix
+  #       path: "/"
+  #       backend:
+  #         service:
+  #           name: demo2
+  #           port:
+  #             number: 80
+  - host: notscrapyet.comtily.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: not-scrap-yet
+            port:
+              number: 3000
+
+  - host: weather.comtily.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: its-weather-outside
+            port:
+              number: 3000
