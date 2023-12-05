@@ -1,6 +1,9 @@
 # Install Rancher Desktop
 `brew install rancher`
 
+# Copy Kube Config to Workstation
+`cat ~/.kube/config`
+
 # Instal Helm
 `brew install helm`
 
