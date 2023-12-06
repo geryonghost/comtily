@@ -1,3 +1,12 @@
+# Install OhMyZSH
+`sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+
+# Install PowerLevel10k
+```
+brew install powerlevel10k
+echo "source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme" >>~/.zshrc
+```
+
 # Install Rancher Desktop
 `brew install rancher`
 
@@ -18,14 +27,6 @@
 
 # Test VPN Connectivity
 ssh and kubectl via ssh
-
-# Install OhMyZSH
-`sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
-
-# Install PowerLevel10k
-git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-
-
 
 # Install Helm
 `brew install helm`
