@@ -39,7 +39,7 @@ spec:
   #           name: demo2
   #           port:
   #             number: 80
-  - host: notscrapyet.com
+  - host: www.notscrapyet.com
     http:
       paths:
       - pathType: Prefix
@@ -50,7 +50,7 @@ spec:
             port:
               number: 3000
 
-  - host: itsweatheroutside.com
+  - host: www.itsweatheroutside.com
     http:
       paths:
       - pathType: Prefix
