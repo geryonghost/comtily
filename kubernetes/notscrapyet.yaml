@@ -15,7 +15,7 @@ spec:
       spec:
          containers:
             - name: not-scrap-yet
-              image: localhost:5000/not-scrap-yet
+              image: localhost:5000/not-scrap-yet:0001.0001
               imagePullPolicy: Always
 ---
 apiVersion: v1

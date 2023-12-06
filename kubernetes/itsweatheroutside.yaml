@@ -15,7 +15,7 @@ spec:
       spec:
          containers:
             - name: its-weather-outside
-              image: localhost:5000/its-weather-outside
+              image: localhost:5000/its-weather-outside:0001.0001
               imagePullPolicy: Always
 ---
 apiVersion: v1
