@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/clusterissuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: "nginx"    
     nginx.ingress.kubernetes.io/from-to-www-redirect: "true"
   name: comtily
@@ -39,6 +39,16 @@ spec:
   #           name: demo2
   #           port:
   #             number: 80
+  - host: notscrapyet.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: not-scrap-yet
+            port:
+              number: 3000
   - host: www.notscrapyet.com
     http:
       paths:
@@ -50,6 +60,16 @@ spec:
             port:
               number: 3000
 
+  - host: itsweatheroutside.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: its-weather-outside
+            port:
+              number: 3000
   - host: www.itsweatheroutside.com
     http:
       paths:
