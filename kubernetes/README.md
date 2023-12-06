@@ -1,18 +1,6 @@
 # Install Rancher Desktop
 `brew install rancher`
 
-# Copy Kube Config to Workstation
-`cat ~/.kube/config`
-
-# Instal Helm
-`brew install helm`
-
-# Create MongoDB
-`kubectl apply -f mongodb.yaml`
-
-# Create Postgres DB
-`kubectl apply -f postgres.yaml`
-
 # Configure Rancher Desktop
 - Preferences
     - Application -> Behavior
@@ -28,24 +16,52 @@
         - v1.27.7 (Stable)
         - Enable Traefik (Uncheck)
 
+# Test VPN Connectivity
+ssh and kubectl via ssh
+
+# Install OhMyZSH
+`sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"`
+
+# Install PowerLevel10k
+git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+
+
+
+# Install Helm
+`brew install helm`
+
+# Install K9s
+`brew install k9s`
+
+# Install Git
+`brew install git`
+
+# Configure Git
+`mkdir gitrepos`
+`git config --global commit.gpgsign true`
+`git config --global user.signingkey ~/.ssh/<id>.pub`
+`git config --global gpg.format ssh`
+
+# Clone Repos
+`git clone git@github.com:geryonghost/comtily.git`
+`git clone git@github.com:geryonghost/notscrapyet.git`
+`git clone git@github.com:geryonghost/itsweatheroutside.git`
+
 # Local Docker Registry 
 `docker run -d -p 5000:5000 --restart=always --name=comtilyhub registry`
 
-# Create Persistent Storage
-`kubectl apply -f persistenvolumeclaims.yaml`
-
 # Create Docker for Not Scrap Yet
 ```
-/Users/geryonghost/gitrepos/notscrapyet/app
-docker build --tag localhost:5000/not-scrap-yet .
-docker push localhost:5000/not-scrap-yet
+cd /Users/geryonghost/gitrepos/notscrapyet/app
+docker build --tag localhost:5000/not-scrap-yet:0001.0001 .
+docker push localhost:5000/not-scrap-yet:0001.0001
 ```
 
 # Create Docker for It's Weather Outside
 ```
 cd /Users/geryonghost/gitrepos/itsweatheroutside/app
-docker build --tag localhost:5000/its-weather-outside .
-docker push localhost:5000/its-weather-outside
+docker build --tag localhost:5000/its-weather-outside:0001.0001 .
+docker push localhost:5000/its-weather-outside:0001.0001
 ```
 
 # Nginx Ingress Controller
@@ -53,15 +69,26 @@ docker push localhost:5000/its-weather-outside
 
 # Cert Manager
 ```
+cd /Users/geryonghost/gitrepos/comtily/kubernetes
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 kubectl create namespace cert-manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.2/cert-manager.crds.yaml
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.13.2
 kubectl apply -f clusterissuer.yaml
 ```
 
-# Kubernetes namespace
+# Create Comtily namespace
 `kubectl create namespace comtily`
+
+# Create Persistent Storage
+`kubectl apply -f persistenvolumeclaims.yaml`
+
+# Create MongoDB
+`kubectl apply -f mongodb.yaml`
+
+# Create Postgres DB
+`kubectl apply -f postgres.yaml`
 
 # Deploy Not Scrap Yet
 `kubectl apply -f notscrapyet.yaml`
