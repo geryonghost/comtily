@@ -25,8 +25,6 @@ ssh and kubectl via ssh
 # Install PowerLevel10k
 git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 
-
-
 # Install Helm
 `brew install helm`
 
@@ -53,19 +51,58 @@ git clone https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerl
 # Create Docker for Not Scrap Yet
 ```
 cd /Users/geryonghost/gitrepos/notscrapyet/app
-docker build --tag localhost:5000/not-scrap-yet:0001.0001 .
-docker push localhost:5000/not-scrap-yet:0001.0001
+docker build --tag localhost:5000/notscrapyet .
+docker push localhost:5000/notscrapyet
 ```
 
 # Create Docker for It's Weather Outside
 ```
 cd /Users/geryonghost/gitrepos/itsweatheroutside/app
-docker build --tag localhost:5000/its-weather-outside:0001.0001 .
-docker push localhost:5000/its-weather-outside:0001.0001
+docker build --tag localhost:5000/itsweatheroutside .
+docker push localhost:5000/itsweatheroutside
+```
+
+# Create Docker for Skygate Security
+```
+cd /Users/geryonghost/gitrepos/skygatesecurity/static
+docker build --tag localhost:5000/skygatesecurity .
+docker push localhost:5000/skygatesecurity
 ```
 
 # Nginx Ingress Controller
 `helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace`
+
+# GitHub Actions ARC
+```
+cd /Users/geryonghost/gitrepos/comtily/kubernetes
+
+kubectl create namespace github-actions
+kubectl create namespace github-actions-runners
+
+kubectl create secret generic gha-arc \
+   --namespace=github-actions \
+   --from-literal=github_app_id=678307 \
+   --from-literal=github_app_installation_id=44839055 \
+   --from-literal=github_app_private_key=''
+
+
+kubectl create secret generic gha-arc \
+   --namespace=github-actions-runners \
+   --from-literal=github_app_id=678307 \
+   --from-literal=github_app_installation_id=44839055 \
+   --from-literal=github_app_private_key=''
+
+helm upgrade --install arc \
+    oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller \
+    --namespace github-actions \
+    --set githubConfigSecret=gha-arc
+
+helm upgrade --install arc-runner-set \
+    oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
+    --namespace github-actions-runners \
+    --set githubConfigUrl="https://github.com/geryonghost/itsweatheroutside" \
+    --set githubConfigSecret=gha-arc
+```
 
 # Cert Manager
 ```
@@ -78,34 +115,38 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --versi
 kubectl apply -f clusterissuer.yaml
 ```
 
-# Create Comtily namespace
-`kubectl create namespace comtily`
-
-# Create Persistent Storage
-`kubectl apply -f persistenvolumeclaims.yaml`
-
-# Create MongoDB
-`kubectl apply -f mongodb.yaml`
-
-# Create Postgres DB
-`kubectl apply -f postgres.yaml`
-
 # Deploy Not Scrap Yet
-`kubectl apply -f notscrapyet.yaml`
+```
+cd /Users/geryonghost/gitrepos/notscrapyet/deployment/dev
+kubectl apply -f deployment.yaml
+```
 
 # Deploy It's Weather Outside
-`kubectl apply -f itsweatheroutside.yaml`
+```
+cd /Users/geryonghost/gitrepos/itsweatheroutside/deployment/dev
+kubectl apply -f deployment.yaml
+```
 
 # Configure DNS
 ```
-notscrapyet.comtily.com
-weather.comtily.com
+dev.notscrapyet.com
+dev.itsweatheroutside.com
 ```
 
 # Nginx Ingress
 `kubectl apply -f ingress.yaml`
 
+# Configure DNS
+```
+dev.notscrapyet.com
+dev.itsweatheroutside.com
+```
+
 # Local Hosts
 `sudo nano /private/etc/hosts`
+```
+127.0.0.1   dev.notscrapyet.com
+127.0.0.1   dev.itsweatheroutside.com
+```
 
 
