@@ -10,8 +10,10 @@ on:
 jobs:
   build:
     runs-on: arc-runner-set
-    # defaults:
-    #   run:
+    defaults:
+      run:
+        shell:  /bin/sh
+      #   run:
     #     working-directory: static
 
     steps:
