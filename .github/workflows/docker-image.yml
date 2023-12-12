@@ -15,26 +15,29 @@ jobs:
     #     working-directory: static
 
     steps:
-      - run: sudo -i
+      - name: Check Docker installation
+        run: docker --version
+    
+      # - run: sudo -i
     #   - name: Setup Docker
     #     uses: docker-practice/actions-setup-docker@master
     #     timeout-minutes: 12
       
-      - name: Checkout
-        uses: actions/checkout@v4
+      # - name: Checkout
+        # uses: actions/checkout@v4
 
       # - name: Setup Qumu
       #   uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      # - name: Set up Docker Buildx
+        # uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: ./static
-          file: ./static/Dockerfile
-          platforms: linux/arm64
-          push: true
-          tags: localhost:5000/comtily:$(date +%s)
+      # - name: Build and push
+        # uses: docker/build-push-action@v5
+        # with:
+          # context: ./static
+          # file: ./static/Dockerfile
+          # platforms: linux/arm64
+          # push: true
+          # tags: localhost:5000/comtily:$(date +%s)
           
