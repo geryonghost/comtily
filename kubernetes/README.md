@@ -103,8 +103,16 @@ helm upgrade --install arc \
 helm upgrade --install arc-runner-set \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
     --namespace github-actions-runners \
+    --set githubConfigUrl="https://github.com/geryonghost/comtily" \
+    --set githubConfigSecret=gha-arc
+
+helm upgrade --install arc-runner-set \
+    oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
+    --namespace github-actions-runners \
     --set githubConfigUrl="https://github.com/geryonghost/itsweatheroutside" \
     --set githubConfigSecret=gha-arc
+
+
 ```
 
 # Cert Manager
