@@ -85,14 +85,14 @@ kubectl create namespace github-actions-runners
 kubectl create secret generic gha-arc \
    --namespace=github-actions \
    --from-literal=github_app_id=678307 \
-   --from-literal=github_app_installation_id=44839055 \
+   --from-literal=github_app_installation_id=44844484 \
    --from-literal=github_app_private_key=''
 
 
 kubectl create secret generic gha-arc \
    --namespace=github-actions-runners \
    --from-literal=github_app_id=678307 \
-   --from-literal=github_app_installation_id=44839055 \
+   --from-literal=github_app_installation_id=44844484 \
    --from-literal=github_app_private_key=''
 
 helm upgrade --install arc \
@@ -103,13 +103,7 @@ helm upgrade --install arc \
 helm upgrade --install arc-runner-set \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
     --namespace github-actions-runners \
-    --set githubConfigUrl="https://github.com/geryonghost/comtily" \
-    --set githubConfigSecret=gha-arc
-
-helm upgrade --install arc-runner-set \
-    oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
-    --namespace github-actions-runners \
-    --set githubConfigUrl="https://github.com/geryonghost/itsweatheroutside" \
+    --set githubConfigUrl="https://github.com/comtily" \
     --set githubConfigSecret=gha-arc
 
 
