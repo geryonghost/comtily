@@ -8,14 +8,16 @@ on:
   #   branches: [ "main" ]
 
 jobs:
-
   build:
-    runs-on: arc-runner-set
+    runs-on: [self-hosted]
+      group: arc-runner-set
+    options: --user root
     defaults:
       run:
         working-directory: ./static
 
     steps:
+      - run: sudo -i
     #   - name: Setup Docker
     #     uses: docker-practice/actions-setup-docker@master
     #     timeout-minutes: 12
