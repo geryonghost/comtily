@@ -34,8 +34,7 @@ jobs:
         with:
           context: .
           platforms: linux/arm64
-      #     context: .
           file: ./Dockerfile
           push: true
-          tags: $(date +%s)
+          tags: localhost:5000/comtily:$(date +%s)
           
