@@ -51,6 +51,13 @@ ssh and kubectl via ssh
 # Local Docker Registry 
 `docker run -d -p 5000:5000 --restart=always --name=comtilyhub registry`
 
+# Create Docker for Actions Runner
+```
+cd /Users/geryonghost/gitrepos/comtily/actions/runner
+docker build --tag localhost:5000/actions_runner .
+docker push localhost:5000/actions_runner
+```
+
 # Create Docker for Not Scrap Yet
 ```
 cd /Users/geryonghost/gitrepos/notscrapyet/app
@@ -103,8 +110,7 @@ helm upgrade --install arc \
 helm upgrade --install arc-runner-set \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
     --namespace github-actions-runners \
-    --set githubConfigUrl="https://github.com/comtily" \
-    --set githubConfigSecret=gha-arc
+    -f gha-runner-controller.yaml
 
 
 ```
