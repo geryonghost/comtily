@@ -15,16 +15,16 @@ jobs:
       run:
         working-directory: ./static
 
-    # steps:
+    steps:
     #   - name: Setup Docker
     #     uses: docker-practice/actions-setup-docker@master
     #     timeout-minutes: 12
       
-      # - name: Checkout
-      #   uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       # - name: Build and push
       #   uses: docker/build-push-action@v5
