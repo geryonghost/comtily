@@ -1,9 +1,0 @@
-githubConfigUrl: "https://github.com/comtily"
-
-githubConfigSecret: gha-arc
-template:
-  spec:
-    containers:
-      - name: runner
-        image: localhost:5000/actions_runner
-        command: ["/home/runner/run.sh"]

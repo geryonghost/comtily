@@ -84,7 +84,7 @@ docker push localhost:5000/skygatesecurity
 
 # GitHub Actions ARC
 ```
-cd /Users/geryonghost/gitrepos/comtily/kubernetes
+cd ~/gitrepos/comtily/kubernetes
 
 kubectl create namespace github-actions
 kubectl create namespace github-actions-runners
@@ -95,7 +95,6 @@ kubectl create secret generic gha-arc \
    --from-literal=github_app_installation_id=44844484 \
    --from-literal=github_app_private_key=''
 
-
 kubectl create secret generic gha-arc \
    --namespace=github-actions-runners \
    --from-literal=github_app_id=678307 \
@@ -105,13 +104,14 @@ kubectl create secret generic gha-arc \
 helm upgrade --install arc \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller \
     --namespace github-actions \
-    --set githubConfigSecret=gha-arc
+    -f arc.yaml
 
 helm upgrade --install arc-runner-set \
     oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set \
     --namespace github-actions-runners \
-    -f gha-runner-controller.yaml
+    -f arc-runner-set.yaml
 
+kubectl apply -f ~/gitrepos/comtily/actions/runner/runner.yaml
 
 ```
 

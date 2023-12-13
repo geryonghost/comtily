@@ -1,7 +1,7 @@
-FROM --platform= summerwind/actions-runner-dind:latest
+FROM --platform=arm64 summerwind/actions-runner-dind:latest
 
-
-
+ENV RUNNER_NAME=arc-runner-set
+ENV RUNNER_ORG=comtily
 
 # FROM mcr.microsoft.com/dotnet/runtime-deps:6.0 as build
 

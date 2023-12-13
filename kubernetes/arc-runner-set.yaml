@@ -1,0 +1,16 @@
+githubConfigUrl: "https://github.com/comtily"
+
+githubConfigSecret: gha-arc
+
+runnerGroup: "default"
+
+runnerScaleSetName: "self-hosted"
+
+containerMode:
+  type: "dind"
+
+# template:
+#   spec:
+#     containers:
+#       - name: runner
+#         image: localhost:5000/actions_runner:latest
