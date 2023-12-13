@@ -32,6 +32,8 @@ jobs:
 
       # - name: Setup Qumu
       #   uses: docker/setup-qemu-action@v3
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -44,7 +46,7 @@ jobs:
           platforms: linux/arm64
           push: true
           # tags: localhost:5000/comtily:${{ github.sha }}
-          tags: http://docker.comtily.com:5000/comtily:${{ github.sha }}
+          tags: comtily/comtily:${{ github.sha }}
       
       - name: Deploy new image
         uses: actions-hub/kubectl@master
