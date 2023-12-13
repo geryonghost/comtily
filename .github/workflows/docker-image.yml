@@ -44,4 +44,9 @@ jobs:
           platforms: linux/arm64
           push: true
           tags: localhost:5000/comtily:${{ github.sha }}
+      
+      - name: Deploy new image
+        uses: actions-hub/kubectl@master
+        with:
+          args: get pods
           
