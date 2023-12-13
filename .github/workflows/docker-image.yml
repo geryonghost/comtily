@@ -43,7 +43,8 @@ jobs:
           file: ./static/Dockerfile
           platforms: linux/arm64
           push: true
-          tags: localhost:5000/comtily:${{ github.sha }}
+          # tags: localhost:5000/comtily:${{ github.sha }}
+          tags: 192.168.4.201:5000/comtily:${{ github.sha }}
       
       - name: Deploy new image
         uses: actions-hub/kubectl@master
