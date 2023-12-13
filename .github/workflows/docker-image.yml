@@ -43,5 +43,5 @@ jobs:
           file: ./static/Dockerfile
           platforms: linux/arm64
           push: true
-          tags: localhost:5000/comtily:$(date +%s)
+          tags: localhost:5000/comtily:${{ github.sha }}
           
