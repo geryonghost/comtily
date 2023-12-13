@@ -52,4 +52,8 @@ jobs:
         uses: actions-hub/kubectl@master
         with:
           args: get pods
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: $(date +%s)
           
