@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <link rel="stylesheet" type="text/css" href="css/responsive.css">
+
+    <title><%=pageTitle%></title>
+  </head>
+
+    <body>
+        <div class="main-header">
+            <p style="text-align: center;">
+                <a href="/">Home</a> |
+                <% if (pageTitle!="Not Scrap Yet") { %><a href="notscrapyet">Not Scrap Yet</a> | <% } %>
+                <% if (pageTitle!="Skygate Security") { %><a href="skygatesecurity">Skygate Security</a> | <% } %>
+                <% if (pageTitle!="It's Weather Outside") { %><a href="itsweatheroutside">It's Weather Outside</a><% } %>
+                <% if (pageTitle!="Auto Insurance") { %> | <a href="autoinsurance">Auto Insurance</a> <% } %>
+            </p>
+        </div>

@@ -1,0 +1,6 @@
+{
+    "env": {
+        "environment": "dev"
+    },
+    "ext": "css,js,json,ejs"
+}
