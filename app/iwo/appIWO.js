@@ -12,7 +12,7 @@ app.set('views', `${__dirname}/views`)
 app.use(express.static(`${__dirname}/public`))
 
 // Default view of the site
-app.get('/', async (req, res) => {
+app.get('', async (req, res) => {
   const acceptlanguageheader = req.get('Accept-Language')
   const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
   clientlocale = preferredlocales[0] || 'en-US'
