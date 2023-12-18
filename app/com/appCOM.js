@@ -7,7 +7,7 @@ app.set('views', `${__dirname}/views`)
 app.use(express.static(`${__dirname}/public`))
 
 // Default home page / index
-app.get('/', (req, res) => {
+app.get('', (req, res) => {
   const pageTitle = "Comtily"
   res.render('index', { pageTitle: pageTitle })
 });
