@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- <?php
+######################################################################
+# PHP Errors
+######################################################################
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+######################################################################
+# DB Connection
+######################################################################
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'geryonghost');
+define('DB_PASSWORD', '4f7^fZ21puDdZeNx%Iy@');
+define('DB_NAME', 'autos');
+    
+# Attempt to connect to MySQL database
+$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+    
+# Check connection to MySQL database
+if($conn === false){
+    die('ERROR: Could not connect. ' . mysqli_connect_error());
+}
+
+?> -->
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title><%= pageTitle %></title>
+    <!-- <title><?php echo $page_title; ?></title> -->
+
+    <!-- Bootstrap CSS-->
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+    <div class="main-content">
+        <div class="container">
+            <div class="alert alert-warning text-center" role="alert"><a href="admin/">B</a>eta Disclaimer: This site is in beta an has missing features. For more information visit <a href="/beta" class="alert-link">here</a>.</div>
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/"><img src="/img/logo-32x32.png" alt=""> Not Scrap Yet</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto">
+                    <!-- <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li> -->
+                            <li class="nav-item"><a class="nav-link" href="beta">Beta Disclaimer</a></li>
+                        </ul>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="status.php">Status</a>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="errors.php">Error Page</a>
+                    </li> -->
+                    <!--
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>-->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="dealers">Dealers</a>
+                        </li>
+                    </ul>
+                    <!--
+                    <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form> -->
+                    </div>
+                </div>
+            </nav><br />
