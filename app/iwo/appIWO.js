@@ -11,27 +11,32 @@ app.set('view engine', 'ejs')
 app.set('views', `${__dirname}/views`)
 app.use(express.static(`${__dirname}/public`))
 
-// Default view of the site
-app.get('', async (req, res) => {
-  const acceptlanguageheader = req.get('Accept-Language')
-  const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
-  clientlocale = preferredlocales[0] || 'en-US'
-  
-  const query = req.query.q;
-
-  if (query == "" || query == undefined) {
-      res.render('index', {})
-  } else {
-      try {
-          forecast = await getWeather(query, clientlocale);
-          // console.log(forecast)
-          res.render('index', {forecast});
-      } catch (error) {
-          console.error(error)
-          res.status(500).json({ success: false, error: error.message });
-      }  
-  }
+// Maintenance Mode
+app.get('', async(req, res) => {
+    res.render('maintenance')
 })
+
+// Default view of the site
+// app.get('', async (req, res) => {
+//   const acceptlanguageheader = req.get('Accept-Language')
+//   const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
+//   clientlocale = preferredlocales[0] || 'en-US'
+  
+//   const query = req.query.q;
+
+//   if (query == "" || query == undefined) {
+//       res.render('index', {})
+//   } else {
+//       try {
+//           forecast = await getWeather(query, clientlocale);
+//           // console.log(forecast)
+//           res.render('index', {forecast});
+//       } catch (error) {
+//           console.error(error)
+//           res.status(500).json({ success: false, error: error.message });
+//       }  
+//   }
+// })
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
