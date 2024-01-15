@@ -1,3 +1,5 @@
+const statusIWO = process.env.statusIWO
+
 const express = require('express')
 const app = express()
 const { render } = require("ejs")
@@ -11,32 +13,46 @@ app.set('view engine', 'ejs')
 app.set('views', `${__dirname}/views`)
 app.use(express.static(`${__dirname}/public`))
 
-// Maintenance Mode
-app.get('', async(req, res) => {
-    res.render('maintenance')
-})
+// Custom functions
+const tomorrow_functions = require('./scripts/tomorrow')
 
 // Default view of the site
-// app.get('', async (req, res) => {
-//   const acceptlanguageheader = req.get('Accept-Language')
-//   const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
-//   clientlocale = preferredlocales[0] || 'en-US'
+app.get('', async (req, res) => {
+    if (statusIWO != 'maintenance') {
+        const acceptlanguageheader = req.get('Accept-Language')
+        const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
+        clientlocale = preferredlocales[0] || 'en-US'
   
-//   const query = req.query.q;
+        const query = req.query.q;
+        
+        if (query == "" || query == undefined) {
+            res.render('index', {})
+        } else {
+            // Get Coordinates
 
-//   if (query == "" || query == undefined) {
-//       res.render('index', {})
-//   } else {
-//       try {
-//           forecast = await getWeather(query, clientlocale);
-//           // console.log(forecast)
-//           res.render('index', {forecast});
-//       } catch (error) {
-//           console.error(error)
-//           res.status(500).json({ success: false, error: error.message });
-//       }  
-//   }
-// })
+            // Get National Weather Service forecast
+            try {
+                forecast = await getWeather(query, clientlocale)
+                // console.log(forecast)
+                res.render('index', {forecast})
+            } catch (error) {
+                console.error(error)
+                res.status(500).json({ success: false, error: error.message })
+            }
+            
+            // Get Tomorrow.io forecast
+            // try {
+            //     forecast = await tomorrow_functions.get_tomorrow_forecast('imperial')
+            //     console.log(forecast)
+            // } catch (error) {
+            //     console.error(error)
+            //     res.status(500).json({success: false, error: error.message})
+            // }
+        }
+    } else {
+        res.render('maintenance')
+    }
+})
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
