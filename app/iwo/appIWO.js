@@ -14,7 +14,7 @@ app.set('views', `${__dirname}/views`)
 app.use(express.static(`${__dirname}/public`))
 
 // Custom functions
-const tomorrow_functions = require('./scripts/tomorrow')
+
 
 // Default view of the site
 app.get('', async (req, res) => {
@@ -28,9 +28,6 @@ app.get('', async (req, res) => {
         if (query == "" || query == undefined) {
             res.render('index', {})
         } else {
-            // Get Coordinates
-
-            // Get National Weather Service forecast
             try {
                 forecast = await getWeather(query, clientlocale)
                 // console.log(forecast)
@@ -39,15 +36,6 @@ app.get('', async (req, res) => {
                 console.error(error)
                 res.status(500).json({ success: false, error: error.message })
             }
-            
-            // Get Tomorrow.io forecast
-            // try {
-            //     forecast = await tomorrow_functions.get_tomorrow_forecast('imperial')
-            //     console.log(forecast)
-            // } catch (error) {
-            //     console.error(error)
-            //     res.status(500).json({success: false, error: error.message})
-            // }
         }
     } else {
         res.render('maintenance')
