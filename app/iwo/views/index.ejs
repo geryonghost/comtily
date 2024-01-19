@@ -1,5 +1,5 @@
 <% 
-if (locals.currentForecast != "" && locals.currentForecast != undefined) {
+if (locals.location != "" && locals.location != undefined) {
     currentForecast = locals.currentForecast
     location=locals.location
     hourlyforecast=""
@@ -9,7 +9,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
     // hourlyforecast = forecast.forecasthourly
     // dailyforecast = forecast.forecastdaily
 } else {
-    forecast = ""
+    location = ""
     currentForecast = ""
     hourlyforecast = ""
     dailyforecast = ""

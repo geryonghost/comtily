@@ -25,7 +25,7 @@ app.get('', async (req, res) => {
         // const acceptlanguageheader = req.get('Accept-Language')
         // const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
         // clientlocale = preferredlocales[0] || 'en-US'
-        let forecast, forecastDifference
+        let forecast
         const query = req.query.q;
         
         if (query == "" || query == undefined) {
