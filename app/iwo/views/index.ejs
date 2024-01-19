@@ -1,81 +1,59 @@
 <% 
-if (locals.forecast != "" && locals.forecast != undefined) {
-    forecast = locals.forecast
-    currentforecast = forecast.forecastcurrent
-    hourlyforecast = forecast.forecasthourly
-    dailyforecast = forecast.forecastdaily
+if (locals.currentForecast != "" && locals.currentForecast != undefined) {
+    currentForecast = locals.currentForecast
+    location=locals.location
+    hourlyforecast=""
+    dailyforecast=""
+    // forecast = locals.forecast
+    // currentForecast = forecast.forecastcurrent
+    // hourlyforecast = forecast.forecasthourly
+    // dailyforecast = forecast.forecastdaily
 } else {
     forecast = ""
-    currentforecast = ""
+    currentForecast = ""
     hourlyforecast = ""
     dailyforecast = ""
 }
+// if (locals.forecast != "" && locals.forecast != undefined) {
+//     forecast = locals.forecast
+//     currentForecast = forecast.forecastcurrent
+//     hourlyforecast = forecast.forecasthourly
+//     dailyforecast = forecast.forecastdaily
+// } else {
+//     forecast = ""
+//     currentForecast = ""
+//     hourlyforecast = ""
+//     dailyforecast = ""
+// }
 %>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-
-    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
-
-
-    <!-- Font Awesome-->
-    <script src="https://kit.fontawesome.com/3ccfb6c902.js" crossorigin="anonymous"></script>
-    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" /> -->
-
-    <!-- Core theme CSS -->
-    <!-- <link href="css/styles.css" rel="stylesheet" /> -->
-
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-
-    <!-- Include Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-
-    <!-- <script src="js/forecasts.js"></script> -->
-    <!-- <script src="js/functions.js"></script> -->
-
-    <title>It's Weather Outside</title>
-</head>
+<%- include('inc/header.ejs') %>
 
 <body>
-    <div style="text-align: center; max-width: 400px; margin: 0 auto; padding: 0px;">
-        <table style="margin: auto;">
-            <tr>
-                <td style="width: 150px;">
-                    <p><i class="fa-solid fa-cloud fa-2xl"></i></p>
-                    <p>It's Weather Outside</p>
-                </td>
-                <td style="text-align: right;">
-                    <form style="display: inline-block;">
-                        <input type="text" id="searchquery" name="q" required />
-                        <button type="submit" id="searchbutton">Search</button><br />
-                    </form>
-                </td>
-            </tr>
-        </table>
-        <% 
-        if (forecast == "") {
-        %>
-        <div id="searchhints">
-            <small>
-                60601 (Least accurate)<br />
-                Chicago IL (More accurate) <br />
-                233 S Wacker Dr Chicago IL (Most accurate)
-            </small>
-        </div>
-        <%
-        }
-        %>
-        <%=//JSON.stringify(hourlyforecast)%>
-        <div id="searcherror"
-            style="text-align: center; color: white; background-color: red; margin: 10px auto; padding: 0px; display: none; visibility: hidden;">
-        </div>
+    <div class="d-flex align-items-center justify-content-center">
+        <form method="GET" action="">
+            <div class="input-group">
+                <input type="text" class="form-control" id="searchquery" name="q" required />
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <% 
+    if (location == "") {
+    %>
+    <div style="text-align: center;">
+        <small>
+            60601 (Least accurate)<br />
+            Chicago IL (More accurate) <br />
+            233 S Wacker Dr Chicago IL (Most accurate)
+        </small>
+    </div>
+    <%
+    }
+    %>
+    <%=//JSON.stringify(hourlyforecast)%>
+    <div id="searcherror"
+        style="text-align: center; color: white; background-color: red; margin: 10px auto; padding: 0px; display: none; visibility: hidden;">
     </div>
     <br />
     <div id="waiting" style="display: none; visibility: hidden; text-align: center; max-width: 300px; margin: 10px auto; padding: 0px;">
@@ -85,40 +63,24 @@ if (locals.forecast != "" && locals.forecast != undefined) {
     <!-- ALERTS -->
     <div id="alerts" style="display: none; visibility: hidden;">Alerts</div>
     <% 
-    if (currentforecast != "") {
+    if (currentForecast != "") {
     %>
     <!-- CURRENT FORECAST -->
-    <div id="currentforecast">
-        <div style="text-align: center; border-style: dotted; max-width: 400px; margin: 10px auto; padding: 0px;">
-            <img src="<%=currentforecast.icon%>" />
-            <h2><%=currentforecast.temperature%>&#176; <%=currentforecast.temperatureunit%> <%-currentforecast.temperaturetrend%></h2>
-            <table style="margin:auto; width:50%;">
-                <tr>
-                    <% //if (currentforecast.hightemp != '') { %> 
-                    <td style="width: 50%; text-align: center;">H:<%=currentforecast.hightemp%>&#176;</td>
-                    <% //} %>
-                    <% //if (currentforecast.lowtemp != '') { %> 
-                    <td style="width: 50%; text-align: center;">L:<%=currentforecast.lowtemp%>&#176;</td>
-                    <% //} %>
-                </tr>
-                <tr>
-                    <% //if (currentforecast.hightemp != '') { %> 
-                        <td style="width: 50%; text-align: center;"><%=currentforecast.highstart%><!-- - --><%=//currentforecast.highend%></td>
-                    <% //} %>
-                    <% //if (currentforecast.lowtemp != '') { %> 
-                        <td style="width: 50%; text-align: center;"><%=currentforecast.lowstart%><!-- - --><%=//currentforecast.lowend%></td>
-                    <% //} %>
-                </tr>
-                <tr>
-                    <td colspan="2"><small><i>The high/low and times are not working correctly all the time</i></small></td>
-                </tr>
-            </table>
-            <h4><%=currentforecast.shortforecast%></h4>
-            <p style="text-align: center;">
-                Forecast for <%=forecast.addressname%><br />
-                Timezone: <%=forecast.timezone%><br />
-                Elevation: <%=forecast.elevation%></span>
-            </p>
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h6 class="card-title">Current</h6>
+                <div class="text-center">
+                    <img class="img-fluid" src="<%=currentForecast.icon%>" />
+                    <h3><%=currentForecast.temperature%>&#176; <%=currentForecast.temperatureunit%> <%-currentForecast.temperaturetrend%></h3>
+                    <h5><%=currentForecast.shortforecast%></h5>  
+                    <p class="card-text">
+                        Forecast for <%=location.addressName%><br />
+                        Timezone: <%=location.timeZone[1]%><br />
+                        Elevation: <%=location.elevation%>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
     <% } %>
@@ -194,20 +156,11 @@ if (locals.forecast != "" && locals.forecast != undefined) {
     <div style="text-align: center; margin: 10px auto; padding: 0px;">
         <p>
             This site is still under development. Please check back frequently to see what is new<br />
-            As of today, the temperatures are sometime displayed in C and F.
+            <!--As of today, the temperatures are sometime displayed in C and F.-->
         </p>
     </div>
 
-    <div style="text-align: center;">
-        <p>
-            Our other ventures...
-            <a href="https://www.skygatesecurity.com" target="_new">Skygate Security</a> and
-            <a href="https://www.notscrapyet.com" target="_new">Not Scrap Yet</a>
-        </p>
-        <p>
-            &#169; It's Weather Outside, a <a href="https://www.comtily.com">Comtily</a> product.
-        </p>
-    </div>
+<%- include('inc/footer.ejs') %>
 </body>
 
 <script>
