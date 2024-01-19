@@ -1,3 +1,4 @@
+appHost = process.env.host
 appEnvironment = process.env.environment
 
 const express = require('express')
@@ -43,6 +44,6 @@ if (appEnvironment == 'dev') {
 }
 // Add a default route or handle unrecognized domains
 
-app.listen(3000, () => {
+app.listen(3000, appHost, () => {
   console.log('Server is running on port 3000')
 });

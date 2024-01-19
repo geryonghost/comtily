@@ -3,39 +3,93 @@ const statusIWO = process.env.statusIWO
 const express = require('express')
 const app = express()
 const { render } = require("ejs")
-const axios = require('axios'); // Used to connect to remote APIs
+// const axios = require('axios'); // Used to connect to remote APIs
 
-const app_domain = "itsweatheroutside.com"
-const app_email = "webmaster@itsweatheroutside.com"
-const user_agent = "(" + app_domain + "," + app_email + ")"
+const appDomain = "itsweatheroutside.com"
+const appEmail = "webmaster@itsweatheroutside.com"
+const userAgent = "(" + appDomain + "," + appEmail + ")"
 
 app.set('view engine', 'ejs')
 app.set('views', `${__dirname}/views`)
 app.use(express.static(`${__dirname}/public`))
 
 // Custom functions
-
+const database = require('./scripts/database')
+const nominatim = require('./scripts/nominatim')
+const nws = require('./scripts/nws')
+const forecasts = require('./scripts/forecasts')
 
 // Default view of the site
 app.get('', async (req, res) => {
     if (statusIWO != 'maintenance') {
-        const acceptlanguageheader = req.get('Accept-Language')
-        const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
-        clientlocale = preferredlocales[0] || 'en-US'
-  
+        // const acceptlanguageheader = req.get('Accept-Language')
+        // const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
+        // clientlocale = preferredlocales[0] || 'en-US'
+        let forecast, forecastDifference
         const query = req.query.q;
         
         if (query == "" || query == undefined) {
             res.render('index', {})
         } else {
-            try {
-                forecast = await getWeather(query, clientlocale)
-                // console.log(forecast)
-                res.render('index', {forecast})
-            } catch (error) {
-                console.error(error)
-                res.status(500).json({ success: false, error: error.message })
+            const units = 'us' // us (imperial) or si (metric)
+            forecast = await forecasts.getAll(query, units, appEmail, userAgent)
+            // Get existing forecast from DB
+                // forecast = await getWeather(query, clientlocale)
+            // forecast = await database.getWeatherForecast(query)
+            // // console.log(forecast)
+            // if (forecast == null) {
+            //     console.log('Get coordinates')
+            //     coordinates = await nominatim.getCoordinates(query, app_email)
+                
+            //     if (coordinates == 'e001') {} // HANDLE BAD QUERY HERE
+            //     else {
+            //         console.log('Get new forecast')
+            //         forecast = await nws.getWeatherForecast('new', query, coordinates, 'us', userAgent)
+            //     }
+            // } else {
+            //     const now = new Date();
+            //     const forecastFrom = new Date(forecast.forecastFrom)
+            //     forecastDifference = Math.floor(Math.abs(forecastFrom - now) / (1000 * 60))
+            //     console.log(forecastDifference)
+            
+            //     if (forecastDifference > 10 ) {
+            //         coordinates = {
+            //             "lat": forecast.lat,
+            //             "lon": forecast.lon,
+            //             "addressType": forecast.addressType,
+            //             "addressName": forecast.addressName,
+            //             "forecastUrl": forecast.forecastUrl
+            //         }
+            //         forecast = await nws.getWeatherForecast('update', query, coordinates, 'us', userAgent)
+            //     }
+            // }
+            // console.log(forecast)
+
+            // console.log(forecast)
+            // const location = {
+            //     'addressName': forecast.addressName,
+            //     'elevation': forecast.forecastGridData.elevation
+            //     "forecastUrl": forecast.forecastUrl
+            // }
+            const location = {
+                'addressName': forecast.addressName,
+                'forecastUrl': forecast.forecastUrl,
+                'timeZone': forecast.timeZone,
+                'elevation': forecast.elevation
             }
+            const currentForecast = forecasts.currentForecast(await forecast.forecastHourly)
+            // // console.log(forecast)
+
+            // // res.render('index', {query})
+            res.render('index', {location, currentForecast})            
+            // Get Tomorrow.io forecast
+            // try {
+            //     forecast = await tomorrow_functions.get_tomorrow_forecast('imperial')
+            //     console.log(forecast)
+            // } catch (error) {
+            //     console.error(error)
+            //     res.status(500).json({success: false, error: error.message})
+            // }
         }
     } else {
         res.render('maintenance')
