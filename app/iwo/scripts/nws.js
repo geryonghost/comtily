@@ -49,7 +49,7 @@ async function getWeatherForecast(type, query, coordinates, unit = 'us', userAge
     }
 
     if (dbData != 'e004') {
-        const dbAction = await database.addWeatherForecastDb(type, query, dbData)
+        await database.addWeatherForecastDb(type, query, dbData)
         return dbData
     } else {
         return dbData
