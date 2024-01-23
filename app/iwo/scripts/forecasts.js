@@ -25,11 +25,10 @@ async function getAll(query, units, appEmail, userAgent) {
             }
             console.log('Get updated forecast')
             updatedForecast = await nws.getWeatherForecast('update', query, coordinates, units, userAgent)
-
-            hourlyReference(updatedForecast)
+            await hourlyReference(updatedForecast)
             return updatedForecast
         } else {
-            hourlyReference(dbForecast)
+            // await hourlyReference(dbForecast)
             return dbForecast
         }
     } else {
@@ -40,7 +39,7 @@ async function getAll(query, units, appEmail, userAgent) {
         else {
             console.log('Get new forecast')
             const newForecast = await nws.getWeatherForecast('new', query, coordinates, units, userAgent)
-            hourlyReference(newForecast)
+            await hourlyReference(newForecast)
             return newForecast
         }
     }
