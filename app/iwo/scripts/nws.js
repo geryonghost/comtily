@@ -3,7 +3,7 @@ const axios = require('axios')
 const database = require('./database')
 const conversions = require('./conversions')
 
-async function getWeatherForecast(type, query, coordinates, unit = 'us', userAgent) {
+async function getWeatherForecast(query, coordinates, unit = 'us', userAgent) {
     let forecastUrl, forecastDaily, forecastHourly, forecastAlerts, dbData
 
     console.log('Getting Forecast URL')    
@@ -49,7 +49,7 @@ async function getWeatherForecast(type, query, coordinates, unit = 'us', userAge
     }
 
     if (dbData != 'e004') {
-        await database.addWeatherForecastDb(type, query, dbData)
+        await database.updateWeatherForecastDb(query, dbData)
         return dbData
     } else {
         return dbData
