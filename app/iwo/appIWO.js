@@ -1,23 +1,28 @@
 const statusIWO = process.env.statusIWO
 
+const mongoDb = require('mongodb')
 const express = require('express')
 const app = express()
-const { render } = require("ejs")
-// const axios = require('axios'); // Used to connect to remote APIs
+// const render = require("ejs")
 
 const appDomain = "itsweatheroutside.com"
 const appEmail = "webmaster@itsweatheroutside.com"
 const userAgent = "(" + appDomain + "," + appEmail + ")"
-
-app.set('view engine', 'ejs')
-app.set('views', `${__dirname}/views`)
-app.use(express.static(`${__dirname}/public`))
 
 // Custom functions
 const database = require('./scripts/database')
 const nominatim = require('./scripts/nominatim')
 const nws = require('./scripts/nws')
 const forecasts = require('./scripts/forecasts')
+
+// Connect to MongoDB when the application starts
+const { connectToDatabase, closeDatabase } = require('./scripts/db')
+connectToDatabase()
+
+// Set express environment
+app.set('view engine', 'ejs')
+app.set('views', `${__dirname}/views`)
+app.use(express.static(`${__dirname}/public`))
 
 // Default view of the site
 app.get('', async (req, res) => {
@@ -32,6 +37,7 @@ app.get('', async (req, res) => {
             res.render('index', {})
         } else {
             const units = 'us' // us (imperial) or si (metric)
+            
             forecast = await forecasts.getAll(query, units, appEmail, userAgent)
             // Get existing forecast from DB
                 // forecast = await getWeather(query, clientlocale)
@@ -100,6 +106,27 @@ app.get('', async (req, res) => {
 app.get('*', function(req, res){
   res.redirect('/')
 });
+
+// Close MongoDB connection when the application exits
+process.on('SIGINT', async () => {
+    await closeDatabase()
+    process.exit()
+})
+  
+process.on('SIGTERM', async () => {
+    await closeDatabase()
+    process.exit()
+})
+
+
+
+
+
+
+
+
+
+
 
 // Get the weather forecast from the searchquery
 async function getWeather(query) {
