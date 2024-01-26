@@ -1,6 +1,7 @@
 const { getClient, dbName } = require('./db')
 
 const moment = require('moment-timezone')
+const conversions = require('./conversions')
 
 // async function connectMongo(name) {
 //     console.log('Connecting to MongoDB')
@@ -98,6 +99,9 @@ async function getHighsLows(query, dateOffset, timeZone) {
     const collection = db.collection('hourlyReference')
 
     const now = new Date()
+    console.log(now)
+
+    conversions.getTodaysDate()
     
     const startDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 0, 0, 0)
     const startDayLocal = moment.utc(startDay).tz(timeZone[0]).format()
