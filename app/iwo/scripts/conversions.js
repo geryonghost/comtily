@@ -67,36 +67,20 @@ function getCurrentDate(timeZone, dateOffset = 0) {
     const date = new Date()
     date.setDate(date.getDate() + dateOffset)
 
-    console.log(date)
-
-    // const nextDate = new Date();
-//   nextDate.setDate(now.getDate() + i);
-    // console.log(now)
-    // const today = new Date(now.getDate() + 3)
-    // console.log(today)   
     const clientDate = moment.tz(date, timeZone[0]).format(moment.HTML5_FMT.DATE)
-
-    // console.log(today)
-    console.log(clientDate)
-
-
-// Get the year, month, and day
-// var year = clientTime.getFullYear();
-// var month = clientTime.getMonth() + 1; // Month is zero-based, so we add 1
-// var day = clientTime.getDate();
-
-// Create a string representation of the date in the format "YYYY-MM-DD"
-// var todayDateString = year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day;
-
-// console.log(todayDateString);
     return clientDate
-
 }
 
+function convertTime(time, timeZone) {
+    const clientTime = moment.tz(time, timeZone).format('LT')
+    
+    return clientTime
+}
 
-  module.exports = {
+module.exports = {
     convertLength,
     formatUnitCode,
     getTimeZoneName,
-    getCurrentDate,    
+    getCurrentDate,
+    convertTime 
 }

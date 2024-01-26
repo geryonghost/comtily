@@ -1,6 +1,9 @@
+const conversions = require('./conversions')
 const database = require('./database')
 const nominatim = require('./nominatim')
 const nws = require('./nws')
+
+
 
 // Checks the DB, if exists passes data back.
 // If not, it gets coordinates and weather forecast
@@ -91,11 +94,12 @@ async function currentForecast(query, forecastHourly, timeZone) {
     return forecast
 }
 
-async function displayTemp(temperature) {
+async function displayTemp(temperature, timeZone) {
     if (temperature.length > 0) {
         const temp = temperature[0].temperature
         const tempUnit = temperature[0].temperatureUnit
-        const time = new Date(temperature[0].startTime).toLocaleTimeString([], {timeStyle: 'short'})
+        const time = conversions.convertTime(temperature[0].startTime, 'America/Chicago')
+        // const time = new Date(temperature[0].startTime).toLocaleTimeString([], {timeStyle: 'short'})
         
         const display = `${temp}&#176;${tempUnit}<br /><font size="2">${time}</font>`
         return display
