@@ -1,6 +1,7 @@
 <% 
 if (locals.location != "" && locals.location != undefined) {
     currentForecast = locals.currentForecast
+    currentMorningHigh = locals.currentMorningHigh
     location=locals.location
     hourlyforecast=""
     dailyforecast=""
@@ -72,13 +73,31 @@ if (locals.location != "" && locals.location != undefined) {
                 <h6 class="card-title">Current</h6>
                 <div class="text-center">
                     <img class="img-fluid" src="<%=currentForecast.icon%>" />
-                    <h3><%=currentForecast.temperature%>&#176; <%=currentForecast.temperatureunit%> <%-currentForecast.temperaturetrend%></h3>
+                    <h3><%=currentForecast.temperature%>&#176;<%=currentForecast.temperatureunit%> <%-currentForecast.temperaturetrend%></h3>
                     <h5><%=currentForecast.shortforecast%></h5>  
                     <p class="card-text">
                         Forecast for <%=location.addressName%><br />
                         Timezone: <%=location.timeZone[1]%><br />
                         Elevation: <%=location.elevation%>
                     </p>
+                    <table>
+                        <th></th>
+                        <th>Morning</th>
+                        <th>Daytime</th>
+                        <th>Evening</th>
+                        <tr>
+                            <td><h6>Low</h6></td>
+                            <td><%-currentMorningLow%></td>
+                            <td><%-currentDayLow%></td>
+                            <td><%-currentEveningLow%></td>
+                        </tr>
+                        <tr>
+                            <td><h6>High</h6></td>    
+                            <td><%-currentMorningHigh%></td>
+                            <td><%-currentDayHigh%></td>
+                            <td><%-currentEveningHigh%></td>
+                        </tr>
+                    </table>                    
                 </div>
             </div>
         </div>

@@ -1,4 +1,6 @@
-const { getClient, dbName } = require('./db');
+const { getClient, dbName } = require('./db')
+
+const moment = require('moment-timezone')
 
 // async function connectMongo(name) {
 //     console.log('Connecting to MongoDB')
@@ -63,10 +65,13 @@ async function updateWeatherForecastDb(query, dbData) {
 
     // Update hourly reference
     try {
+        const collection = db.collection('hourlyReference')
+        
+        console.log('Create hourly reference index')
+        await collection.createIndex({query: 1, startTime: 1}, {unique: true})
+        
         console.log('Updating hourly reference in MongoDB')
-
-        const currentTime = new Date().toISOString()
-
+        const currentTime = new Date()
         for (let i = 0; i < dbData.forecastHourly.length; i++) {
             let hourlyReference
             hourlyReference = {
@@ -78,7 +83,6 @@ async function updateWeatherForecastDb(query, dbData) {
             }
             
             const filter = { "query": query, 'startTime': {$lt: currentTime}}
-            const collection = db.collection('hourlyReference')
             await collection.updateOne(filter, {$set: hourlyReference}, {'upsert': true})
         }
     } catch(err) {
@@ -86,6 +90,83 @@ async function updateWeatherForecastDb(query, dbData) {
     }
 
     return 'complete'
+}
+
+async function getHighsLows(query, dateOffset, timeZone) {
+    const client = getClient()
+    const db = client.db(dbName)
+    const collection = db.collection('hourlyReference')
+
+    const now = new Date()
+    
+    const startDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 0, 0, 0)
+    const startDayLocal = moment.utc(startDay).tz(timeZone[0]).format()
+    // console.log(startDayLocal)
+    // console.log(startDay)
+    // startDay.setDate(startDay.getDate() + dateOffset)
+    // const startDayLocal = startDay.toLocaleString('en-US', {timeZone: timeZone[0]})
+    // const startDayISO = new Date(startDayLocal).toISOString()
+    // console.log(startDayLocal)
+
+    const midDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 12, 0, 0)
+    const midDayLocal = moment.utc(midDay).tz(timeZone[0]).format()
+    // console.log(midDayLocal)
+    // midDay.setDate(midDay.getDate() + dateOffset)
+    // const midDayLocal = midDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+    // const midDayISO = new Date(midDay).toISOString()
+    // console.log(midDayISO)
+
+    const endDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 23, 59, 59)
+    const endDayLocal = moment.utc(endDay).tz(timeZone[0]).format()
+    // console.log(endDay)
+    // endDay.setDate(endDay.getDate() + dateOffset)
+    // const endDayLocal = endDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+    // const endDayISO = new Date(endDayLocal).toISOString()
+    // console.log(midDayLocal)
+    // console.log(midDayISO)
+
+    let filter, options
+
+    // Morning High
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: startDayLocal, $lt: midDayLocal}}
+    options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
+    const morningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // Morning Low
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: startDayLocal, $lt: midDayLocal}}
+    options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
+    const morningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // midDay High
+    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: startDayLocal, $lt: endDayLocal}}
+    options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
+    const dayHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // midDay Low
+    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: startDayLocal, $lt: endDayLocal}}
+    options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
+    const dayLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // Evening High
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: midDayLocal, $lt: endDayLocal}}
+    options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
+    const eveningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // Evening Low
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: midDayLocal, $lt: endDayLocal}}
+    options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
+    const eveningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    const highsLows = {
+        ...{'morningHigh': morningHigh},
+        ...{'morningLow': morningLow},
+        ...{'dayHigh': dayHigh},
+        ...{'dayLow': dayLow},
+        ...{'eveningHigh': eveningHigh},
+        ...{'eveningLow': eveningLow}
+    }
+    
+    return highsLows
 }
 
 // Hourly Reference for High/Low functions
@@ -99,4 +180,5 @@ async function updateWeatherForecastDb(query, dbData) {
 module.exports = {
     getAll,
     updateWeatherForecastDb,
+    getHighsLows,
 }

@@ -10,9 +10,10 @@ const appEmail = "webmaster@itsweatheroutside.com"
 const userAgent = "(" + appDomain + "," + appEmail + ")"
 
 // Custom functions
-const database = require('./scripts/database')
-const nominatim = require('./scripts/nominatim')
-const nws = require('./scripts/nws')
+// const database = require('./scripts/database')
+// const nominatim = require('./scripts/nominatim')
+// const nws = require('./scripts/nws')
+const conversions = require('./scripts/conversions')
 const forecasts = require('./scripts/forecasts')
 
 // Connect to MongoDB when the application starts
@@ -81,13 +82,28 @@ app.get('', async (req, res) => {
                 'addressName': forecast.addressName,
                 'forecastUrl': forecast.forecastUrl,
                 'timeZone': forecast.timeZone,
-                'elevation': forecast.elevation
+                'elevation': conversions.convertLength(units, forecast.elevation)
             }
-            const currentForecast = forecasts.currentForecast(await forecast.forecastHourly)
+            const currentForecast = await forecasts.currentForecast(query, forecast.forecastHourly, forecast.timeZone)
+            const currentMorningHigh = await forecasts.displayTemp(currentForecast.highsLows.morningHigh)
+            const currentMorningLow = await forecasts.displayTemp(currentForecast.highsLows.morningLow)
+            const currentDayHigh = await forecasts.displayTemp(currentForecast.highsLows.dayHigh)
+            const currentDayLow = await forecasts.displayTemp(currentForecast.highsLows.dayLow)
+            const currentEveningHigh = await forecasts.displayTemp(currentForecast.highsLows.eveningHigh)
+            const currentEveningLow = await forecasts.displayTemp(currentForecast.highsLows.eveningLow)
             // // console.log(forecast)
 
             // // res.render('index', {query})
-            res.render('index', {location, currentForecast})            
+            res.render('index', {
+                location, 
+                currentForecast,
+                currentMorningHigh,
+                currentMorningLow,
+                currentDayHigh,
+                currentDayLow,
+                currentEveningHigh,
+                currentEveningLow
+            })
             // Get Tomorrow.io forecast
             // try {
             //     forecast = await tomorrow_functions.get_tomorrow_forecast('imperial')

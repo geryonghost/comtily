@@ -24,9 +24,23 @@ async function getAll(query, units, appEmail, userAgent) {
     }
 }
 
-function currentForecast(forecastHourly) {
-    let temperaturesum = temperatureaverage = 0
+async function currentForecast(query, forecastHourly, timeZone) {
+    // let temperaturesum = temperatureaverage = 0
     
+    // const now = new Date().setHours(0,0,0,0)
+    // const now = new Date()
+    // const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
+    // const startOfDayLocal = startOfDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+    // const startOfDayISO = new Date(startOfDayLocal).toISOString()
+    
+    // const midDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
+    // const midDayLocal = midDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+    // const midDayISO = new Date(midDayLocal).toISOString()
+
+    // const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59)
+    // const endOfDayLocal = endOfDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+    // const endOfDayISO = new Date(endOfDayLocal).toISOString()
+
     // const dailyhigh = getDailyHighs(forecastHourly)
     // const dailylow = getDailyLows(forecastHourly)
     // const dailyhigh = getTodaysHigh(forecastHourly)
@@ -43,6 +57,9 @@ function currentForecast(forecastHourly) {
     // } else if (forecastHourly[0].temperature < temperatureaverage) { 
     //     currenttemperaturetrend = "<span style=\"color:green\";>&#8593;</span>"
     // }
+
+    const highsLows = await database.getHighsLows(query, 0, timeZone)
+    // console.log(highsLows)
   
     const i = 0
     const forecast = {
@@ -67,13 +84,28 @@ function currentForecast(forecastHourly) {
         "temperatureunit": forecastHourly[i].temperatureUnit,
         // "temperaturetrend": currenttemperaturetrend,
         "winddirection": forecastHourly[i].windDirection,
-        "windspeed": forecastHourly[i].windSpeed
+        "windspeed": forecastHourly[i].windSpeed,
+        "highsLows": highsLows
     }
   
     return forecast
 }
 
+async function displayTemp(temperature) {
+    if (temperature.length > 0) {
+        const temp = temperature[0].temperature
+        const tempUnit = temperature[0].temperatureUnit
+        const time = new Date(temperature[0].startTime).toLocaleTimeString([], {timeStyle: 'short'})
+        
+        const display = `${temp}&#176;${tempUnit}<br /><font size="2">${time}</font>`
+        return display
+    } else {
+        return ""
+    }
+}
+
 module.exports = {
     getAll,
     currentForecast,
+    displayTemp,
 }
