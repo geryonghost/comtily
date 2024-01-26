@@ -101,29 +101,15 @@ async function getHighsLows(query, dateOffset, timeZone) {
     
     const startDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 0, 0, 0)
     const startDayLocal = moment.utc(startDay).tz(timeZone[0]).format()
-    // console.log(startDayLocal)
-    // console.log(startDay)
-    // startDay.setDate(startDay.getDate() + dateOffset)
-    // const startDayLocal = startDay.toLocaleString('en-US', {timeZone: timeZone[0]})
-    // const startDayISO = new Date(startDayLocal).toISOString()
-    // console.log(startDayLocal)
+    console.log(startDayLocal)
 
     const midDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 12, 0, 0)
     const midDayLocal = moment.utc(midDay).tz(timeZone[0]).format()
-    // console.log(midDayLocal)
-    // midDay.setDate(midDay.getDate() + dateOffset)
-    // const midDayLocal = midDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
-    // const midDayISO = new Date(midDay).toISOString()
-    // console.log(midDayISO)
+    console.log(midDayLocal)
 
     const endDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 23, 59, 59)
     const endDayLocal = moment.utc(endDay).tz(timeZone[0]).format()
-    // console.log(endDay)
-    // endDay.setDate(endDay.getDate() + dateOffset)
-    // const endDayLocal = endDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
-    // const endDayISO = new Date(endDayLocal).toISOString()
-    // console.log(midDayLocal)
-    // console.log(midDayISO)
+    console.log(endDayLocal)
 
     let filter, options
 
