@@ -1,6 +1,5 @@
 const { getClient, dbName } = require('./db')
 
-const moment = require('moment-timezone')
 const conversions = require('./conversions')
 
 async function getAll(query) {
@@ -72,57 +71,40 @@ async function getHighsLows(query, dateOffset, timeZone) {
     const db = client.db(dbName)
     const collection = db.collection('hourlyReference')
 
-    const now = new Date()
-    console.log(now)
-
-    const currentDate = conversions.getCurrentDate(timeZone, 3)
-    console.log(currentDate)
-    // 2024-01-25T00:00:00-06:00
-    
-    const startDay = `${currentDate}T00:00:00${timeZone[2]}`
-    console.log(startDay)
-    // const startDayLocal = moment.utc(startDay).tz(timeZone[0]).format()
-    // console.log(startDayLocal)
-    const midDay = `${currentDate}T12:00:00${timeZone[2]}`
-    // const midDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 12, 0, 0)
-    // const midDayLocal = moment.utc(midDay).tz(timeZone[0]).format()
-    // console.log(midDayLocal)
-
-    const endDay = `${currentDate}T23:59:59${timeZone[2]}`
-    // const endDay = new Date(now.getFullYear(), now.getMonth(), now.getDate() + dateOffset, 23, 59, 59)
-    // const endDayLocal = moment.utc(endDay).tz(timeZone[0]).format()
-    // console.log(endDayLocal)
+    const currentDate = conversions.getCurrentDate(timeZone, dateOffset)
+    const morning = `${currentDate}T00:00:00${timeZone[2]}`
+    const day = `${currentDate}T12:00:00${timeZone[2]}`
+    const evening = `${currentDate}T23:59:59${timeZone[2]}`
 
     let filter, options
 
     // Morning High
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: startDay, $lt: midDay}}
-    console.log(filter)
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: morning, $lt: day}}
     options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
     const morningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
     // Morning Low
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: startDay, $lt: midDay}}
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: morning, $lt: day}}
     options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
     const morningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
     // midDay High
-    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: startDay, $lt: endDay}}
+    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: morning, $lt: evening}}
     options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
     const dayHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
     // midDay Low
-    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: startDay, $lt: endDay}}
+    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: morning, $lt: evening}}
     options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
     const dayLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
     // Evening High
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: midDay, $lt: endDay}}
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: day, $lt: evening}}
     options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
     const eveningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
     // Evening Low
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: midDay, $lt: endDay}}
+    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: day, $lt: evening}}
     options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
     const eveningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
@@ -137,14 +119,6 @@ async function getHighsLows(query, dateOffset, timeZone) {
     
     return highsLows
 }
-
-// Hourly Reference for High/Low functions
-// {query: "60532", "startTime": {$gte: '2024-01-18T00:00:00.000Z', $lt: '2024-01-18T23:59:59.999Z'}}
-// Max
-// db.teams.find().sort({"field":-1}).limit(1)
-// Min
-// db.teams.find().sort({"field":1}).limit(1)
-
 
 module.exports = {
     getAll,
