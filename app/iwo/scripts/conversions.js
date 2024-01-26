@@ -35,11 +35,28 @@ function getTimeZoneName(offset) {
         default:
             timezone[0] = ""
             timezone[1] = ""
+            timezone[2] = ""
     }
     return timezone
+  }
+
+  function convertLength(unit, data) {
+    const measurement = data.slice(0,-1)
+    const unitCode = data.substr(data.length - 1)
+    let length
+
+    if (unit = 'us' && unitCode == 'm') {
+        const math  = Math.round(measurement * 3.2808399)
+        length = math + 'ft'
+    }
+    if (unit = 'us' && unitCode == 'f') {
+        length = data
+    }
+    return length
   }
 
   module.exports = {
     formatUnitCode,
     getTimeZoneName,
+    convertLength,
 }
