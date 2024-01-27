@@ -45,19 +45,21 @@ async function updateWeatherForecastDb(query, dbData) {
         await collection.createIndex({query: 1, startTime: 1}, {unique: true})
         
         console.log('Updating hourly reference in MongoDB')
-        const currentTime = new Date()
+        const currentTime = conversions.convertDateTime(new Date(), dbData.timeZone[0])
+
         for (let i = 0; i < dbData.forecastHourly.length; i++) {
-            let hourlyReference
-            hourlyReference = {
+            const hourlyReference = {
                 'query': dbData.query,
                 'startTime': dbData.forecastHourly[i].startTime,
                 'isDaytime': dbData.forecastHourly[i].isDaytime,
                 'temperature':dbData.forecastHourly[i].temperature,
                 'temperatureUnit': dbData.forecastHourly[i].temperatureUnit
             }
-            
-            const filter = { "query": query, 'startTime': {$lt: currentTime}}
-            await collection.updateOne(filter, {$set: hourlyReference}, {'upsert': true})
+
+            if (hourlyReference.startTime > currentTime) {
+                const filter = {"query": query, 'startTime': hourlyReference.startTime}
+                await collection.updateOne(filter, {$set: {hourlyReference}}, {'upsert': true})
+            }
         }
     } catch(err) {
         console.error(err)

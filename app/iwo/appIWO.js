@@ -86,7 +86,7 @@ app.get('', async (req, res) => {
                 'timeZone': forecast.timeZone,
                 'elevation': conversions.convertLength(units, forecast.elevation)
             }
-            console.log(forecast.timeZone)
+
             const currentForecast = await forecasts.currentForecast(query, forecast.forecastHourly, forecast.timeZone)
             const currentMorningHigh = await forecasts.displayTemp(currentForecast.highsLows.morningHigh, forecast.timeZone[0])
             const currentMorningLow = await forecasts.displayTemp(currentForecast.highsLows.morningLow, forecast.timeZone[0])
@@ -94,11 +94,6 @@ app.get('', async (req, res) => {
             const currentDayLow = await forecasts.displayTemp(currentForecast.highsLows.dayLow, forecast.timeZone[0])
             const currentEveningHigh = await forecasts.displayTemp(currentForecast.highsLows.eveningHigh, forecast.timeZone[0])
             const currentEveningLow = await forecasts.displayTemp(currentForecast.highsLows.eveningLow, forecast.timeZone[0])
-
-
-            testTime = new Date().toUTCString()
-            testTimeZone = moment.tz(testTime, 'America/Chicago').format()
-
 
             res.render('index', {
                 location, 
@@ -109,8 +104,6 @@ app.get('', async (req, res) => {
                 currentDayLow,
                 currentEveningHigh,
                 currentEveningLow,
-                testTime,
-                testTimeZone
             })
             // Get Tomorrow.io forecast
             // try {

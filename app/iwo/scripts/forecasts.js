@@ -95,13 +95,10 @@ async function currentForecast(query, forecastHourly, timeZone) {
 }
 
 async function displayTemp(temperature, timeZone) {
-    console.log("HERe")
-    console.log(timeZone)
     if (temperature.length > 0) {
         const temp = temperature[0].temperature
         const tempUnit = temperature[0].temperatureUnit
         const time = conversions.convertTime(temperature[0].startTime, timeZone)
-        // const time = new Date(temperature[0].startTime).toLocaleTimeString([], {timeStyle: 'short'})
         
         const display = `${temp}&#176;${tempUnit}<br /><font size="2">${time}</font>`
         return display
