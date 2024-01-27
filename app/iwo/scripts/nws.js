@@ -6,7 +6,7 @@ const conversions = require('./conversions')
 async function getWeatherForecast(query, coordinates, unit = 'us', userAgent) {
     let forecastUrl, forecastDaily, forecastHourly, forecastAlerts, dbData
 
-    console.log('Getting Forecast URL')    
+    console.log('IWO:Getting Forecast URL')    
     if (coordinates.forecastUrl != '') {
        forecastUrl = await getForecastUrl(coordinates.lat, coordinates.lon, userAgent)
     } else {
@@ -15,13 +15,13 @@ async function getWeatherForecast(query, coordinates, unit = 'us', userAgent) {
 
     if (forecastUrl != 'e002') {
         const location = coordinates.lat + ',' + coordinates.lon
-        console.log('Getting Forecast Daily')
+        console.log('IWO:Getting Forecast Daily')
         forecastDaily = await getForecasts(forecastUrl, 'daily', unit, userAgent)
-        console.log('Getting Forecast Hourly')
+        console.log('IWO:Getting Forecast Hourly')
         forecastHourly = await getForecasts(forecastUrl, 'hourly', unit, userAgent)
-        console.log('Getting Forecast Alerts')
+        console.log('IWO:Getting Forecast Alerts')
         forecastAlerts = await getForecasts(forecastUrl, 'alerts', unit, userAgent, location)
-        console.log('Getting Forecast Grid Data')
+        console.log('IWO:Getting Forecast Grid Data')
         forecastGridData = await getForecasts(forecastUrl, 'griddata', unit, userAgent)
     }
 
@@ -65,7 +65,7 @@ async function getForecastUrl(lat, lon, userAgent) {
         if (results.status == 200) {
             forecastUrl = await results.data.properties.forecastGridData
         } else {
-            console.log("Query results in bad response status")
+            console.log("IWO:Query results in bad response status")
             forecastUrl = 'e002'
         }
     } catch (err) {

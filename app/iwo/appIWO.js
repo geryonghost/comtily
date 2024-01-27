@@ -88,22 +88,26 @@ app.get('', async (req, res) => {
             }
 
             const currentForecast = await forecasts.currentForecast(query, forecast.forecastHourly, forecast.timeZone)
-            const currentMorningHigh = await forecasts.displayTemp(currentForecast.highsLows.morningHigh, forecast.timeZone[0])
-            const currentMorningLow = await forecasts.displayTemp(currentForecast.highsLows.morningLow, forecast.timeZone[0])
-            const currentDayHigh = await forecasts.displayTemp(currentForecast.highsLows.dayHigh, forecast.timeZone[0])
-            const currentDayLow = await forecasts.displayTemp(currentForecast.highsLows.dayLow, forecast.timeZone[0])
-            const currentEveningHigh = await forecasts.displayTemp(currentForecast.highsLows.eveningHigh, forecast.timeZone[0])
-            const currentEveningLow = await forecasts.displayTemp(currentForecast.highsLows.eveningLow, forecast.timeZone[0])
+            const currentHigh = await forecasts.displayTemp(currentForecast.highsLows.high, forecast.timeZone[0])
+            const currentLow = await forecasts.displayTemp(currentForecast.highsLows.low, forecast.timeZone[0])
+            // const currentMorningHigh = await forecasts.displayTemp(currentForecast.highsLows.morningHigh, forecast.timeZone[0])
+            // const currentMorningLow = await forecasts.displayTemp(currentForecast.highsLows.morningLow, forecast.timeZone[0])
+            // const currentDayHigh = await forecasts.displayTemp(currentForecast.highsLows.dayHigh, forecast.timeZone[0])
+            // const currentDayLow = await forecasts.displayTemp(currentForecast.highsLows.dayLow, forecast.timeZone[0])
+            // const currentEveningHigh = await forecasts.displayTemp(currentForecast.highsLows.eveningHigh, forecast.timeZone[0])
+            // const currentEveningLow = await forecasts.displayTemp(currentForecast.highsLows.eveningLow, forecast.timeZone[0])
 
             res.render('index', {
                 location, 
                 currentForecast,
-                currentMorningHigh,
-                currentMorningLow,
-                currentDayHigh,
-                currentDayLow,
-                currentEveningHigh,
-                currentEveningLow,
+                currentHigh,
+                currentLow,
+                // currentMorningHigh,
+                // currentMorningLow,
+                // currentDayHigh,
+                // currentDayLow,
+                // currentEveningHigh,
+                // currentEveningLow,
             })
             // Get Tomorrow.io forecast
             // try {

@@ -82,29 +82,34 @@ if (locals.location != "" && locals.location != undefined) {
                     </p>
                     <%
                     if (
-                        currentMorningLow != '' && currentMorningHigh != '' &&
-                        currentDayLow != '' && currentDayHigh != '' &&
-                        currentEveningLow != '' && currentEveningHigh != ''
+                        currentHigh != '' && currentLow !=''
+                        // currentMorningLow != '' && currentMorningHigh != '' &&
+                        // currentDayLow != '' && currentDayHigh != '' &&
+                        // currentEveningLow != '' && currentEveningHigh != ''
                     ) {
                     %>
-                    <table>
+                    <p class="card-text">
+                        High <%-currentHigh%><br />
+                        &nbsp;Low <%-currentLow%>
+                    </p>
+                    <!--<table>
                         <th></th>
                         <th>Morning</th>
                         <th>Daytime</th>
                         <th>Evening</th>
                         <tr>
                             <td><h6>Low</h6></td>
-                            <td><%-currentMorningLow%></td>
-                            <td><%-currentDayLow%></td>
-                            <td><%-currentEveningLow%></td>
+                            <td><%-//currentMorningLow%></td>
+                            <td><%-//currentDayLow%></td>
+                            <td><%-//currentEveningLow%></td>
                         </tr>
                         <tr>
                             <td><h6>High</h6></td>    
-                            <td><%-currentMorningHigh%></td>
-                            <td><%-currentDayHigh%></td>
-                            <td><%-currentEveningHigh%></td>
+                            <td><%-//currentMorningHigh%></td>
+                            <td><%-//currentDayHigh%></td>
+                            <td><%-//currentEveningHigh%></td>
                         </tr>
-                    </table>    
+                    </table>  -->  
                     <%
                     }
                     %>                

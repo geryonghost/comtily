@@ -11,15 +11,15 @@ async function getAll(query, units, appEmail, userAgent) {
     const dbForecast = await database.getAll(query)
 
     if (dbForecast != null) {
-        console.log('Forecast exists')
+        console.log('IWO:Forecast exists')
         return dbForecast
     } else {
-        console.log('Get coordinates')
+        console.log('IWO:Get coordinates')
         coordinates = await nominatim.getCoordinates(query, appEmail)
                 
         if (coordinates == 'e001') {return 'e001'} // HANDLE BAD QUERY HERE
         else {
-            console.log('Get new forecast')
+            console.log('IWO:Get new forecast')
             
             const newForecast = await nws.getWeatherForecast(query, coordinates, units, userAgent)
             return newForecast
@@ -28,38 +28,21 @@ async function getAll(query, units, appEmail, userAgent) {
 }
 
 async function currentForecast(query, forecastHourly, timeZone) {
-    // let temperaturesum = temperatureaverage = 0
+    const temperatureTrendHourCount = 5
+    let temperatureSum = temperatureAverage = 0
+    let currentTemperatureTrend = ''
     
-    // const now = new Date().setHours(0,0,0,0)
-    // const now = new Date()
-    // const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
-    // const startOfDayLocal = startOfDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
-    // const startOfDayISO = new Date(startOfDayLocal).toISOString()
+    // Determines the temperature trend based in the average for the next 5 hours
+    for (let i = 0; i < 5; i++) {
+        temperatureSum += forecastHourly[i].temperature
+    }
+    temperatureAverage = temperatureSum / temperatureTrendHourCount
     
-    // const midDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0)
-    // const midDayLocal = midDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
-    // const midDayISO = new Date(midDayLocal).toISOString()
-
-    // const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59)
-    // const endOfDayLocal = endOfDay.toLocaleString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone })
-    // const endOfDayISO = new Date(endOfDayLocal).toISOString()
-
-    // const dailyhigh = getDailyHighs(forecastHourly)
-    // const dailylow = getDailyLows(forecastHourly)
-    // const dailyhigh = getTodaysHigh(forecastHourly)
-    // const dailylow = getTodaysLow(forecastHourly)
-    
-    // Determines the temperature trend based in the average for the next 10 hours
-    // for (let i = 0; i < 10; i++) {
-    //     temperaturesum += forecastHourly[i].temperature
-    // }
-    // temperatureaverage = temperaturesum / 10
-    
-    // if (forecastHourly[0].temperature > temperatureaverage) { 
-    //     currenttemperaturetrend = "<span style=\"color:blue;\">&#8595;</span>"
-    // } else if (forecastHourly[0].temperature < temperatureaverage) { 
-    //     currenttemperaturetrend = "<span style=\"color:green\";>&#8593;</span>"
-    // }
+    if (forecastHourly[0].temperature > temperatureAverage) { 
+        currentTemperatureTrend = '<span class="text-info">&#8595;</span>'
+    } else if (forecastHourly[0].temperature < temperatureAverage) { 
+        currentTemperaturetrend = '<span class="text-danger";>&#8593;</span>'
+    }
 
     const highsLows = await database.getHighsLows(query, 0, timeZone)
     // console.log(highsLows)
@@ -85,7 +68,7 @@ async function currentForecast(query, forecastHourly, timeZone) {
         "shortforecast": forecastHourly[i].shortForecast,
         "temperature": forecastHourly[i].temperature,
         "temperatureunit": forecastHourly[i].temperatureUnit,
-        // "temperaturetrend": currenttemperaturetrend,
+        "temperaturetrend": currentTemperatureTrend,
         "winddirection": forecastHourly[i].windDirection,
         "windspeed": forecastHourly[i].windSpeed,
         "highsLows": highsLows
@@ -100,7 +83,7 @@ async function displayTemp(temperature, timeZone) {
         const tempUnit = temperature[0].temperatureUnit
         const time = conversions.convertTime(temperature[0].startTime, timeZone)
         
-        const display = `${temp}&#176;${tempUnit}<br /><font size="2">${time}</font>`
+        const display = `${temp}&#176;${tempUnit} at ${time}`
         return display
     } else {
         return ""

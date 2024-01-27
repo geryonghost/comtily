@@ -7,7 +7,7 @@ async function getAll(query) {
     const db = client.db(dbName)
     const collection = db.collection('forecasts')
     
-    console.log('Querying the collection with: ' + query)
+    console.log('IWO:Querying the collection with: ' + query)
     try {
         const currentTime = new Date()
         const tenMinutesAgo = new Date(currentTime - 10 * 60 * 1000)
@@ -29,7 +29,7 @@ async function updateWeatherForecastDb(query, dbData) {
 
     // Update forecasts
     try {
-        console.log('Updating forecast in MongoDB')
+        console.log('IWO:Updating forecast in MongoDB')
         const filter = {'query': query}
         const collection = db.collection('forecasts')
         await collection.updateOne(filter, {$set: dbData}, {'upsert': true})
@@ -41,10 +41,10 @@ async function updateWeatherForecastDb(query, dbData) {
     try {
         const collection = db.collection('hourlyReference')
         
-        console.log('Create hourly reference index')
+        console.log('IWO:Create hourly reference index')
         await collection.createIndex({query: 1, startTime: 1}, {unique: true})
         
-        console.log('Updating hourly reference in MongoDB')
+        console.log('IWO:Updating hourly reference in MongoDB')
         const currentTime = conversions.convertDateTime(new Date(), dbData.timeZone[0])
 
         for (let i = 0; i < dbData.forecastHourly.length; i++) {
@@ -80,47 +80,59 @@ async function getHighsLows(query, dateOffset, timeZone) {
 
     let filter, options
 
-    // Morning High
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: morning, $lt: day}}
-    console.log(filter)
+    // // Morning High
+    // filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: morning, $lt: day}}
+    // console.log(filter)
+    // options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
+    // const morningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // // Morning Low
+    // filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: morning, $lt: day}}
+    // options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
+    // const morningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // // midDay High
+    // filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: morning, $lt: evening}}
+    // options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
+    // const dayHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // // midDay Low
+    // filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: morning, $lt: evening}}
+    // options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
+    // const dayLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // // Evening High
+    // filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: day, $lt: evening}}
+    // options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
+    // const eveningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // // Evening Low
+    // filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: day, $lt: evening}}
+    // options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
+    // const eveningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+
+    // High
+    filter = {'query': query, 'startTime': {$gte: morning, $lt: evening}}
     options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
-    const morningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+    const high = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
-    // Morning Low
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: morning, $lt: day}}
+    // Low
+    filter = {'query': query, 'startTime': {$gte: morning, $lt: evening}}
     options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
-    const morningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
+    const low = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
-    // midDay High
-    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: morning, $lt: evening}}
-    options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
-    const dayHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
-
-    // midDay Low
-    filter = {'query': query, 'isDaytime': true, 'startTime': {$gte: morning, $lt: evening}}
-    options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
-    const dayLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
-
-    // Evening High
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: day, $lt: evening}}
-    options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
-    const eveningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
-
-    // Evening Low
-    filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: day, $lt: evening}}
-    options = {sort: {temperature: 1}, limit: 1} // Max = -1, Min = 1
-    const eveningLow = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
     const highsLows = {
-        ...{'morningHigh': morningHigh},
-        ...{'morningLow': morningLow},
-        ...{'dayHigh': dayHigh},
-        ...{'dayLow': dayLow},
-        ...{'eveningHigh': eveningHigh},
-        ...{'eveningLow': eveningLow}
+        // ...{'morningHigh': morningHigh},
+        // ...{'morningLow': morningLow},
+        // ...{'dayHigh': dayHigh},
+        // ...{'dayLow': dayLow},
+        // ...{'eveningHigh': eveningHigh},
+        // ...{'eveningLow': eveningLow},
+        ...{'high': high},
+        ...{'low': low}
     }
     
-    console.log(highsLows)
     return highsLows
 }
 

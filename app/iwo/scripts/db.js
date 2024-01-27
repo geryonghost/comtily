@@ -9,7 +9,7 @@ let client
 async function connectToDatabase() {
   client = new MongoClient(databaseConnectionString)
   await client.connect();
-  console.log('Connected to MongoDB');
+  console.log('IWO:Connected to MongoDB');
 }
 
 function getClient() {
@@ -18,7 +18,7 @@ function getClient() {
 
 async function closeDatabase() {
   await client.close();
-  console.log('Disconnected from MongoDB');
+  console.log('IWO:Disconnected from MongoDB');
 }
 
 module.exports = { connectToDatabase, getClient, closeDatabase, dbName };
