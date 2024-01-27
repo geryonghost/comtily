@@ -20,6 +20,11 @@ function convertTime(time, timeZone) {
     const convertedTime = moment.tz(utcTime, timeZone).format('LT')
     return convertedTime
 }
+function convertDateTime(dateTime, timeZone) {
+    const utcDateTime = new Date(dateTime).toUTCString()
+    const convertedDateTime = moment.tz(utcDateTime, timeZone).format()
+    return convertedDateTime
+}
 
 function formatUnitCode(unitcode) {
     let unit = unitcode.substring(unitcode.lastIndexOf(':') + 1)
@@ -77,11 +82,10 @@ function getCurrentDate(timeZone, dateOffset = 0) {
     return currentDate
 }
 
-
-
 module.exports = {
     convertLength,
     convertTime,
+    convertDateTime,
     formatUnitCode,
     getTimeZoneName,
     getCurrentDate,
