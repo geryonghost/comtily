@@ -15,6 +15,12 @@ function convertLength(unit, data) {
     return length
 }
 
+function convertTime(time, timeZone) {
+    const utcTime = new Date(time).toUTCString()
+    const convertedTime = moment.tz(utcTime, timeZone).format('LT')
+    return convertedTime
+}
+
 function formatUnitCode(unitcode) {
     let unit = unitcode.substring(unitcode.lastIndexOf(':') + 1)
   
@@ -64,23 +70,19 @@ function getTimeZoneName(offset) {
 }
 
 function getCurrentDate(timeZone, dateOffset = 0) {
-    const date = new Date()
-    date.setDate(date.getDate() + dateOffset)
+    const utcDate = new Date()
+    utcDate.setDate(utcDate.getDate() + dateOffset)
 
-    const clientDate = moment.tz(date, timeZone[0]).format(moment.HTML5_FMT.DATE)
-    return clientDate
+    const currentDate = moment.tz(utcDate, timeZone[0]).format(moment.HTML5_FMT.DATE)
+    return currentDate
 }
 
-function convertTime(time, timeZone) {
-    const clientTime = moment.tz(time, timeZone).format('LT')
-    
-    return clientTime
-}
+
 
 module.exports = {
     convertLength,
+    convertTime,
     formatUnitCode,
     getTimeZoneName,
     getCurrentDate,
-    convertTime 
 }

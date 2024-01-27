@@ -86,16 +86,15 @@ app.get('', async (req, res) => {
                 'timeZone': forecast.timeZone,
                 'elevation': conversions.convertLength(units, forecast.elevation)
             }
+            console.log(forecast.timeZone)
             const currentForecast = await forecasts.currentForecast(query, forecast.forecastHourly, forecast.timeZone)
-            const currentMorningHigh = await forecasts.displayTemp(currentForecast.highsLows.morningHigh)
-            const currentMorningLow = await forecasts.displayTemp(currentForecast.highsLows.morningLow)
-            const currentDayHigh = await forecasts.displayTemp(currentForecast.highsLows.dayHigh)
-            const currentDayLow = await forecasts.displayTemp(currentForecast.highsLows.dayLow)
-            const currentEveningHigh = await forecasts.displayTemp(currentForecast.highsLows.eveningHigh)
-            const currentEveningLow = await forecasts.displayTemp(currentForecast.highsLows.eveningLow)
-            // // console.log(forecast)
+            const currentMorningHigh = await forecasts.displayTemp(currentForecast.highsLows.morningHigh, forecast.timeZone[0])
+            const currentMorningLow = await forecasts.displayTemp(currentForecast.highsLows.morningLow, forecast.timeZone[0])
+            const currentDayHigh = await forecasts.displayTemp(currentForecast.highsLows.dayHigh, forecast.timeZone[0])
+            const currentDayLow = await forecasts.displayTemp(currentForecast.highsLows.dayLow, forecast.timeZone[0])
+            const currentEveningHigh = await forecasts.displayTemp(currentForecast.highsLows.eveningHigh, forecast.timeZone[0])
+            const currentEveningLow = await forecasts.displayTemp(currentForecast.highsLows.eveningLow, forecast.timeZone[0])
 
-            // // res.render('index', {query})
 
             testTime = new Date().toUTCString()
             testTimeZone = moment.tz(testTime, 'America/Chicago').format()
