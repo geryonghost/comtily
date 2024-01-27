@@ -58,7 +58,7 @@ async function updateWeatherForecastDb(query, dbData) {
 
             if (hourlyReference.startTime > currentTime) {
                 const filter = {"query": query, 'startTime': hourlyReference.startTime}
-                await collection.updateOne(filter, {$set: {hourlyReference}}, {'upsert': true})
+                await collection.updateOne(filter, {$set: hourlyReference}, {'upsert': true})
             }
         }
     } catch(err) {
@@ -82,6 +82,7 @@ async function getHighsLows(query, dateOffset, timeZone) {
 
     // Morning High
     filter = {'query': query, 'isDaytime': false, 'startTime': {$gte: morning, $lt: day}}
+    console.log(filter)
     options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
     const morningHigh = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
 
@@ -119,6 +120,7 @@ async function getHighsLows(query, dateOffset, timeZone) {
         ...{'eveningLow': eveningLow}
     }
     
+    console.log(highsLows)
     return highsLows
 }
 
