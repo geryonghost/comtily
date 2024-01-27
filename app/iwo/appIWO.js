@@ -5,6 +5,8 @@ const express = require('express')
 const app = express()
 // const render = require("ejs")
 
+const moment = require('moment-timezone')
+
 const appDomain = "itsweatheroutside.com"
 const appEmail = "webmaster@itsweatheroutside.com"
 const userAgent = "(" + appDomain + "," + appEmail + ")"
@@ -94,6 +96,11 @@ app.get('', async (req, res) => {
             // // console.log(forecast)
 
             // // res.render('index', {query})
+
+            testTime = new Date().toUTCString()
+            testTimeZone = moment.tz(testTime, 'America/Chicago').format()
+
+
             res.render('index', {
                 location, 
                 currentForecast,
@@ -102,7 +109,9 @@ app.get('', async (req, res) => {
                 currentDayHigh,
                 currentDayLow,
                 currentEveningHigh,
-                currentEveningLow
+                currentEveningLow,
+                testTime,
+                testTimeZone
             })
             // Get Tomorrow.io forecast
             // try {
