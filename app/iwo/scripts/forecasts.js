@@ -61,7 +61,7 @@ async function currentForecast(query, forecastHourly, timeZone) {
     //     currenttemperaturetrend = "<span style=\"color:green\";>&#8593;</span>"
     // }
 
-    const highsLows = await database.getHighsLows(query, 4, timeZone)
+    const highsLows = await database.getHighsLows(query, 0, timeZone)
     // console.log(highsLows)
   
     const i = 0
