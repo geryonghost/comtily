@@ -26,6 +26,7 @@ if (appEnvironment == 'dev') {
     app.use(vhost('www.skygatesecurity.com', appSGS))
 
     app.use(vhost('comtily.com', function(req, res){
+      console.log('www.comtily.com')
       res.set('location', 'https://www.comtily.com');
       res.status(301).send()
     }))

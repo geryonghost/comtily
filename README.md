@@ -4,7 +4,30 @@ npm install express
 npm install ejs
 npm install axios
 npm install vhost
+npm install mongodb
+npm install multer
+npm install papaparse
 npm install nodemon
+
+#NSY
+npm install body-parser
+
+#IWO
+npm install moment-timezone
+```
+# Configure Dev Environment (Python)
+```
+python3 -m pip install "pymongo[srv]"
+python3 -m pip install pytz
+python3 -m pip install undetected_chromedriver
+python3 -m pip install pyvirtualdisplay
+python3 -m pip install webdriver_manager
+python3 -m pip install numpy
+```
+
+# NPM Dependency Check
+```
+npx depcheck
 ```
 
 # Local Hosts
