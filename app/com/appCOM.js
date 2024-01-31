@@ -13,10 +13,10 @@ app.get('', (req, res) => {
 });
 
 // Auto Insurance
-app.get('/autoinsurance', (req, res) => {
-  const pageTitle = 'Auto Insurance'
-  res.render('autoinsurance', { pageTitle: pageTitle })
-});
+// app.get('/autoinsurance', (req, res) => {
+//   const pageTitle = 'Auto Insurance'
+//   res.render('autoinsurance', { pageTitle: pageTitle })
+// });
 
 // How to Contribute
 app.get('/howtocontribute', (req, res) => {
@@ -37,10 +37,10 @@ app.get('/notscrapyet', (req, res) => {
 });
 
 // Skygate Security
-app.get('/skygatesecurity', (req, res) => {
-  const pageTitle = 'Skygate Security'
-  res.render('skygatesecurity', { pageTitle: pageTitle})
-});
+// app.get('/skygatesecurity', (req, res) => {
+//   const pageTitle = 'Skygate Security'
+//   res.render('skygatesecurity', { pageTitle: pageTitle})
+// });
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){
