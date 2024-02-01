@@ -1,5 +1,3 @@
-console.log('steven.thehillden.us')
-
 const express = require('express')
 const app = express()
 

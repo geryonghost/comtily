@@ -1,5 +1,3 @@
-console.log('I See Coyotes')
-
 const express = require('express')
 const app = express()
 
