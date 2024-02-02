@@ -1,3 +1,5 @@
+const statusSWH = process.env.statusSWH
+
 const express = require('express')
 const app = express()
 
@@ -7,8 +9,9 @@ app.use(express.static(`${__dirname}/public`))
 
 // Default view of the site
 app.get('', async (req, res) => {
-    if (statusIWO != 'maintenance') {
-        res.render('index')
+    if (statusSWH != 'maintenance') {
+        const pageTitle = "The Home of Steven Hill"
+        res.render('index', {pageTitle})
     } else {
         res.render('maintenance')
     }
