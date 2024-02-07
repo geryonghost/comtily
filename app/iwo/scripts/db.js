@@ -16,9 +16,10 @@ function getClient() {
   return client;
 }
 
-async function closeDatabase() {
-  await client.close();
-  console.log('IWO:Disconnected from MongoDB');
-}
+// async function closeDatabase() {
+//   await client.close();
+//   console.log('IWO:Disconnected from MongoDB');
+// }
 
-module.exports = { connectToDatabase, getClient, closeDatabase, dbName };
+// module.exports = { connectToDatabase, getClient, closeDatabase, dbName }
+module.exports = { connectToDatabase, getClient, dbName }
