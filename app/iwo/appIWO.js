@@ -129,15 +129,15 @@ app.get('*', function(req, res){
 });
 
 // Close MongoDB connection when the application exits
-process.on('SIGINT', async () => {
-    await closeDatabase()
-    process.exit()
-})
+// process.on('SIGINT', async () => {
+//     await closeDatabase()
+//     process.exit()
+// })
   
-process.on('SIGTERM', async () => {
-    await closeDatabase()
-    process.exit()
-})
+// process.on('SIGTERM', async () => {
+//     await closeDatabase()
+//     process.exit()
+// })
 
 
 

@@ -60,6 +60,7 @@ async function getForecastUrl(lat, lon, userAgent) {
     weatherForecastUrl = 'https://api.weather.gov/points/' + lat + ',' + lon
   
     let forecastUrl
+    console.log('IWO:Trying to get forecast URL')
     try {
         const results = await axios.get(weatherForecastUrl, { headers: { userAgent } })
         if (results.status == 200) {
@@ -78,6 +79,7 @@ async function getForecastUrl(lat, lon, userAgent) {
 
 async function getForecasts(forecastUrl, type, unit, userAgent, location = null) {
     let results, forecast
+    console.log('IWO:Trying to get forecast ' + type)
     try {
         switch(type) {
             case 'daily':
