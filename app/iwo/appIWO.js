@@ -87,9 +87,10 @@ app.get('', async (req, res) => {
                 'elevation': conversions.convertLength(units, forecast.elevation)
             }
 
-            const currentForecast = await forecasts.currentForecast(query, forecast.forecastHourly, forecast.timeZone)
-            const currentHigh = await forecasts.displayTemp(currentForecast.highsLows.high, forecast.timeZone[0])
-            const currentLow = await forecasts.displayTemp(currentForecast.highsLows.low, forecast.timeZone[0])
+            const currentForecast = await forecasts.currentForecast(units, forecast.forecastGridData, forecast.forecastSunriseSunset, forecast.forecastTimeZone)
+            // const currentForecast = await forecasts.currentForecast(query, forecast.forecastHourly, forecast.timeZone)
+            // const currentHigh = await forecasts.displayTemp(currentForecast.highsLows.high, forecast.timeZone[0])
+            // const currentLow = await forecasts.displayTemp(currentForecast.highsLows.low, forecast.timeZone[0])
             // const currentMorningHigh = await forecasts.displayTemp(currentForecast.highsLows.morningHigh, forecast.timeZone[0])
             // const currentMorningLow = await forecasts.displayTemp(currentForecast.highsLows.morningLow, forecast.timeZone[0])
             // const currentDayHigh = await forecasts.displayTemp(currentForecast.highsLows.dayHigh, forecast.timeZone[0])
@@ -100,8 +101,8 @@ app.get('', async (req, res) => {
             res.render('index', {
                 location, 
                 currentForecast,
-                currentHigh,
-                currentLow,
+                // currentHigh,
+                // currentLow,
                 // currentMorningHigh,
                 // currentMorningLow,
                 // currentDayHigh,

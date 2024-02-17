@@ -37,33 +37,49 @@ async function updateWeatherForecastDb(query, dbData) {
         console.error(err)
     }
 
-    // Update hourly reference
-    try {
-        const collection = db.collection('hourlyReference')
+    // // Update hourly reference
+    // try {
+    //     const collection = db.collection('hourlyReference')
         
-        console.log('IWO:Create hourly reference index')
-        await collection.createIndex({query: 1, startTime: 1}, {unique: true})
+    //     console.log('IWO:Create hourly reference index')
+    //     await collection.createIndex({query: 1, startTime: 1}, {unique: true})
         
-        console.log('IWO:Updating hourly reference in MongoDB')
-        const currentTime = conversions.convertDateTime(new Date(), dbData.timeZone[0])
+    //     console.log('IWO:Updating hourly reference in MongoDB')
+    //     const currentTime = conversions.convertDateTime(new Date(), dbData.timeZone[0])
 
-        for (let i = 0; i < dbData.forecastHourly.length; i++) {
-            const hourlyReference = {
-                'query': dbData.query,
-                'startTime': dbData.forecastHourly[i].startTime,
-                'isDaytime': dbData.forecastHourly[i].isDaytime,
-                'temperature':dbData.forecastHourly[i].temperature,
-                'temperatureUnit': dbData.forecastHourly[i].temperatureUnit
-            }
+    //     for (let i = 0; i < dbData.forecastHourly.length; i++) {
+    //         const hourlyReference = {
+    //             'query': dbData.query,
+    //             'startTime': dbData.forecastHourly[i].startTime,
+    //             'isDaytime': dbData.forecastHourly[i].isDaytime,
+    //             'temperature':dbData.forecastHourly[i].temperature,
+    //             'temperatureUnit': dbData.forecastHourly[i].temperatureUnit
+    //         }
 
-            if (hourlyReference.startTime > currentTime) {
-                const filter = {"query": query, 'startTime': hourlyReference.startTime}
-                await collection.updateOne(filter, {$set: hourlyReference}, {'upsert': true})
-            }
-        }
-    } catch(err) {
-        console.error(err)
-    }
+    //         if (hourlyReference.startTime > currentTime) {
+    //             const filter = {"query": query, 'startTime': hourlyReference.startTime}
+    //             await collection.updateOne(filter, {$set: hourlyReference}, {'upsert': true})
+    //         }
+    //     }
+    // } catch(err) {
+    //     console.error(err)
+    // }
+
+    // // Update shortforecast naming
+    // try {
+    //     console.log('IWO:Updating short forecast types in MongoDB')
+    //     const collection = db.collection('short_forecast_types')
+
+    //     for (let i = 0; i < dbData.forecastDaily.length; i++) {
+    //         const dbInsert = {
+    //             'shortForecast': dbData.forecastDaily[i].shortForecast,
+    //             'icon': dbData.forecastDaily[i].icon
+    //         }
+    //         await collection.insertOne(dbInsert)
+    //     }
+    // } catch(err) {
+    //     console.error(err)
+    // }
 
     return 'complete'
 }

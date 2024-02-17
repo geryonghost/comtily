@@ -2,6 +2,7 @@ const axios = require('axios')
 
 const database = require('./database')
 const conversions = require('./conversions')
+const sunriseSunset = require('./sunrise-sunset')
 
 async function getWeatherForecast(query, coordinates, unit = 'us', userAgent) {
     let forecastUrl, forecastDaily, forecastHourly, forecastAlerts, dbData
@@ -23,6 +24,10 @@ async function getWeatherForecast(query, coordinates, unit = 'us', userAgent) {
         forecastAlerts = await getForecasts(forecastUrl, 'alerts', unit, userAgent, location)
         console.log('IWO:Getting Forecast Grid Data')
         forecastGridData = await getForecasts(forecastUrl, 'griddata', unit, userAgent)
+        console.log('IWO:Getting Time Zone')
+        forecastTimeZone = await sunriseSunset.getTimeZone(coordinates.lat, coordinates.lon)
+        console.log('IWO:Getting Sunrise/Sunset Data')
+        forecastSunriseSunset = await sunriseSunset.getSunriseSunset(coordinates.lat, coordinates.lon, forecastTimeZone)
     }
 
     if (forecastDaily != 'e003' && forecastHourly != 'e003' && forecastAlerts != 'e003' && forecastGridData != 'e003') {
@@ -36,7 +41,8 @@ async function getWeatherForecast(query, coordinates, unit = 'us', userAgent) {
                 'addressType': coordinates.addresstype,
                 'addressName': coordinates.addressname,
                 'forecastUrl': forecastUrl,
-                'timeZone': conversions.getTimeZoneName(forecastDaily[0].startTime.substring(forecastDaily[0].startTime.length - 6)),
+                forecastTimeZone,
+                forecastSunriseSunset,
                 'elevation': Math.round(forecastGridData.elevation.value) + conversions.formatUnitCode(forecastGridData.elevation.unitCode)
             }
 
@@ -79,31 +85,42 @@ async function getForecastUrl(lat, lon, userAgent) {
 
 async function getForecasts(forecastUrl, type, unit, userAgent, location = null) {
     let results, forecast
-    console.log('IWO:Trying to get forecast ' + type)
     try {
         switch(type) {
             case 'daily':
                 results = await axios.get(forecastUrl + '/forecast?units=' + unit, {headers: {userAgent}})
                 if (results.status == 200) {
                     forecast = await results.data.properties.periods
+                } else if (results.status == 500) {
+                    console.log('IWO:Error getting Forecast Daily, status 500')
+                    forecast = 'e003'
                 }
                 break
             case 'hourly':
                 results = await axios.get(forecastUrl + '/forecast/hourly?units=' + unit, {headers: {userAgent }})
                 if (results.status == 200) {
                     forecast = await results.data.properties.periods
+                } else if (results.status == 500) {
+                    console.log('IWO:Error getting Forecast Hourly, status 500')
+                    forecast = 'e003'
                 }
                 break
             case 'griddata':
                 results = await axios.get(forecastUrl, {headers: {userAgent}})
                 if (results.status == 200) {
                     forecast = await results.data.properties
+                } else if (results.status == 500) {
+                    console.log('IWO:Error getting Forecast Grid Data, status 500')
+                    forecast = 'e003'
                 }
                 break
             case 'alerts':
                 results = await axios.get('https://api.weather.gov/alerts/active?point=' + location, {headers: {userAgent}})
                 if (results.status == 200) {
                     forecast = await results.data.properties
+                } else if (results.status == 500) {
+                    console.log('IWO:Error getting Forecast Alerts, status 500')
+                    forecast = 'e003'
                 }
                 break
         }
