@@ -55,9 +55,9 @@ async function currentForecast(units, forecast) {
     // humidity = forecast.gridData.relativeHumidity.values[i].value
     if (highsLows != null && highsLows != undefined) {
         highTemp = conversions.convertTemperature(units, highsLows.high[0].temperature)
-        highTime = moment(highsLows.high[0].validTime).format('LT')
+        highTime = moment(highsLows.high[0].validTime).tz(forecast.timeZone.zoneName).format('LT')
         lowTemp = conversions.convertTemperature(units, highsLows.low[0].temperature)
-        lowTime = moment(highsLows.low[0].validTime).format('LT')
+        lowTime = moment(highsLows.low[0].validTime).tz(forecast.timeZone.zoneName).format('LT')
     } else {
         highTemp = 999
     }
@@ -65,8 +65,8 @@ async function currentForecast(units, forecast) {
     precipitation = forecast.probabilityOfPrecipitation.values[i].value
     const query = forecast.query
     skyCover = forecast.skyCover.values[i].value
-    const sunrise = moment(forecast.today.sunrise).format('LT')
-    const sunset = moment(forecast.today.sunset).format('LT')
+    const sunrise = moment(forecast.today.sunrise).tz(forecast.timeZone.zoneName).format('LT')
+    const sunset = moment(forecast.today.sunset).tz(forecast.timeZone.zoneName).format('LT')
     temperature = conversions.convertTemperature(units, forecast.temperature.values[i].value)
     timeZone = timeZoneMap[forecast.timeZone.abbreviation]
 
