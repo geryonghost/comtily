@@ -146,7 +146,7 @@ async function hourlyForecast(units, forecast) {
         }
         const skyCover = forecast.skyCover.values[i].value
         const temperature = conversions.convertTemperature(units, forecast.temperature.values[i].value)
-        const temperatureTime = moment(forecast.temperature.values[i].validTime).format('LT')
+        const temperatureTime = moment(forecast.temperature.values[i].validTime).tz(forecast.timeZone.zoneName).format('LT')
         const coverage = forecast.weather.values[i].value[0].coverage
         const intensity = forecast.weather.values[i].value[0].intensity
         const weather = forecast.weather.values[i].value[0].weather
