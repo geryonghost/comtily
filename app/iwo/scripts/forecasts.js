@@ -33,8 +33,8 @@ async function currentForecast(units, forecast) {
     }
 
     const highsLows = await database.getHighsLows(forecast.query, forecast.timeZone.zoneName, 0)
-    const todaySunrise = moment.utc(forecast.today.sunrise).tz(forecast.timeZone.zoneName).format()
-    const todaySunset = moment.utc(forecast.today.sunset).tz(forecast.timeZone.zoneName).format()
+    const todaySunrise = moment(forecast.today.sunrise).tz(forecast.timeZone.zoneName).format()
+    const todaySunset = moment(forecast.today.sunset).tz(forecast.timeZone.zoneName).format()
 
     let timeOfDay
 
@@ -168,15 +168,15 @@ async function hourlyForecast(units, forecast) {
         const temperatureTime = moment(forecast.temperature.values[i].validTime).tz(forecast.timeZone.zoneName).format('LT')
         
         let coverage, intensity, weather
-        if (forecast.weather.values[i].value.length > 1) {
-            coverage = forecast.weather.values[i].value[1].coverage
-            intensity = forecast.weather.values[i].value[1].intensity
-            weather = forecast.weather.values[i].value[1].weather
-        } else {
+        // if (forecast.weather.values[i].value.length > 1) {
+        //     coverage = forecast.weather.values[i].value[1].coverage
+        //     intensity = forecast.weather.values[i].value[1].intensity
+        //     weather = forecast.weather.values[i].value[1].weather
+        // } else {
             coverage = forecast.weather.values[i].value[0].coverage
             intensity = forecast.weather.values[i].value[0].intensity
             weather = forecast.weather.values[i].value[0].weather
-        }
+        // }
         if (coverage != null && coverage != undefined) {
             coverage = conversions.capitalizeFirstLetter(coverage.replace(/_/g,' '))
         }
@@ -255,6 +255,12 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
 
         // '11030': 'Partly Cloudy and Mostly Clear',
         // '21000': 'Light Fog',
+        else if (coverage == 'Patchy' && weather == 'fog' && intensity == null) {
+            subForecast = {
+                'shortForecast': 'Light Fog',
+                'icon': '21000_fog_light'
+            }
+        }
         // '21010': 'Mostly Clear and Light Fog',
         // '21020': 'Partly Cloudy and Light Fog',
         // '21030': 'Mostly Cloudy and Light Fog',
@@ -324,6 +330,12 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         // '51060': 'Partly Cloudy and Snow',
         // '51070': 'Mostly Cloudy and Snow',
         // '50000': 'Snow',
+        else if (coverage == 'Likely' && weather == 'snow showers' && intensity == 'moderate') {
+            subForecast = {
+                'shortForecast': 'Snow',
+                'icon': '50000_snow'
+            }
+        }
         // '51010': 'Heavy Snow',
         // '51190': 'Mostly Clear and Heavy Snow',
         // '51200': 'Partly Cloudy and Heavy Snow',
@@ -426,6 +438,12 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
 
         // '11031': 'Partly Cloudy and Mostly Clear',
         // '21001': 'Light Fog',
+        else if (coverage == 'Patchy' && weather == 'fog' && intensity == null) {
+            subForecast = {
+                'shortForecast': 'Light Fog',
+                'icon': '21000_fog_light'
+            }
+        }
         // '21011': 'Mostly Clear and Light Fog',
         // '21021': 'Partly Cloudy and Light Fog',
         // '21031': 'Mostly Cloudy and Light Fog',
@@ -499,6 +517,12 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         // '51061': 'Partly Cloudy and Snow',
         // '51071': 'Mostly Cloudy and Snow',
         // '50001': 'Snow',
+        else if (coverage == 'Likely' && weather == 'snow showers' && intensity == 'moderate') {
+            subForecast = {
+                'shortForecast': 'Snow',
+                'icon': '50000_snow'
+            }
+        }
         // '51011': 'Heavy Snow',
         // '51191': 'Mostly Clear and Heavy Snow',
         // '51201': 'Partly Cloudy and Heavy Snow',
@@ -568,7 +592,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
     )
 
     if (subForecast.shortForecast == 'Unknown') {
-        console.log(index, 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'coverage:', coverage, 'Type:', weather, 'Intensity', intensity)
+        console.log(index, 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'coverage:', coverage, 'Weather:', weather, 'Intensity', intensity)
     }
     return subForecast
 }
