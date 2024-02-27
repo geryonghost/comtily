@@ -226,7 +226,7 @@ function convertValidTimeValues(values, timeZone) {
     }
 
     for (let i = 0; i < numberHours; i++) {
-        const newTime = moment.utc(parts[0]).add(i, 'hours').tz(timeZone).format() //.format('LT')
+        const newTime = moment(parts[0]).add(i, 'hours').tz(timeZone).format() //.format('LT')
         const newTimeValue = {'validTime': newTime, 'value': values.value}
         validTimeValues.push(newTimeValue)
     }

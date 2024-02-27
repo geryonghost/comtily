@@ -218,7 +218,7 @@ async function updateHourlyReference(query, dbForecast, dbCoordinates) {
         for (let i = 0; i < dbForecast.temperature.values.length; i++) {
             const hourlyReference = {
                 'query': query,
-                'validTime': moment.utc(dbForecast.temperature.values[i].validTime).tz(dbCoordinates.timeZone.zoneName).format(),
+                'validTime': moment(dbForecast.temperature.values[i].validTime).tz(dbCoordinates.timeZone.zoneName).format(),
                 'temperature':dbForecast.temperature.values[i].value
             }
 
