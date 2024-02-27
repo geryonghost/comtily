@@ -15,21 +15,19 @@ async function getAlerts(dbCoordinates, variables) {
     
     if (results.status == 200) {
         forecast = await results.data.properties
-    } else if (results.status == 500) {
-        console.log('IWO:Error getting Forecast Alerts, status 500')
-        forecast = 'e003'
+        return forecast
+    } else {
+        console.log('IWO:Error getting Forecast Alerts')
+        return 'e003'
     }
   } catch (error) {
-    console.error(error)
+    console.log('IWO:Error getting Forecast Alerts', error)
+    return'e003'
   }
-
-  return forecast
 }
 
 async function getCoordinates(query, app_email) {
     try {
-        let coordinates
-
         const results = await axios.get('https://nominatim.openstreetmap.org/search', {
             params: {
                 q: query,
@@ -43,17 +41,17 @@ async function getCoordinates(query, app_email) {
         
         if (results.status == 200) {
             if (results.data.length == 0) {
-                coordinates = 'e001'
+                return 'e001'
             } else {
-                coordinates = {
+                const coordinates = {
                     'lat':results.data[0].lat, 
                     'lon':results.data[0].lon,
                     "addresstype": results.data[0].addresstype,
                     "addressname": results.data[0].name,
                 }
+                return coordinates
             }
         }
-        return coordinates
 
       } catch (error) {
         console.error('Error fetching openstreetmap data', error)
@@ -63,43 +61,39 @@ async function getCoordinates(query, app_email) {
 
 async function getForecastUrl(lat, lon, userAgent) {
   const weatherForecastUrl = 'https://api.weather.gov/points/' + lat + ',' + lon
-  let forecastUrl
 
   try {
       const results = await axios.get(weatherForecastUrl, { headers: { userAgent } })
       if (results.status == 200) {
-          forecastUrl = await results.data.properties.forecastGridData
+          const forecastUrl = await results.data.properties.forecastGridData
+          return forecastUrl
       } else {
           console.log("IWO:Query results in bad response status")
-          forecastUrl = 'e002'
+          return 'e002'
       }
   } catch (err) {
       console.error('Error fetching forecast URL', err)
-      forecastUrl = 'e002'
+      return 'e002'
   }
-
-  return forecastUrl
 }
 
 
 async function getGridData(dbCoordinates, variables) {
-  let forecast
-  
   try {
     const userAgent = variables.userAgent
     const results = await axios.get(dbCoordinates.forecastURL, {headers: {userAgent}})
     if (results.status == 200) {
       console.log('IWO:Convert griddata')
-      forecast = conversions.convertGridData(await results.data.properties, dbCoordinates.timeZone.zoneName)
-    } else if (results.status == '500') {
-      console.log('IWO:Error getting Forecast Grid Data, status 500')
-      forecast = 'e003'
+      const forecast = conversions.convertGridData(await results.data.properties, dbCoordinates.timeZone.zoneName)
+      return forecast
+    } else {
+      console.log('IWO:Error getting Forecast Grid Data')
+      return 'e003'
     }
   } catch (error) {
-    console.error(error.response)
+    console.error('IWO:Error getting Forecast Grid Data', error.response)
+    return 'e003'
   }
-
-  return forecast
 }
 
 async function getSunriseSunset(lat, lon) {
@@ -150,7 +144,7 @@ async function getSunriseSunset(lat, lon) {
       
     } catch (error) {
       console.error('Error fetching openstreetmap data', error)
-      return 'e001'
+      return 'e003'
     }
 }
 
@@ -171,7 +165,7 @@ async function getTimeZone(lat, lon) {
     }
   } catch (error) {
     console.error('Error fetching time zone data', error)
-    return 'e001'
+    return 'e003'
   }
 }
 
