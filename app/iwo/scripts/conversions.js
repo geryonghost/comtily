@@ -1,5 +1,9 @@
 const moment = require('moment-timezone')
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function convertGridData(gridData, timeZone) {
     // const id = gridData['@id']
     // const type = gridData['@type']
@@ -241,6 +245,7 @@ function formatUnitCode(unitcode) {
 
 
 module.exports = {
+    capitalizeFirstLetter,
     convertGridData,
     convertLength,
     convertTemperature,

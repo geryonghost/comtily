@@ -79,8 +79,9 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                 <div class="text-center">
                     <img class="img-fluid" src="<%=currentForecast.icon%>" />
                     <h3><%-currentForecast.temperature%> <%-currentForecast.temperaturetrend%></h3>
-                    <p  class="card-text">Feels like: <%-currentForecast.apparentTemperature%></p>
-                    
+                    <% if (currentForecast.apparentTemperature != currentForecast.temperature) { %>
+                        <p  class="card-text">Feels like: <%-currentForecast.apparentTemperature%></p>
+                    <% } %>
                     <h5><%=currentForecast.shortForecast%></h5>
                     <% if (currentForecast.highTemp != 999) { %>
                     <p class="card-text">
@@ -89,6 +90,9 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     </p>
                     <% } else { %>
                     <p class="card-text"><font size="1">High and Low times are not currently available</font></p>
+                    <% } %>
+                    <%if (currentForecast.precipitation != 0 && currentForecast.weather != null) { %>
+                        <%=currentForecast.coverage%> (<%=houcurrentForecastrly.precipitation%>) of <%=currentForecast.weather%>
                     <% } %>
                 </div>
             </div>
@@ -107,28 +111,26 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                 <div class="text-center">
                     <div class="swiper" id="swiper-hourly" style="text-align: center;">
                         <div class="swiper-wrapper">
-    <%
-    hourlyForecast.forEach((hourly) => {
-    %>          
-                <div class="swiper-slide">
-                    <img src="<%=hourly.icon%>" />
-                    <h4><%-hourly.temperature%></h4>
-                    <h5><%=hourly.shortForecast%></h5>
-                    <h6><%=hourly.temperatureTime%></h6>
-                    
-                    <!-- <p>
-                        Dewpoint: <%=//hourly.dewpoint%>&#176; <%=//hourly.dewpointunit%> <br />
-                        Humidity: <%=//hourly.humidity%> <%=//hourly.humidityunit%> <br />
-                        Chance of precipitation: <%=//hourly.probabilityofprecipitation%> <%=//hourly.probabilityofprecipitationunit%> <br />
-                        <%=//hourly.winddirection%> <%=//hourly.windspeed%>
-                    </p>-->
-                    <% if (hourly.precipitation != 0) { %>
-                        Chance of precipitation: <%=hourly.precipitation%>
-                    <% } %>
-                </div>
-    <% 
-    })
-    %>
+                            <%
+                            hourlyForecast.forEach((hourly) => {
+                            %>          
+                            <div class="swiper-slide">
+                                <img src="<%=hourly.icon%>" />
+                                <h4><%-hourly.temperature%></h4>
+                                <% if (currentForecast.apparentTemperature != hourly.temperature) { %>
+                                    <p  class="card-text">Feels like: <%-currentForecast.apparentTemperature%></p>
+                                <% } else { %>
+                                    <br />
+                                <% } %>
+                                <h5><%=hourly.shortForecast%></h5>
+                                <h6><%=hourly.temperatureTime%></h6>
+                                <%if (hourly.precipitation != 0 && hourly.weather != null) { %>
+                                    <%=hourly.coverage%> (<%=hourly.precipitation%>) of <%=hourly.weather%>
+                                <% } %>
+                            </div>
+                            <% 
+                            })
+                            %>
                         </div>
                     </div>
                 </div>
@@ -200,8 +202,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
 <br />
     <div style="text-align: center; margin: 10px auto; padding: 0px;">
         <p>
-            This site is still under development, has errors, and sometimes crashes. Please check back frequently to see what is new<br />
-            <!--As of today, the temperatures are sometime displayed in C and F.-->
+            This site is still under development, has errors, and sometimes crashes. Please check back frequently to see what's new.
         </p>
     </div>
 

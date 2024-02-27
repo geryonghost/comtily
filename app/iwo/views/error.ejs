@@ -1,0 +1,65 @@
+<% 
+if (locals.query != "" && locals.query != undefined) {
+    query = locals.query
+} else {
+    query = ""
+}
+%>
+
+<%- include('inc/header.ejs') %>
+
+<body>
+    <div class="d-flex align-items-center justify-content-center">
+        <form method="GET" action="">
+            <div class="input-group">
+                <% if (query == "") { %>
+                    <input type="text" class="form-control" id="searchquery" name="q" required />
+                <% } else { %>
+                    <input type="text" class="form-control" id="searchquery" name="q" value="<%=query%>" required />
+                <% } %>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+    <br />
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="alert alert-dismissible alert-warning">
+            <p class="mb-0">There was an error, please refresh <i class="fa-solid fa-arrow-rotate-right fa-xl"></i> or search again.</p>
+      </div>
+    </div>
+    
+  
+    <div style="text-align: center; margin: 10px auto; padding: 0px;">
+        <p>
+            This site is still under development, has errors, and sometimes crashes. Please check back frequently to see what is new.
+        </p>
+    </div>
+</div>
+
+<%- include('inc/footer.ejs') %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var swiperHourly = new Swiper('#swiper-hourly', {
+            // Add your swiper configuration options here
+            // For example:
+            initialSlide: 1,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        var swiper7day = new Swiper('#swiper-daily', {
+            // Add your swiper configuration options here
+            // For example:
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            }
+        });
+    });
+</script>
+
+</html>

@@ -44,7 +44,7 @@ async function currentForecast(units, forecast) {
         timeOfDay = 'night'
     }
 
-    let apparentTemperature, dewPoint, elevation, heatIndex, humidity, highTemp, highTime, lowTemp, lowTime, precipitation, skyCover
+    let apparentTemperature, dewPoint, elevation, heatIndex, humidity, highTemp, highTime, lowTemp, lowTime, skyCover
     let temperature, timeZone, windChill, windDirection, windGust, windSpeed
     
     const addressName = forecast.addressname
@@ -62,7 +62,7 @@ async function currentForecast(units, forecast) {
         highTemp = 999
     }
 
-    precipitation = forecast.probabilityOfPrecipitation.values[i].value
+    const precipitation = forecast.probabilityOfPrecipitation.values[i].value
     const query = forecast.query
     skyCover = forecast.skyCover.values[i].value
     const sunrise = moment(forecast.today.sunrise).tz(forecast.timeZone.zoneName).format('LT')
@@ -70,9 +70,15 @@ async function currentForecast(units, forecast) {
     temperature = conversions.convertTemperature(units, forecast.temperature.values[i].value)
     timeZone = timeZoneMap[forecast.timeZone.abbreviation]
 
-    const coverage = forecast.weather.values[i].value[0].coverage
+    let coverage = forecast.weather.values[i].value[0].coverage
+    if (coverage != null && coverage != undefined) {
+        coverage = conversions.capitalizeFirstLetter(coverage.replace(/_/g,' '))
+    }
     const intensity = forecast.weather.values[i].value[0].intensity
-    const weather = forecast.weather.values[i].value[0].weather
+    let weather = forecast.weather.values[i].value[0].weather
+    if (weather != null && weather != undefined) {
+        weather = weather.replace(/_/g, ' ')
+    }
 
     // windChill = conversions.convertTemperature(units, forecast.gridData.windChill.values[i].value)    
     // windDirection = forecast.gridData.windDirection.values[i].value
@@ -85,6 +91,7 @@ async function currentForecast(units, forecast) {
     const currentForecast = {
         'addressName': addressName,
         'apparentTemperature': apparentTemperature,
+        'coverage': coverage,
         'dewpoint': dewPoint,
         'elevation': elevation,
         // 'heatIndex': heatIndex,
@@ -104,6 +111,7 @@ async function currentForecast(units, forecast) {
         'temperature': temperature,
         'temperaturetrend': currentTemperatureTrend,
         'timeZone': timeZone,
+        'weather': weather,
         // 'windChill': windChill,
         'winddirection': windDirection,
         'windgust': windGust,
@@ -140,6 +148,7 @@ async function hourlyForecast(units, forecast) {
             timeOfDay = 'night'
         }
 
+        const apparentTemperature = forecast.apparentTemperature.values[i].value
         let precipitation = forecast.probabilityOfPrecipitation.values[i].value
         if (precipitation > 0) {
             precipitation = precipitation + conversions.formatUnitCode(forecast.probabilityOfPrecipitation.uom)
@@ -147,13 +156,20 @@ async function hourlyForecast(units, forecast) {
         const skyCover = forecast.skyCover.values[i].value
         const temperature = conversions.convertTemperature(units, forecast.temperature.values[i].value)
         const temperatureTime = moment(forecast.temperature.values[i].validTime).tz(forecast.timeZone.zoneName).format('LT')
-        const coverage = forecast.weather.values[i].value[0].coverage
+        let coverage = forecast.weather.values[i].value[0].coverage
+        if (coverage != null && coverage != undefined) {
+            coverage = conversions.capitalizeFirstLetter(coverage.replace(/_/g,' '))
+        }
         const intensity = forecast.weather.values[i].value[0].intensity
-        const weather = forecast.weather.values[i].value[0].weather
+        let weather = forecast.weather.values[i].value[0].weather
+        if (weather != null && weather != undefined) {
+            weather = weather.replace(/_/g, ' ')
+        }
     
         const subForecast = getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity, weather, i)
 
         const document = {...{
+            'apparentTemperature': apparentTemperature,
             'temperature': temperature,
             'temperatureTime': temperatureTime,
             'shortForecast': subForecast.shortForecast,
@@ -163,7 +179,9 @@ async function hourlyForecast(units, forecast) {
             'todaySunset': moment(todaySunset).format('LT'),
             'tomorrowSunrise': moment(tomorrowSunrise).format('LT'),
             'tomorrowSunset': moment(tomorrowSunset).format('LT'),
+            'coverage': coverage,
             'precipitation': precipitation,
+            'weather': weather,
         }}
 
         hourlyForecast.push(document)
@@ -231,7 +249,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         // '42050': 'Mostly Cloudy and Drizzle',
         // '40000': 'Drizzle',
         // '42000': 'Light Rain',
-        else if ((weather == 'rain' || weather == 'rain_showers') && intensity == 'light') {
+        else if ((weather == 'rain' || weather == 'rain showers') && intensity == 'light') {
             subForecast = {
                 'shortForecast': 'Light Rain',
                 'icon': '42000_rain_light'
@@ -259,7 +277,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
 
         // '42100': 'Mostly Cloudy and Rain',
         // '40010': 'Rain',
-        else if ((weather == 'rain' || weather == 'rain_showers') && intensity == 'moderate') {
+        else if ((weather == 'rain' || weather == 'rain showers') && intensity == 'moderate') {
             subForecast = {
                 'shortForecast': 'Rain',
                 'icon': '40010_rain'
@@ -408,7 +426,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         //     }
         // }
         // '42001': 'Light Rain',
-        else if ((weather == 'rain' || weather == 'rain_showers') && intensity == 'light') {
+        else if ((weather == 'rain' || weather == 'rain showers') && intensity == 'light') {
             subForecast = {
                 'shortForecast': 'Light Rain',
                 'icon': '42001_rain_light'
@@ -434,7 +452,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
 
         // '42101': 'Mostly Cloudy and Rain',
         // '40011': 'Rain' (Day/Night icons are the same)
-        else if ((weather == 'rain' || weather == 'rain_showers') && intensity == 'moderate') {
+        else if ((weather == 'rain' || weather == 'rain showers') && intensity == 'moderate') {
             subForecast = {
                 'shortForecast': 'Rain',
                 'icon': '40010_rain'
@@ -538,7 +556,6 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
 }
 
 module.exports = {
-    // getAll,
     currentForecast,
     hourlyForecast,
 }

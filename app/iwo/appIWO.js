@@ -49,19 +49,19 @@ app.get('', async (req, res) => {
 
             // forecast = await forecasts.getAll(query, units, appEmail, userAgent)
             forecast = await database.getAll(query, variables)
-
+            // console.log(forecast.weather.values[7].value)
             switch (forecast) {
                 case 'e001':
-                    res.render('error', {})
+                    res.render('error', {query})
                     break
                 case 'e002':
-                    res.render('error', {})
+                    res.render('error', {query})
                     break
                 case 'e003':
-                    res.render('error', {})
+                    res.render('error', {query})
                     break
                 case 'e004':
-                    res.render('error', {})
+                    res.render('error', {query})
                     break
                 default:
                     break
