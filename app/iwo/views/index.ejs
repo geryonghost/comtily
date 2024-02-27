@@ -117,8 +117,8 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                             <div class="swiper-slide">
                                 <img src="<%=hourly.icon%>" />
                                 <h4><%-hourly.temperature%></h4>
-                                <% if (currentForecast.apparentTemperature != hourly.temperature) { %>
-                                    <p  class="card-text">Feels like: <%-currentForecast.apparentTemperature%></p>
+                                <% if (hourly.apparentTemperature != hourly.temperature) { %>
+                                    <p  class="card-text">Feels like: <%-hourly.apparentTemperature%></p>
                                 <% } else { %>
                                     <br />
                                 <% } %>
