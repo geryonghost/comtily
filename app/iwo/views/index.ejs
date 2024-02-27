@@ -92,7 +92,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     <p class="card-text"><font size="1">High and Low times are not currently available</font></p>
                     <% } %>
                     <%if (currentForecast.precipitation != 0 && currentForecast.weather != null) { %>
-                        <%=currentForecast.coverage%> (<%=houcurrentForecastrly.precipitation%>) of <%=currentForecast.weather%>
+                        <%=currentForecast.coverage%> (<%=currentForecast.precipitation%>) of <%=currentForecast.weather%>
                     <% } %>
                 </div>
             </div>

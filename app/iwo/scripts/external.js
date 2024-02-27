@@ -77,7 +77,6 @@ async function getForecastUrl(lat, lon, userAgent) {
   }
 }
 
-
 async function getGridData(dbCoordinates, variables) {
   try {
     const userAgent = variables.userAgent
