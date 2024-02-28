@@ -69,6 +69,7 @@ app.get('', async (req, res) => {
 
             const currentForecast = await forecasts.currentForecast(units, forecast)
             const hourlyForecast = await forecasts.hourlyForecast(units, forecast)
+            const dailyForecast = await forecasts.dailyForecast(units, forecast)
             
             res.render('index', {
                 currentForecast,

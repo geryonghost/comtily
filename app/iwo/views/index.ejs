@@ -118,7 +118,10 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                                 <img src="<%=hourly.icon%>" />
                                 <h4><%-hourly.temperature%></h4>
                                 <% if (hourly.apparentTemperature != hourly.temperature) { %>
-                                    <p  class="card-text">Feels like: <%-hourly.apparentTemperature%></p>
+                                    <p class="card-text">Feels like: <%-hourly.apparentTemperature%></p>
+                                    <p class="card-text">
+                                        <%=hourly.windSpeed%> <%=hourly.windDirection%> <br />Gusts of <%=hourly.windGust%>
+                                    </p>
                                 <% } else { %>
                                     <br />
                                 <% } %>

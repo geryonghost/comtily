@@ -78,67 +78,63 @@ async function getForecastUrl(lat, lon, userAgent) {
 }
 
 async function getGridData(dbCoordinates, variables) {
+  let forecast
   try {
     const userAgent = variables.userAgent
     const results = await axios.get(dbCoordinates.forecastURL, {headers: {userAgent}})
     if (results.status == 200) {
-      console.log('IWO:Convert griddata')
-      const forecast = conversions.convertGridData(await results.data.properties, dbCoordinates.timeZone.zoneName)
-      return forecast
+      forecast = await results.data.properties, dbCoordinates.timeZone.zoneName
+    } else if (results.status == 500) {
+      console.log('IWO:Error getting Forecast Grid Data, 500')
+      forecast = 'error'
     } else {
-      console.log('IWO:Error getting Forecast Grid Data')
-      return 'e003'
+      console.log('IWO:Error getting Forecast Grid Data, Other')
+      forecast = 'error'
     }
   } catch (error) {
-    console.error('IWO:Error getting Forecast Grid Data', error.response)
-    return 'e003'
+    console.error('IWO:Error getting Forecast Grid Data')
+    forecast = 'error'
   }
+  if (forecast != 'error') {
+    console.log('IWO:Convert griddata')
+    forecast = conversions.convertGridData(forecast, dbCoordinates.timeZone.zoneName)
+  }
+  return forecast
 }
 
 async function getSunriseSunset(lat, lon) {
     try {
-      let apiURL = ''
-      let today, tomorrow, sunriseSunset
+      const currentTime = moment.utc().format()
+      let createMap = []
 
-      for (let i = 0; i < 2; i++) {
-        if (i == 0) { apiURL = 'https://api.sunrise-sunset.org/json?formatted=0&lat=' + lat + '&lng=' + lon + '&date=today' }
-        if (i == 1) { apiURL = 'https://api.sunrise-sunset.org/json?formatted=0&lat=' + lat + '&lng=' + lon + '&date=tomorrow' }
+      for (let i = 0; i < 7; i++) {
+        const useDate = moment(currentTime).add(i, 'day').format('YYYY-MM-DD')
+        const apiURL = 'https://api.sunrise-sunset.org/json?formatted=0&lat=' + lat + '&lng=' + lon + '&date=' + useDate
 
         const results = await axios.get(apiURL)
 
         if (results.status == 200) {
-          const currentTime = moment.utc().format()
           const sunrise = results.data.results.sunrise
           const sunset = results.data.results.sunset
           const dayLength = results.data.results.day_length
-  
-          if (i == 0 ) {
-            today = {
-              'sunrise': sunrise,
-              'sunset': sunset,
-              'dayLength': dayLength
-            }
-          }
 
-          if (i == 1) {
-            tomorrow = {
+          const mapResults = {
               'sunrise': sunrise,
               'sunset': sunset,
               'dayLength': dayLength
-            }
           }
+          createMap.push(mapResults)
           
-          sunriseSunset = {
-            'forecastFrom':currentTime,
-            ...{'today':today},
-            ...{'tomorrow':tomorrow}
-          }
-
         } else {
           console.log('IWO:Error getting sunrise and sunset')
           return 'e003'
         }
       }
+      const sunriseSunset = {
+        'forecastFrom':currentTime,
+        'sunriseSunset': createMap,
+      }
+
       return sunriseSunset
       
     } catch (error) {

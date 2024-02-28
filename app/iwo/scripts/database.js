@@ -145,9 +145,11 @@ async function getAll(query, variables) {
         if (queryForecast == null) {
             console.log('IWO:Get forecast griddata')
             gridData = await external.getGridData(queryCoordinates, variables)
+            if (gridData == 'error') { return 'error' }
     
             console.log('IWO:Get forecast alerts')
             alerts = await external.getAlerts(queryCoordinates, variables)
+            if (alerts == 'error') { return 'error' }
     
             const currentTime = moment.utc().format()
             dbForecast = {
