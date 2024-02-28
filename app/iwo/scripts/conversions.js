@@ -4,6 +4,14 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function convertDirection(units, data) {
+    const directionArr = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
+    const math = Math.floor((data / 22.5) + 0.5)
+    const unit = directionArr[(math % 16)]
+
+    return unit
+}
+
 function convertGridData(gridData, timeZone) {
     // const id = gridData['@id']
     // const type = gridData['@type']
@@ -50,9 +58,24 @@ function convertGridData(gridData, timeZone) {
     }
     const skyCover = {'uom': gridData.skyCover.uom, 'values': skyCoverValues}
 
-    // windDirection
-    // windSpeed
-    // windGust
+    let windDirectionValues = []
+    for (i = 0; i < gridData.windDirection.values.length; i++) {
+        windDirectionValues = windDirectionValues.concat(convertValidTimeValues(gridData.windDirection.values[i], timeZone))
+    }
+    const windDirection = {'uom': gridData.windDirection.uom, 'values': windDirectionValues}
+
+    let windSpeedValues = []
+    for (i = 0; i < gridData.windSpeed.values.length; i++) {
+        windSpeedValues = windSpeedValues.concat(convertValidTimeValues(gridData.windSpeed.values[i], timeZone))
+    }
+    const windSpeed = {'uom': gridData.windSpeed.uom, 'values': windSpeedValues}
+
+    let windGustValues = []
+    for (i = 0; i < gridData.windGust.values.length; i++) {
+        windGustValues = windGustValues.concat(convertValidTimeValues(gridData.windGust.values[i], timeZone))
+    }
+    const windGust = {'uom': gridData.windGust.uom, 'values': windGustValues}
+    
     // weather
     let weatherValues = []
     for (i = 0; i < gridData.weather.values.length; i++) {
@@ -131,9 +154,9 @@ function convertGridData(gridData, timeZone) {
         // 'heatIndex':
         // 'windChill': 
         'skyCover': skyCover,
-        // 'windDirection':
-        // 'windSpeed':
-        // 'windGust':
+        'windDirection': windDirection,
+        'windSpeed': windSpeed,
+        'windGust': windGust,
         'weather': weather,
         // 'hazards':
         'probabilityOfPrecipitation': probabilityOfPrecipitation,
@@ -198,6 +221,18 @@ function convertLength(units, data) {
     return unit
 }
 
+function convertSpeed(units, data) {
+    let math, unit
+    if (units == 'us') {
+        math = Math.round(data * 0.6213711922)
+        unit = math + ' mph'
+    }
+    if (units == 'metric') {
+        unit = data + ' km/h'
+    }
+    return unit
+}
+
 function convertTemperature(units, data) {
     let math, unit
     if (units == 'us') {
@@ -246,8 +281,10 @@ function formatUnitCode(unitcode) {
 
 module.exports = {
     capitalizeFirstLetter,
+    convertDirection,
     convertGridData,
     convertLength,
+    convertSpeed,
     convertTemperature,
     formatUnitCode,
 }

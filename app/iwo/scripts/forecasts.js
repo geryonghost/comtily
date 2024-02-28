@@ -5,6 +5,7 @@ const database = require('./database')
 const nominatim = require('./external')
 
 async function currentForecast(units, forecast) {
+    // console.log(forecast)
     const currentTime = moment.utc().tz(forecast.timeZone.zoneName).format()
     
     let index = -1
@@ -33,8 +34,8 @@ async function currentForecast(units, forecast) {
     }
 
     const highsLows = await database.getHighsLows(forecast.query, forecast.timeZone.zoneName, 0)
-    const todaySunrise = moment(forecast.today.sunrise).tz(forecast.timeZone.zoneName).format()
-    const todaySunset = moment(forecast.today.sunset).tz(forecast.timeZone.zoneName).format()
+    const todaySunrise = moment(forecast.sunriseSunset[0].sunrise).tz(forecast.timeZone.zoneName).format()
+    const todaySunset = moment(forecast.sunriseSunset[0].sunset).tz(forecast.timeZone.zoneName).format()
 
     let timeOfDay
 
@@ -68,8 +69,8 @@ async function currentForecast(units, forecast) {
     }
     const query = forecast.query
     skyCover = forecast.skyCover.values[i].value
-    const sunrise = moment(forecast.today.sunrise).tz(forecast.timeZone.zoneName).format('LT')
-    const sunset = moment(forecast.today.sunset).tz(forecast.timeZone.zoneName).format('LT')
+    // const sunrise = moment(forecast.sunriseSunset[0].sunrise).tz(forecast.timeZone.zoneName).format('LT')
+    // const sunset = moment(forecast.sunriseSunset[0].sunset).tz(forecast.timeZone.zoneName).format('LT')
     temperature = conversions.convertTemperature(units, forecast.temperature.values[i].value)
     timeZone = timeZoneMap[forecast.timeZone.abbreviation]
 
@@ -91,9 +92,9 @@ async function currentForecast(units, forecast) {
     }
 
     // windChill = conversions.convertTemperature(units, forecast.gridData.windChill.values[i].value)    
-    // windDirection = forecast.gridData.windDirection.values[i].value
-    // windGust = forecast.gridData.windGust.values[i].value
-    // windSpeed =  forecast.gridData.windSpeed.values[i].value
+    windDirection = forecast.windDirection.values[i].value
+    windGust = conversions.convertSpeed(units, forecast.windGust.values[i].value)
+    windSpeed =  conversions.convertSpeed(units, forecast.windSpeed.values[i].value)
 
     // precipitation, skycover, weather_coverage, weather_type, fog???
     const subForecast = getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity, weather)
@@ -116,8 +117,8 @@ async function currentForecast(units, forecast) {
         'query': query,
         'shortForecast': subForecast.shortForecast,
         'skycover': skyCover,
-        'sunrise': sunrise,
-        'sunset': sunset,
+        'sunrise': moment(todaySunrise).tz(forecast.timeZone.zoneName).format('LT'),
+        'sunset': moment(todaySunset).tz(forecast.timeZone.zoneName).format('LT'),
         'temperature': temperature,
         'temperaturetrend': currentTemperatureTrend,
         'timeZone': timeZone,
@@ -132,10 +133,10 @@ async function currentForecast(units, forecast) {
 }
 
 async function hourlyForecast(units, forecast) {
-    const todaySunrise = moment(forecast.today.sunrise).format()
-    const todaySunset = moment(forecast.today.sunset).format()
-    const tomorrowSunrise = moment(forecast.tomorrow.sunrise).format()
-    const tomorrowSunset = moment(forecast.tomorrow.sunset).format()
+    const todaySunrise = moment(forecast.sunriseSunset[0].sunrise).format()
+    const todaySunset = moment(forecast.sunriseSunset[0].sunset).format()
+    const tomorrowSunrise = moment(forecast.sunriseSunset[1].sunrise).format()
+    const tomorrowSunset = moment(forecast.sunriseSunset[1].sunset).format()
 
     const currentTime = moment.utc().tz(forecast.timeZone.zoneName).format()
     let index = -1
@@ -158,7 +159,7 @@ async function hourlyForecast(units, forecast) {
             timeOfDay = 'night'
         }
 
-        const apparentTemperature = forecast.apparentTemperature.values[i].value
+        const apparentTemperature = conversions.convertTemperature(units, forecast.apparentTemperature.values[i].value)
         let precipitation = forecast.probabilityOfPrecipitation.values[i].value
         if (precipitation > 0) {
             precipitation = precipitation + conversions.formatUnitCode(forecast.probabilityOfPrecipitation.uom)
@@ -176,14 +177,16 @@ async function hourlyForecast(units, forecast) {
             coverage = forecast.weather.values[i].value[0].coverage
             intensity = forecast.weather.values[i].value[0].intensity
             weather = forecast.weather.values[i].value[0].weather
-        // }
+        
         if (coverage != null && coverage != undefined) {
             coverage = conversions.capitalizeFirstLetter(coverage.replace(/_/g,' '))
         }
         if (weather != null && weather != undefined) {
             weather = weather.replace(/_/g, ' ')
         }
-    
+        windDirection = conversions.convertDirection(units, forecast.windDirection.values[i].value)
+        windGust = conversions.convertSpeed(units, forecast.windGust.values[i].value)
+        windSpeed =  conversions.convertSpeed(units, forecast.windSpeed.values[i].value)
         const subForecast = getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity, weather, i)
 
         const document = {...{
@@ -200,12 +203,29 @@ async function hourlyForecast(units, forecast) {
             'coverage': coverage,
             'precipitation': precipitation,
             'weather': weather,
+            'windDirection': windDirection,
+            'windGust': windGust,
+            'windSpeed': windSpeed,
         }}
 
         hourlyForecast.push(document)
     }
-
     return hourlyForecast
+}
+
+async function dailyForecast(units, forecast) {
+    const currentDate = moment.utc().format('YYYY-MM-DD')
+    for (let i = 0; i < 7; i++) {
+        const dailyDate = moment(currentDate).add(i, 'day').format('YYYY-MM-DD')
+        // const sunrise = 
+    }
+}
+
+
+module.exports = {
+    currentForecast,
+    hourlyForecast,
+    dailyForecast,
 }
 
 function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity, weather, index) {
@@ -330,7 +350,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         // '51060': 'Partly Cloudy and Snow',
         // '51070': 'Mostly Cloudy and Snow',
         // '50000': 'Snow',
-        else if (coverage == 'Likely' && weather == 'snow showers' && intensity == 'moderate') {
+        else if (coverage == 'Likely' && (weather == 'snow showers' || weather == 'snow') && intensity == 'moderate') {
             subForecast = {
                 'shortForecast': 'Snow',
                 'icon': '50000_snow'
@@ -517,7 +537,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         // '51061': 'Partly Cloudy and Snow',
         // '51071': 'Mostly Cloudy and Snow',
         // '50001': 'Snow',
-        else if (coverage == 'Likely' && weather == 'snow showers' && intensity == 'moderate') {
+        else if ((coverage == 'Likely' || coverage == 'Slight chance') && (weather == 'snow showers' || weather == 'snow') && intensity == 'moderate') {
             subForecast = {
                 'shortForecast': 'Snow',
                 'icon': '50000_snow'
@@ -595,11 +615,6 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         console.log(index, 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'coverage:', coverage, 'Weather:', weather, 'Intensity', intensity)
     }
     return subForecast
-}
-
-module.exports = {
-    currentForecast,
-    hourlyForecast,
 }
 
 const timeZoneMap = {
