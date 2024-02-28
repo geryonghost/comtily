@@ -3,9 +3,6 @@ const statusIWO = process.env.statusIWO
 const mongoDb = require('mongodb')
 const express = require('express')
 const app = express()
-// const render = require("ejs")
-
-const moment = require('moment-timezone')
 
 const appDomain = "itsweatheroutside.com"
 const appEmail = "webmaster@itsweatheroutside.com"
@@ -13,9 +10,6 @@ const userAgent = "(" + appDomain + "," + appEmail + ")"
 
 // Custom functions
 const database = require('./scripts/database')
-// const nominatim = require('./scripts/nominatim')
-// const nws = require('./scripts/nws')
-const conversions = require('./scripts/conversions')
 const forecasts = require('./scripts/forecasts')
 
 // Connect to MongoDB when the application starts
@@ -49,32 +43,19 @@ app.get('', async (req, res) => {
 
             // forecast = await forecasts.getAll(query, units, appEmail, userAgent)
             forecast = await database.getAll(query, variables)
-            // console.log(forecast.weather.values[7].value)
-            switch (forecast) {
-                case 'e001':
-                    res.render('error', {query})
-                    break
-                case 'e002':
-                    res.render('error', {query})
-                    break
-                case 'e003':
-                    res.render('error', {query})
-                    break
-                case 'e004':
-                    res.render('error', {query})
-                    break
-                default:
-                    break
-            }
 
-            const currentForecast = await forecasts.currentForecast(units, forecast)
-            const hourlyForecast = await forecasts.hourlyForecast(units, forecast)
-            const dailyForecast = await forecasts.dailyForecast(units, forecast)
-            
-            res.render('index', {
-                currentForecast,
-                hourlyForecast,
-            })
+            if (forecast == 'e001' || forecast == 'e002' || forecast == 'e003' || forecast == 'e004' || forecast == 'error') {
+                res.render('error', {query})                
+            } else {
+                const currentForecast = await forecasts.currentForecast(units, forecast)
+                const hourlyForecast = await forecasts.hourlyForecast(units, forecast)
+                const dailyForecast = await forecasts.dailyForecast(units, forecast)
+                
+                res.render('index', {
+                    currentForecast,
+                    hourlyForecast,
+                })
+            }
         }
     } else {
         res.render('maintenance')
