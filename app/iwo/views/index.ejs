@@ -61,7 +61,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     <% } %>
                     <h5><%=currentForecast.shortForecast%></h5>
                     <%if (currentForecast.precipitation != 0 && currentForecast.weather != null && currentForecast.weather != 'fog') { %>
-                        <p class="card-text"><%=currentForecast.coverage%> <%=currentForecast.precipitation%></p>
+                        <p class="card-text"><%=currentForecast.precipitation%> chance of precipitation</p>
                     <% } %>
                     <% if (currentForecast.highTemp != 999) { %>
                     <p class="card-text">
@@ -100,7 +100,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                                 <% } %>
                                 <h5><%=hourly.shortForecast%></h5>
                                 <%if (hourly.precipitation != 0 && hourly.weather != null && hourly.weather != 'fog') { %>
-                                    <p class="card-text"><%=hourly.coverage%> <%=hourly.precipitation%></p>
+                                    <p class="card-text"><%=hourly.precipitation%></p>
                                 <% } %>
                             </div>
                             <% 
@@ -124,12 +124,14 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
             <div class="card-header text-white bg-primary"><%=daily.dayOfWeek%></div>
             <div class="card-body">
                 <div class="text-center">
+                    <% if (daily.morningHide != true) { %>
                     <img src="<%=daily.morningForecast.icon%>" />
                     <h6><%=daily.morningForecast.shortForecast%></h6>
                     <p class="card-text">
                         High <%-daily.morningHigh%> at <%=daily.morningHighTime%><br />&nbsp;
                         Low <%-daily.morningLow%> at <%=daily.morningLowTime%>
                     </p>
+                    <% } %>
                     <div class="badge bg-warning">Sunrise <%=daily.sunrise%></div><br /><br />
                     <img src="<%=daily.dayForecast.icon%>" />
                     <h6><%=daily.dayForecast.shortForecast%></h6>
