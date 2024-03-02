@@ -229,13 +229,21 @@ async function dailyForecast(units, forecast) {
         const dayLowTime = moment(dayTimes[dayLowIndex]).format('LT')
         const dayHigh = conversions.convertTemperature(units, dayTemps[dayHighIndex])
         const dayHighTime = moment(dayTimes[dayHighIndex]).format('LT')
-        
+        let dayHide
+        if (dayTemps.length == 0) {
+            dayHide = true
+        }
+
         const eveningLowIndex = eveningTemps.indexOf(Math.min(...eveningTemps))
         const eveningHighIndex = eveningTemps.indexOf(Math.max(...eveningTemps))
         const eveningLow = conversions.convertTemperature(units, eveningTemps[eveningLowIndex])
         const eveningLowTime = moment(eveningTimes[eveningLowIndex]).format('LT')
         const eveningHigh = conversions.convertTemperature(units, eveningTemps[eveningHighIndex])
         const eveningHighTime = moment(eveningTimes[eveningHighIndex]).format('LT')
+        let eveningHide
+        if (eveningTemps.length == 0) {
+            eveningHide = true
+        }
 
         let morningWeather = [], dayWeather = [], eveningWeather = []
 
@@ -312,10 +320,12 @@ async function dailyForecast(units, forecast) {
             'dayLowTime': dayLowTime,
             'dayHigh': dayHigh,
             'dayHighTime': dayHighTime,
+            'dayHide': dayHide,
             'eveningLow': eveningLow,
             'eveningLowTime': eveningLowTime,
             'eveningHigh': eveningHigh,
             'eveningHighTime': eveningHighTime,
+            'eveningHide': eveningHide,
             'sunrise': moment(sunrise).tz(timeZone).format('LT'),
             'sunset': moment(sunset).tz(timeZone).format('LT'),
             'morningForecast': {'shortForecast': morningForecast.shortForecast, 'icon': 'icons/' + morningForecast.icon + '_large.png'},
