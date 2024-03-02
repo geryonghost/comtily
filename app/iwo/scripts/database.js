@@ -224,10 +224,8 @@ async function updateHourlyReference(query, dbForecast, dbCoordinates) {
                 'temperature':dbForecast.temperature.values[i].value
             }
 
-            if (hourlyReference.validTime >= tomorrow) {
-                const filter = {"query": query, 'validTime': hourlyReference.validTime}
-                await collection.updateOne(filter, {$set: hourlyReference}, {'upsert': true})
-            }
+            const filter = {"query": query, 'validTime': hourlyReference.validTime}
+            await collection.updateOne(filter, {$set: hourlyReference}, {'upsert': true})
         }
     } catch(err) {
         console.error(err)
