@@ -41,7 +41,6 @@ app.get('', async (req, res) => {
                 'userAgent': userAgent,
             }
 
-            // forecast = await forecasts.getAll(query, units, appEmail, userAgent)
             forecast = await database.getAll(query, variables)
 
             if (forecast == 'e001' || forecast == 'e002' || forecast == 'e003' || forecast == 'e004' || forecast == 'error') {
@@ -54,6 +53,7 @@ app.get('', async (req, res) => {
                 res.render('index', {
                     currentForecast,
                     hourlyForecast,
+                    dailyForecast,
                 })
             }
         }

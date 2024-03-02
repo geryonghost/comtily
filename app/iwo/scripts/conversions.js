@@ -225,10 +225,10 @@ function convertSpeed(units, data) {
     let math, unit
     if (units == 'us') {
         math = Math.round(data * 0.6213711922)
-        unit = math + ' mph'
+        unit = math + ' MPH'
     }
     if (units == 'metric') {
-        unit = data + ' km/h'
+        unit = data + ' KM/H'
     }
     return unit
 }
