@@ -65,6 +65,10 @@ async function getAll(query, variables) {
         console.log('IWO:Get forecast griddata')
         gridData = await external.getGridData(dbCoordinates, variables)
 
+        if (gridData == 'error') {
+            return 'error'
+        }
+
         console.log('IWO:Get forecast alerts')
         alerts = await external.getAlerts(dbCoordinates, variables)
 

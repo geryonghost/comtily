@@ -47,6 +47,7 @@ async function currentForecast(units, forecast) {
     const coverage = forecast.weather.values[i].value[0].coverage
 
     const highsLows = await database.getHighsLows(forecast.query, forecast.timeZone.zoneName, 0)
+    let highTemp, highTime, lowTemp, lowTime
     if (highsLows != null && highsLows != undefined) {
         highTemp = conversions.convertTemperature(units, highsLows.high[0].temperature)
         highTime = moment(highsLows.high[0].validTime).tz(forecast.timeZone.zoneName).format('LT')
@@ -168,8 +169,12 @@ async function hourlyForecast(units, forecast) {
 async function dailyForecast(units, forecast) {
     let sunrise, sunset
     let dailyForecast = []
+
+    const lengthArray = [forecast.temperature.values.length, forecast.weather.values.length]
+    const lengthIndex = Math.min(...lengthArray)
     
-    const currentDate = moment.utc().format('YYYY-MM-DD')
+    const timeZone = forecast.timeZone.zoneName
+    const currentDate = moment.utc().tz(timeZone).format('YYYY-MM-DD')
     for (let i = 0; i < 7; i++) {
         const dailyDate = moment(currentDate).add(i, 'day').format('YYYY-MM-DD')
         const dayOfWeek = moment(dailyDate).format('dddd')
@@ -182,7 +187,7 @@ async function dailyForecast(units, forecast) {
 
         let morningTemps = [], dayTemps = [], eveningTemps = []
         let morningTimes = [], dayTimes = [], eveningTimes = []
-        for (let j = 0; j < forecast.temperature.values.length; j++) {
+        for (let j = 0; j < lengthIndex; j++) {
             if (
                 moment(forecast.temperature.values[j].validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') &&
                 moment(forecast.temperature.values[j].validTime).format() < sunrise
@@ -206,12 +211,17 @@ async function dailyForecast(units, forecast) {
                 eveningTimes.push(forecast.temperature.values[j].validTime)
             }
         }
+
         const morningLowIndex = morningTemps.indexOf(Math.min(...morningTemps))
         const morningHighIndex = morningTemps.indexOf(Math.max(...morningTemps))
         const morningLow = conversions.convertTemperature(units, morningTemps[morningLowIndex])
         const morningLowTime = moment(morningTimes[morningLowIndex]).format('LT')
         const morningHigh = conversions.convertTemperature(units, morningTemps[morningHighIndex])
         const morningHighTime = moment(morningTimes[morningHighIndex]).format('LT')
+        let morningHide
+        if (morningTemps.length == 0) {
+            morningHide = true
+        }
         
         const dayLowIndex = dayTemps.indexOf(Math.min(...dayTemps))
         const dayHighIndex = dayTemps.indexOf(Math.max(...dayTemps))
@@ -228,7 +238,8 @@ async function dailyForecast(units, forecast) {
         const eveningHighTime = moment(eveningTimes[eveningHighIndex]).format('LT')
 
         let morningWeather = [], dayWeather = [], eveningWeather = []
-        for (let j = 0; j < forecast.weather.values.length; j++) {
+
+        for (let j = 0; j < lengthIndex; j++) {
             if (
                 moment(forecast.weather.values[j].validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') &&
                 moment(forecast.weather.values[j].validTime).format() < sunrise
@@ -296,6 +307,7 @@ async function dailyForecast(units, forecast) {
             'morningLowTime': morningLowTime,
             'morningHigh': morningHigh,
             'morningHighTime': morningHighTime,
+            'morningHide': morningHide,
             'dayLow': dayLow,
             'dayLowTime': dayLowTime,
             'dayHigh': dayHigh,
@@ -304,8 +316,8 @@ async function dailyForecast(units, forecast) {
             'eveningLowTime': eveningLowTime,
             'eveningHigh': eveningHigh,
             'eveningHighTime': eveningHighTime,
-            'sunrise': moment(sunrise).format('LT'),
-            'sunset': moment(sunset).format('LT'),
+            'sunrise': moment(sunrise).tz(timeZone).format('LT'),
+            'sunset': moment(sunset).tz(timeZone).format('LT'),
             'morningForecast': {'shortForecast': morningForecast.shortForecast, 'icon': 'icons/' + morningForecast.icon + '_large.png'},
             'dayForecast': {'shortForecast': dayForecast.shortForecast, 'icon': 'icons/' + dayForecast.icon + '_large.png'},
             'eveningForecast': {'shortForecast': eveningForecast.shortForecast, 'icon': 'icons/' + eveningForecast.icon + '_large.png'},
@@ -579,7 +591,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         else if ((weather == 'rain' || weather == 'rain_showers') && intensity == 'light') {
             subForecast = {
                 'shortForecast': 'Light Rain',
-                'icon': '42001_rain_light'
+                'icon': '42000_rain_light'
             }
         }
         // '42131': 'Mostly Clear and Light Rain',
