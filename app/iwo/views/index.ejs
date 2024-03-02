@@ -133,19 +133,23 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     </p>
                     <% } %>
                     <div class="badge bg-warning">Sunrise <%=daily.sunrise%></div><br /><br />
+                    <% if (daily.dayHide != true) { %>
                     <img src="<%=daily.dayForecast.icon%>" />
                     <h6><%=daily.dayForecast.shortForecast%></h6>
                     <p class="card-text">
                         High <%-daily.dayHigh%> at <%=daily.dayHighTime%><br />&nbsp;
                         Low <%-daily.dayLow%> at <%=daily.dayLowTime%>
                     </p>
+                    <% } %>
                     <div class="badge bg-dark">Sunset <%=daily.sunset%></div><br /><br />
+                    <% if (daily.eveningHide != true) { %>
                     <img src="<%=daily.eveningForecast.icon%>" />
                     <h6><%=daily.eveningForecast.shortForecast%></h6>
                     <p class="card-text">
                         High <%-daily.eveningHigh%> at <%=daily.eveningHighTime%><br />&nbsp;
                         Low <%-daily.eveningLow%> at <%=daily.eveningLowTime%>
                     </p>
+                    <% } %>
                 </div>
             </div> 
         </div>
