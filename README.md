@@ -17,12 +17,12 @@ npm install moment-timezone
 ```
 # Configure Dev Environment (Python)
 ```
-python3 -m pip install "pymongo[srv]"
-python3 -m pip install pytz
+python3 -m pip install pymongo
 python3 -m pip install undetected_chromedriver
 python3 -m pip install pyvirtualdisplay
 python3 -m pip install webdriver_manager
 python3 -m pip install numpy
+python3 -m pip install 'urllib3<2.0'
 ```
 
 # NPM Dependency Check

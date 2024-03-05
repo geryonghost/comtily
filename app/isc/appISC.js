@@ -1,3 +1,5 @@
+const statusISC = process.env.statusISC
+
 const express = require('express')
 const app = express()
 
@@ -7,7 +9,7 @@ app.use(express.static(`${__dirname}/public`))
 
 // Default view of the site
 app.get('', async (req, res) => {
-    if (statusIWO != 'maintenance') {
+    if (statusISC != 'maintenance') {
         res.render('index')
     } else {
         res.render('maintenance')
