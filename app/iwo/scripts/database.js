@@ -12,7 +12,7 @@ async function getAll(query, variables) {
     const collectionCoordinates = db.collection('coordinates')
     let queryCoordinates
 
-    console.log('IWO:Querying the coordinates collection with: ' + query)
+    console.log('IWO:Info: Querying the coordinates collection with: ' + query)
     try {
         const filter = {'query': query}
         queryCoordinates = await collectionCoordinates.findOne(filter)
@@ -23,28 +23,28 @@ async function getAll(query, variables) {
     if (queryCoordinates == null) {
         let coordinates, forecastURL, timeZone, sunriseSunset
 
-        console.log('IWO:Get coordinates')
+        console.log('IWO:Info: Get coordinates')
         try {
             coordinates = await external.getCoordinates(query, variables.appEmail)
         } catch (error) {
             console.error(error)
         }
 
-        console.log('IWO:Get timezone')
+        console.log('IWO:Info: Get timezone')
         try {
             timeZone = await external.getTimeZone(coordinates.lat, coordinates.lon)
         } catch (error) {
             console.error(error)
         }
 
-        console.log('IWO:Get sunrisesunset')
+        console.log('IWO:Info: Get sunrisesunset')
         try {
             sunriseSunset = await external.getSunriseSunset(coordinates.lat, coordinates.lon)
         } catch (error) {
             console.error(error)
         }
 
-        console.log('IWO:Get forecasturl')
+        console.log('IWO:Info: Get forecasturl')
         try {
             forecastURL = await external.getForecastUrl(coordinates.lat, coordinates.lon, variables.userAgent)
         } catch (error) {
@@ -62,14 +62,14 @@ async function getAll(query, variables) {
             ...sunriseSunset,
         }
         
-        console.log('IWO:Get forecast griddata')
+        console.log('IWO:Info: Get forecast griddata')
         gridData = await external.getGridData(dbCoordinates, variables)
 
         if (gridData == 'error') {
             return 'error'
         }
 
-        console.log('IWO:Get forecast alerts')
+        console.log('IWO:Info: Get forecast alerts')
         alerts = await external.getAlerts(dbCoordinates, variables)
 
         const currentTime = moment.utc().format()
@@ -80,16 +80,16 @@ async function getAll(query, variables) {
             ...alerts,
         }
 
-        console.log('IWO:Update coordinates in db')
+        console.log('IWO:Info: Update coordinates in db')
         await updateCoordinatesDb(query, dbCoordinates)
 
-        console.log('IWO:Update sunrisesunset in db')
+        console.log('IWO:Info: Update sunrisesunset in db')
         await updateSunriseSunsetDb(query, dbSunriseSunset)
 
-        console.log('IWO:Update forecasst in db')
+        console.log('IWO:Info: Update forecasst in db')
         await updateForecastDb(query, dbForecast)
 
-        console.log('IWO:Update hourly reference in db')
+        console.log('IWO:Info: Update hourly reference in db')
         await updateHourlyReference(query, dbForecast, dbCoordinates)
 
         const forecast = {
@@ -101,8 +101,8 @@ async function getAll(query, variables) {
         return forecast
 
     } else {
-        console.log('IWO:Coordinates exist')
-        console.log('IWO:Querying the sunrisesunset collection with: ' + query)
+        console.log('IWO:Info: Coordinates exist')
+        console.log('IWO:Info: Querying the sunrisesunset collection with: ' + query)
         const collectionSunriseSunset = db.collection('sunriseSunset')
         let dbForecast, dbSunriseSunset, querySunriseSunset
         try {
@@ -114,7 +114,7 @@ async function getAll(query, variables) {
         }
 
         if (querySunriseSunset == null) {
-            console.log('IWO:Get sunrisesunset')
+            console.log('IWO:Info: Get sunrisesunset')
 
             let sunriseSunset
             try {
@@ -128,14 +128,14 @@ async function getAll(query, variables) {
                 ...sunriseSunset,
             }
 
-            console.log('IWO:Update sunrisesunset in db')
+            console.log('IWO:Info: Update sunrisesunset in db')
             await updateSunriseSunsetDb(query, dbSunriseSunset)
         } else {
-            console.log('IWO:Sunrisesunset already exists')
+            console.log('IWO:Info: Sunrisesunset already exists')
             dbSunriseSunset = querySunriseSunset
         }
 
-        console.log('IWO:Querying the forecast collection with: ' + query)
+        console.log('IWO:Info: Querying the forecast collection with: ' + query)
         const collectionForecast = db.collection('forecasts')
         let queryForecast
         try {
@@ -147,11 +147,11 @@ async function getAll(query, variables) {
         }
 
         if (queryForecast == null) {
-            console.log('IWO:Get forecast griddata')
+            console.log('IWO:Info: Get forecast griddata')
             gridData = await external.getGridData(queryCoordinates, variables)
             if (gridData == 'error') { return 'error' }
     
-            console.log('IWO:Get forecast alerts')
+            console.log('IWO:Info: Get forecast alerts')
             alerts = await external.getAlerts(queryCoordinates, variables)
             if (alerts == 'error') { return 'error' }
     
@@ -163,13 +163,13 @@ async function getAll(query, variables) {
                 ...alerts,
             }
 
-            console.log('IWO:Update forecasst in db')
+            console.log('IWO:Info: Update forecasst in db')
             await updateForecastDb(query, dbForecast)
 
-            console.log('IWO:Update hourly reference in db')
+            console.log('IWO:Info: Update hourly reference in db')
             await updateHourlyReference(query, dbForecast, queryCoordinates)
         } else {
-            console.log('IWO:Forecast already exists')
+            console.log('IWO:Info: Forecast already exists')
             dbForecast = queryForecast
         }
 
@@ -215,10 +215,10 @@ async function updateHourlyReference(query, dbForecast, dbCoordinates) {
     try {
         const collection = db.collection('hourlyReference')
         
-        console.log('IWO:Create hourly reference index')
+        console.log('IWO:Info: Create hourly reference index')
         await collection.createIndex({query: 1, validTime: 1}, {unique: true})
         
-        console.log('IWO:Updating hourly reference in MongoDB')
+        console.log('IWO:Info: Updating hourly reference in MongoDB')
         const tomorrow = moment.utc().add(1, 'days').format()
 
         for (let i = 0; i < dbForecast.temperature.values.length; i++) {
