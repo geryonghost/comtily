@@ -1,5 +1,4 @@
 # Autos Of Chicago # Dealer Sync
-# env = 'dev'
 import notscrapyet
 
 ##############################################################################################################################################
@@ -24,8 +23,6 @@ dealer_array = notscrapyet.dealer_get(dealer_id)
 dealer_id = dealer_array[0]
 dealer_name = dealer_array[1]
 dealer_city = dealer_array[2]
-# dealer_lat = dealer_array[3]
-# dealer_lon = dealer_array[4]
 dealer_url = dealer_array[3]
 dealer_url_path = dealer_array[4]
 
@@ -114,9 +111,6 @@ while not empty:
                     'posting_url': url,
                     'dealer_id': dealer_id,
                     'dealer_city': dealer_city,
-                    # 'dealer_lat': dealer_lat,
-                    # 'dealer_lon': dealer_lon,
-                    'status': 'active',
                 }
 
                 notscrapyet.gatherContent(document)

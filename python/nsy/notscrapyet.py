@@ -30,8 +30,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 # import numpy
 
 # Other
-import requests
-# sys
+import requests, sys
 from datetime import datetime
 
 load_dotenv()
