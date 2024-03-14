@@ -35,7 +35,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 
 // async function getMakes() {
 //     console.log('Get Makes')
-    
+
 //     try {
 //         const db_name = await db_conn()
 //         const db_collection = await db_name.collection('ads')
@@ -49,7 +49,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 
 // async function getModels(make) {
 //     console.log('Get Models')
-    
+
 //     try {
 //         const db_name = await db_conn()
 //         const db_collection = await db_name.collection('ads')
@@ -90,7 +90,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 //             }
 //         }
 //     }
-    
+
 //     try {
 //         filter.status = 1
 //         const db_name = await db_conn()
@@ -111,7 +111,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 //         const db_collection = await db_name.collection('dealers')
 //         const results = await db_collection.find({'_id': new ObjectId(id)}).toArray()
 //         return results
-        
+
 //     } catch (error) {
 //         console.error('Error in the getDealer function', error)
 //         return 'Error'
@@ -124,7 +124,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 //     try {
 //         const db_name = await db_conn()
 //         const db_collection = await db_name.collection('ads')
-        
+
 //         if (id == 0) {
 //             const results = await db_collection.aggregate([
 //                 { $sample: { size: 12 }}
@@ -134,7 +134,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 //             const results = await db_collection.find({'_id': new ObjectId(id)}).toArray()
 //             return results
 //         }
-        
+
 //     } catch (error) {
 //         console.error('Error in the getResults function', error)
 //         return 'Error'
@@ -155,7 +155,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 //         } else {
 //             return results
 //         }
-        
+
 //     } catch (error) {
 //         console.error('Error in the getSearchResults function', error)
 //         return 'Error'
@@ -167,12 +167,12 @@ async function insertCsvContent(dealer_id, csvContent) {
 //         const db_name = await db_conn()
 //         const db_dealers = await db_name.collection('dealers')
 //         const db_locations = await db_name.collection('locations')
-        
+
 //         // Get Postal Code location for geospatial
 //         if (postal != '') {
 //             const filter = {'zip_code': Number(postal)}
 //             const location = await db_locations.findOne(filter)
-            
+
 //             if (!location) {
 //                 console.log('Postal code not found')
 //                 return 'Postal code not found'
@@ -208,7 +208,7 @@ async function insertCsvContent(dealer_id, csvContent) {
 module.exports = {
     insertCsvContent,
     // getMakes,
-    // getModels,  
+    // getModels,
     // getAdCount,
     // getDealer,
     // getDealerCount,

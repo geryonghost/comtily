@@ -25,8 +25,8 @@ async function parseFileContent(fileContent) {
     //           // Respond with parsed data
     //           // res.json(results.data)
     //           // console.log(results.data)
-              
-              
+
+
     //       },
     //       header: true,
     //       dynamicTyping: true,
@@ -333,13 +333,13 @@ async function parseFileContent(fileContent) {
 //                 if (listVar == 'Wheel Size Front (inches)') { wheel_size_front_inches = listValue }
 //                 if (listVar == 'Wheel Size Rear (inches)') { wheel_size_rear_inches = listValue }
 //                 if (listVar == 'Windows') { windows = listValue }
-            
+
 //                 if (body_class == 'Sedan/Saloon') { auto_class = 'Sedan' }
 //                 // if (body_class.find('SUV') != -1) { auto_class = 'SUV' }
-                
+
 //                 if (transmission_style == 'Manual/Standard') { transmission_style = 'Manual' }
-                
-//                 if (drive_type == '4WD/4-Wheel Drive/4x4') { drive_type = '4WD' } 
+
+//                 if (drive_type == '4WD/4-Wheel Drive/4x4') { drive_type = '4WD' }
 //                 if (drive_type == 'AWD/All-Wheel Drive') { drive_type = 'AWD' }
 //                 if (drive_type == 'FWD/Front-Wheel Drive' || drive_type == '4x2') { drive_type = 'FWD' }
 //                 if (drive_type == 'RWD/Rear-Wheel Drive') { drive_type = 'RWD' }
@@ -359,7 +359,7 @@ async function parseFileContent(fileContent) {
 // //     elif auto_color_interior.lower().find('white') != -1: auto_color_interior_search = 'white'
 // //     else: auto_color_interior_search = ''
 //             }
-        
+
 //             const document = {
 //                 'active_safety_system_note': active_safety_system_note,
 //                 'adaptive_cruise_control_acc': adaptive_cruise_control_acc,

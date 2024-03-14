@@ -1,4 +1,4 @@
-if (window.location.pathname == '/') {
+if (window.location.pathname == '/' || window.location.pathname == '/search') {
     document.getElementById('makes_select').addEventListener('change', function () {
         const querystring = 'make=' + this.value
 
