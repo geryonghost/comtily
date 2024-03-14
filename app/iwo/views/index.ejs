@@ -1,4 +1,4 @@
-<% 
+<%
 if (locals.currentForecast != "" && locals.currentForecast != undefined) {
     currentForecast = locals.currentForecast
     hourlyForecast=locals.hourlyForecast
@@ -13,7 +13,6 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
 
 <%- include('inc/header.ejs') %>
 
-<body>
     <div class="d-flex align-items-center justify-content-center">
         <form method="GET" action="">
             <div class="input-group">
@@ -39,7 +38,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
 
     <!-- ALERTS -->
     <div id="alerts" style="display: none; visibility: hidden;">Alerts</div>
-    
+
     <!-- CURRENT FORECAST -->
     <% if (currentForecast != "") { %>
     <div class="d-flex align-items-center justify-content-center">
@@ -88,7 +87,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                         <div class="swiper-wrapper">
                             <%
                             hourlyForecast.forEach((hourly) => {
-                            %>          
+                            %>
                             <div class="swiper-slide">
                                 <h6 class="card-title"><%=hourly.temperatureTime%></h6>
                                 <img src="<%=hourly.icon%>" />
@@ -103,7 +102,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                                     <p class="card-text"><%=hourly.precipitation%></p>
                                 <% } %>
                             </div>
-                            <% 
+                            <%
                             })
                             %>
                         </div>
@@ -151,20 +150,15 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     </p>
                     <% } %>
                 </div>
-            </div> 
+            </div>
         </div>
     </div><br />
     <% }) %>
     <% } %>
     <br />
     <div style="text-align: center; margin: 10px auto; padding: 0px;">
-        <p>
-            This site is still under development, has errors, and sometimes crashes. Please check back frequently to see what's new.
-        </p>
+        <p>This site is still under development, has errors, and sometimes crashes. Please check back frequently to see <a href="/releases">what's new</a>.</p>
     </div>
-
-<%- include('inc/footer.ejs') %>
-</body>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -179,4 +173,4 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
     });
 </script>
 
-</html>
+<%- include('inc/footer.ejs') %>

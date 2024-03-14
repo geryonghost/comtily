@@ -29,12 +29,12 @@ app.get('', async (req, res) => {
         // clientlocale = preferredlocales[0] || 'en-US'
         let forecast
         const query = req.query.q;
-        
+
         if (query == "" || query == undefined) {
             res.render('index', {})
         } else {
             const units = 'us' // us (imperial) or si (metric)
-            
+
             const variables = {
                 'units': units,
                 'appEmail': appEmail,
@@ -44,12 +44,12 @@ app.get('', async (req, res) => {
             forecast = await database.getAll(query, variables)
 
             if (forecast == 'e001' || forecast == 'e002' || forecast == 'e003' || forecast == 'e004' || forecast == 'error') {
-                res.render('error', {query})                
+                res.render('error', {query})
             } else {
                 const currentForecast = await forecasts.currentForecast(units, forecast)
                 const hourlyForecast = await forecasts.hourlyForecast(units, forecast)
                 const dailyForecast = await forecasts.dailyForecast(units, forecast)
-                
+
                 res.render('index', {
                     currentForecast,
                     hourlyForecast,
@@ -61,6 +61,13 @@ app.get('', async (req, res) => {
         res.render('maintenance')
     }
 })
+
+// Displays the releases page
+app.get('/releases', async (req, res) => {
+    const pageTitle = 'Release Notes'
+
+    res.render('releases', { pageTitle: pageTitle })
+  })
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function(req, res){

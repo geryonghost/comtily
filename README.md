@@ -48,3 +48,26 @@ http://dev.comtily.com:3000
 http://dev.itsweatheroutside.com:3000
 http://dev.notscrapyet.com:3000
 http://dev.skygatesecurity.com:3000
+
+# Not Scrap Yet
+## Bootstrap
+https://bootswatch.com/pulse/
+
+## Colors
+Primary: #593196
+
+## Logo
+https://www.flaticon.com/free-icon/sport-car_12490019?term=sports+car&page=1&position=31&origin=search&related_id=12490019
+
+## List of Zip Codes
+https://raw.githubusercontent.com/millbj92/US-Zip-Codes-JSON/master/USCities.json
+
+## Python Script Requirements
+```
+python3 -m pip install pymongo
+python3 -m pip install pytz
+python3 -m pip install undetected_chromedriver
+python3 -m pip install pyvirtualdisplay
+python3 -m pip install webdriver_manager
+python3 -m pip install numpy
+```

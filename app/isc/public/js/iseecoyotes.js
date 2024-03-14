@@ -26,7 +26,7 @@ function validateReCaptcha(divID,widgetID) {
 	} else {
 		var response = grecaptcha.getResponse();
 	}
-	if(response.length == 0) { 
+	if(response.length == 0) {
 		document.getElementById(divID).style.display = "block";
 		return false;
 	} else {
@@ -82,10 +82,10 @@ function initMapIndex() {
 			});
 			marker.addListener('click', function() {
 				infowindow.open(map, marker);
-			});			
-			markers.push(marker);			
+			});
+			markers.push(marker);
 		})
-		var markerCluster = new MarkerClusterer(map, markers);	
+		var markerCluster = new MarkerClusterer(map, markers);
 	});
 	var map = new google.maps.Map(document.getElementById('map'), {
 		center: {lat: 39.67897950734105, lng: -96.89238409999999},
@@ -117,7 +117,7 @@ function postDB() {
 	isc_filetype = '';
 	isc_file = '';
 	fileuploadvalid = true;
-	
+
 	if (document.getElementById('uploads').value != "") {
 		if (validate_fileupload(document.getElementById('uploads').value) == true) {
 			isc_filename = document.getElementById('uploads').files[0].name.toLowerCase();
@@ -135,8 +135,8 @@ function postDB() {
 		} else {
 			isc_notes = encodeURIComponent(document.getElementById("notes").value);
 		}
-		var formOptions = document.getElementsByName('options'); 
-		for(i = 0; i < formOptions.length; i++) { 
+		var formOptions = document.getElementsByName('options');
+		for(i = 0; i < formOptions.length; i++) {
 			if(formOptions[i].checked) {
 				isc_options = formOptions[i].value;
 			}
@@ -182,7 +182,7 @@ function postDB() {
 					contentType: isc_filetype,
 					data: isc_file,
 					success: function(json) { },
-					error: function (XMLHttpRequest, textStatus, errorThrown) {	}	
+					error: function (XMLHttpRequest, textStatus, errorThrown) {	}
 				}
 				$.ajax(settings).done(function (response) { });
 			}
@@ -212,7 +212,7 @@ function initMapReport() {
 	var time = (today.getHours() < 10 ? '0' : '') + today.getHours()  + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
 	document.getElementById("date").valueAsDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
 	document.getElementById("time").value = time;
-	map = new google.maps.Map(document.getElementById('map'), {	
+	map = new google.maps.Map(document.getElementById('map'), {
 		center: {lat: 49.50, lng: -98.35},
 		zoom: 18,
 		mapTypeControl: false,
@@ -242,10 +242,10 @@ function initMapReport() {
 					document.getElementById("lat").value = this.getPosition().lat();
 					document.getElementById("long").value = this.getPosition().lng();
 					geocodePosition(marker.getPosition());
-				});			
+				});
 
 				map.setCenter(pos);
-			}, 
+			},
 
 			function() {
 				handleLocationError(true, infoWindow, map.getCenter());
@@ -254,7 +254,7 @@ function initMapReport() {
 		//Browser doesn't support Geolocation
 		handleLocationError(false, infoWindow, map.getCenter());
 	}
-	
+
 }
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -269,7 +269,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 view.html
 ******************************************************************************/
 function viewNext() {
-	var divContent = "";	
+	var divContent = "";
 
 	const postData = JSON.stringify({
 			"isc_key1" : pageArr[pageNumber][0],
@@ -323,7 +323,7 @@ function viewNext() {
 					divContent = divContent + images;
 				}
 			});
-	
+
 			if (pageNumber >= 1) {
 				document.getElementById('viewPrev').style.visibility = "visible";
 			}
@@ -337,13 +337,13 @@ function viewNext() {
 }
 
 function viewPrev(hideNext) {
-	var divContent = "";	
+	var divContent = "";
 
 	if (pageNumber == 1) {
 		viewDefault();
 		return;
 	}
-	
+
 	const postData = JSON.stringify({
 			"isc_key1" : pageArr[pageNumber-2][0],
 			"isc_key2" : pageArr[pageNumber-2][1],
@@ -358,7 +358,7 @@ function viewPrev(hideNext) {
 		"dataType": "json"
 	}
 	$.ajax(settings).done(function (response) {
-		pageNumber = pageNumber - 1;	
+		pageNumber = pageNumber - 1;
 		if (response.Key != null) {
 			response.Items.forEach(function(value, index) {
 				lat = value.isc_lat;
@@ -393,7 +393,7 @@ function viewPrev(hideNext) {
 					divContent = divContent + images;
 				}
 			});
-	
+
 			if (pageNumber > 1) {
 				document.getElementById('viewPrev').style.visibility = "visible";
 			}
@@ -414,7 +414,7 @@ function viewDefault() {
 		"method": "POST",
 		"headers": apiHeaders
 	}
-	$.ajax(settings).done(function (response) {		
+	$.ajax(settings).done(function (response) {
 		if (response.Key != null) {
 			if (pageArr[pageNumber] == null) {
 				pageArr.push([response.Key.isc_sort,response.Key.isc_timestamp,response.Key.sightingid]);
@@ -499,7 +499,7 @@ function initMapFSMode() {
 					break;
 				default:
 					image = 'img/mapicon.png';
-			}					
+			}
 			var latLng = new google.maps.LatLng(
 				lat,
 				long
@@ -513,8 +513,8 @@ function initMapFSMode() {
 			});
 			marker.addListener('click', function() {
 				infowindow.open(map, marker);
-			});			
-			markers.push(marker);			
+			});
+			markers.push(marker);
 		})
 		var markerCluster = new MarkerClusterer(map, markers);
 	});
@@ -535,7 +535,7 @@ email.html
 function emailReadQuery() {
 	var urlParams = new URLSearchParams(window.location.search);
 	var postData = "";
-	if(urlParams.has("a") == true ) { 
+	if(urlParams.has("a") == true ) {
 		switch(urlParams.get("a")) {
 			case "c":
 				var baseURL = apiURL + "confirmationget";
@@ -550,13 +550,13 @@ function emailReadQuery() {
 					"data": postData,
 					"dataType": "json"
 				}
-				$.ajax(settings).done(function (response) {			
-					if(Array.isArray(response.Items) && response.Items.length) {						
+				$.ajax(settings).done(function (response) {
+					if(Array.isArray(response.Items) && response.Items.length) {
 						var email = response.Items[0].isc_email;
 						var postalcode = response.Items[0].isc_postalcode;
 						var confirmid = response.Items[0].confirmationid;
 						var confirmationInfo = email + "<br />" + postalcode;
-						document.getElementById("txtHeader").innerHTML = "Confirm Email Notification";						
+						document.getElementById("txtHeader").innerHTML = "Confirm Email Notification";
 						document.getElementById("emailConfirmationInfo").innerHTML = confirmationInfo;
 						document.getElementById("emailConfirmationID").value = confirmid;
 						document.getElementById("emailConfirmationEmail").value = email;
@@ -588,13 +588,13 @@ function emailReadQuery() {
 					"data": postData,
 					"dataType": "json"
 				}
-				$.ajax(settings).done(function (response) {	
+				$.ajax(settings).done(function (response) {
 					if(Array.isArray(response.Items) && response.Items.length) {
 						var email = response.Items[0].isc_email;
 						var postalcode = response.Items[0].isc_postalcode;
 						var notificationid = response.Items[0].notificationid;
 						var confirmationInfo = email + "<br />" + postalcode;
-						document.getElementById("txtHeader").innerHTML = "Stop Recieving Email Notifications";						
+						document.getElementById("txtHeader").innerHTML = "Stop Recieving Email Notifications";
 						document.getElementById("emailDiscontinueInfo").innerHTML = confirmationInfo;
 						document.getElementById("emailDiscontinueID").value = notificationid;
 						document.getElementById("emailDiscontinue").style.display = "block";
@@ -685,7 +685,7 @@ function emailNotificationsSubmitFunc() {
 			"isc_email" : document.getElementById("emailNotificationsEmail").value,
 			"isc_postalcode" : document.getElementById("emailNotificationsPostalcode").value
 		});
-	
+
 		var settings = {
 			"url": baseURL,
 			"method": "POST",

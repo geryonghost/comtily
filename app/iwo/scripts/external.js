@@ -12,7 +12,7 @@ async function getAlerts(dbCoordinates, variables) {
     const location = dbCoordinates.lat + ',' + dbCoordinates.lon
     const userAgent = variables.userAgent
     const results = await axios.get('https://api.weather.gov/alerts/active?point=' + location, {headers: {userAgent}})
-    
+
     if (results.status == 200) {
         forecast = await results.data.properties
         return forecast
@@ -38,13 +38,13 @@ async function getCoordinates(query, app_email) {
                 'email': app_email
             }
         })
-        
+
         if (results.status == 200) {
             if (results.data.length == 0) {
                 return 'e001'
             } else {
                 const coordinates = {
-                    'lat':results.data[0].lat, 
+                    'lat':results.data[0].lat,
                     'lon':results.data[0].lon,
                     "addresstype": results.data[0].addresstype,
                     "addressname": results.data[0].name,
@@ -125,7 +125,7 @@ async function getSunriseSunset(lat, lon) {
               'dayLength': dayLength
           }
           createMap.push(mapResults)
-          
+
         } else {
           console.log('IWO:Error: Error getting sunrise and sunset')
           return 'e003'
@@ -137,7 +137,7 @@ async function getSunriseSunset(lat, lon) {
       }
 
       return sunriseSunset
-      
+
     } catch (error) {
       console.error('Error fetching openstreetmap data', error)
       return 'e003'

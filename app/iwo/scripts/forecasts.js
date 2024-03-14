@@ -6,7 +6,7 @@ const database = require('./database')
 async function currentForecast(units, forecast) {
     const query = forecast.query
     const currentTime = moment.utc().tz(forecast.timeZone.zoneName).format()
-    
+
     let index = -1
     for (let i = 0; i < forecast.temperature.values.length; i++) {
         if (forecast.temperature.values[i].validTime > currentTime) {
@@ -18,17 +18,17 @@ async function currentForecast(units, forecast) {
     const temperatureTrendHourCount = 5
     let temperatureSum = temperatureAverage = 0
     let currentTemperatureTrend = ''
-    
+
     for (let i = index; i < index + temperatureTrendHourCount; i++) {
         temperatureSum += forecast.temperature.values[i].value
     }
     temperatureAverage = temperatureSum / temperatureTrendHourCount
-    
+
     const i = index
 
-    if (forecast.temperature.values[i].value > temperatureAverage) { 
+    if (forecast.temperature.values[i].value > temperatureAverage) {
         currentTemperatureTrend = '<span class="text-info">&#8595;</span>'
-    } else if (forecast.temperature.values[i].value < temperatureAverage) { 
+    } else if (forecast.temperature.values[i].value < temperatureAverage) {
         currentTemperatureTrend = '<span class="text-danger";>&#8593;</span>'
     }
 
@@ -63,7 +63,7 @@ async function currentForecast(units, forecast) {
     if (precipitation > 0) {
         precipitation = precipitation + conversions.formatUnitCode(forecast.probabilityOfPrecipitation.uom)
     }
-    
+
     const skyCover = forecast.skyCover.values[i].value
     const temperature = conversions.convertTemperature(units, forecast.temperature.values[i].value)
     const timeZone = timeZoneMap[forecast.timeZone.abbreviation]
@@ -72,7 +72,7 @@ async function currentForecast(units, forecast) {
     const windSpeed =  conversions.convertSpeed(units, forecast.windSpeed.values[i].value)
 
     const subForecast = getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity, weather)
-    
+
     const currentForecast = {
         'addressName': addressName,
         'apparentTemperature': apparentTemperature,
@@ -117,8 +117,8 @@ async function hourlyForecast(units, forecast) {
     let hourlyForecast = []
     for (let i = index -1; i < index + 24; i++) {
         let timeOfDay
-        
-        const hourlyDate = moment(forecast.temperature.values[i].validTime).format()        
+
+        const hourlyDate = moment(forecast.temperature.values[i].validTime).format()
         if ((hourlyDate > todaySunrise && hourlyDate < todaySunset) || (hourlyDate > tomorrowSunrise && hourlyDate < tomorrowSunset) ) {
             timeOfDay = 'day'
         } else {
@@ -140,7 +140,7 @@ async function hourlyForecast(units, forecast) {
         const weather = forecast.weather.values[i].value[0].weather
         const windGust = conversions.convertSpeed(units, forecast.windGust.values[i].value)
         const windSpeed =  conversions.convertSpeed(units, forecast.windSpeed.values[i].value)
-        
+
         const subForecast = getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity, weather, i)
 
         const document = {...{
@@ -172,7 +172,7 @@ async function dailyForecast(units, forecast) {
 
     const lengthArray = [forecast.temperature.values.length, forecast.weather.values.length]
     const lengthIndex = Math.min(...lengthArray)
-    
+
     const timeZone = forecast.timeZone.zoneName
     const currentDate = moment.utc().tz(timeZone).format('YYYY-MM-DD')
     for (let i = 0; i < 7; i++) {
@@ -222,7 +222,7 @@ async function dailyForecast(units, forecast) {
         if (morningTemps.length == 0) {
             morningHide = true
         }
-        
+
         const dayLowIndex = dayTemps.indexOf(Math.min(...dayTemps))
         const dayHighIndex = dayTemps.indexOf(Math.max(...dayTemps))
         const dayLow = conversions.convertTemperature(units, dayTemps[dayLowIndex])
@@ -264,7 +264,7 @@ async function dailyForecast(units, forecast) {
                     morningWeather = [coverage, intensity, precipitation, skyCover, weather]
                 } else if (morningWeather[3] == undefined) {
                     morningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                }                
+                }
             }
             if (
                 moment(forecast.temperature.values[j].validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') &&
@@ -301,7 +301,7 @@ async function dailyForecast(units, forecast) {
                     eveningWeather = [coverage, intensity, precipitation, skyCover, weather]
                 } else if (eveningWeather[3] == undefined) {
                     eveningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                }  
+                }
             }
         }
 
@@ -345,44 +345,44 @@ module.exports = {
 }
 
 function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity, weather, index) {
-    // 
-    
+    //
+
     let subForecast = {}
-    // Precipitation > 0 
+    // Precipitation > 0
     // skyCover > 0 < 26 = Mostly Clear, > 25 < 51 = Partly Cloudy,  > 50 < 76 = Mostly Cloudy, > 75 = Cloudy
     // intensity light, moderate, heavy, violent
 
     if (timeOfDay == 'day') {
         // Clear Day 10000
-        if (skyCover == 0 && weather == null && intensity == null) { 
+        if (skyCover == 0 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Clear, Sunny',
                 'icon': '10000_clear'
             }
         }
         // Mostly Clear Day 11001
-        else if (skyCover > 0 && skyCover < 26 && weather == null && intensity == null) { 
+        else if (skyCover > 0 && skyCover < 26 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Mostly Clear',
                 'icon': '11000_mostly_clear'
             }
         }
         //  Partly Cloudy Day 11010
-        else if (skyCover > 25 && skyCover < 51 && weather == null && intensity == null) { 
+        else if (skyCover > 25 && skyCover < 51 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Partly Cloudy',
                 'icon': '11010_partly_cloudy'
             }
         }
         // Mostly Cloudy Day 11020
-        else if (skyCover > 50 && skyCover < 76 && weather == null && intensity == null) { 
+        else if (skyCover > 50 && skyCover < 76 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Mostly Cloudy',
                 'icon': '11020_mostly_cloudy'
             }
         }
         // Cloudy Day 10010
-        else if (skyCover > 75 && weather == null && intensity == null) { 
+        else if (skyCover > 75 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Cloudy',
                 'icon': '10010_cloudy'
@@ -423,10 +423,10 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         //     subForecast = {
         //         'shortForecast': 'Mostly Clear and Rain',
         //         'icon': '42090'
-        //     }            
+        //     }
         // }
-        
-        
+
+
         // '42080': 'Partly Cloudy and Rain 42080'
         // else if (skyCover > 25 && skyCover < 51 && coverage == 'slight_coverage' && weather == 'rain') {
         //     subForecast = {
@@ -537,35 +537,35 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
 
     } else if (timeOfDay == 'night') {
         // Clear Night 10001
-        if (skyCover == 0 && weather == null && intensity == null) { 
+        if (skyCover == 0 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Clear',
                 'icon': '10001_clear'
             }
         }
         // Mostly Clear Night 11001
-        else if (skyCover > 0 && skyCover < 26 && weather == null && intensity == null) { 
+        else if (skyCover > 0 && skyCover < 26 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Mostly Clear',
                 'icon': '11001_mostly_clear'
             }
         }
         //  Partly Cloudy Night 11011
-        else if (skyCover > 25 && skyCover < 51 && weather == null && intensity == null) { 
+        else if (skyCover > 25 && skyCover < 51 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Partly Cloudy',
                 'icon': '11011_partly_cloudy'
             }
         }
         // Mostly Cloudy Night 11021
-        else if (skyCover > 50 && skyCover < 76 && weather == null && intensity == null) { 
+        else if (skyCover > 50 && skyCover < 76 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Mostly Cloudy',
                 'icon': '11021_mostly_cloudy'
             }
         }
         // Cloudy Night 10011
-        else if (skyCover > 75 && weather == null && intensity == null) { 
+        else if (skyCover > 75 && weather == null && intensity == null) {
             subForecast = {
                 'shortForecast': 'Cloudy',
                 'icon': '10010_cloudy'
@@ -612,7 +612,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
         //     subForecast = {
         //         'shortForecast': 'Mostly Clear and Rain',
         //         'icon': '42091'
-        //     }            
+        //     }
         // }
         // Partly Cloudy and Rain 42081
         // else if ((weather == 'rain' || weather == 'rain_showers') && intensity == 'light') {
@@ -715,12 +715,12 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
                 'icon': '80000_tstorm'
             }
         }
-        
+
         else {
             subForecast = {
                 'shortForecast': 'Unknown',
-                'icon': ''
-            } 
+                'icon': 'unknown'
+            }
         }
 
     } else (
@@ -728,7 +728,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
     )
 
     if (subForecast.shortForecast == 'Unknown') {
-        console.warn(index, 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'coverage:', coverage, 'Weather:', weather, 'Intensity', intensity)
+        console.log('IWO:Warn:', index, 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'coverage:', coverage, 'Weather:', weather, 'Intensity', intensity)
     }
     return subForecast
 }

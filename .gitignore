@@ -2,7 +2,7 @@
 
 **/node_modules
 *.env
-/python
+chromedriver
 
 **_old
 **/uploads

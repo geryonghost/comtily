@@ -61,7 +61,7 @@ async function getAll(query, variables) {
             ...{'query': query},
             ...sunriseSunset,
         }
-        
+
         console.log('IWO:Info: Get forecast griddata')
         gridData = await external.getGridData(dbCoordinates, variables)
 
@@ -150,11 +150,11 @@ async function getAll(query, variables) {
             console.log('IWO:Info: Get forecast griddata')
             gridData = await external.getGridData(queryCoordinates, variables)
             if (gridData == 'error') { return 'error' }
-    
+
             console.log('IWO:Info: Get forecast alerts')
             alerts = await external.getAlerts(queryCoordinates, variables)
             if (alerts == 'error') { return 'error' }
-    
+
             const currentTime = moment.utc().format()
             dbForecast = {
                 ...{'query': query},
@@ -214,10 +214,10 @@ async function updateHourlyReference(query, dbForecast, dbCoordinates) {
 
     try {
         const collection = db.collection('hourlyReference')
-        
+
         console.log('IWO:Info: Create hourly reference index')
         await collection.createIndex({query: 1, validTime: 1}, {unique: true})
-        
+
         console.log('IWO:Info: Updating hourly reference in MongoDB')
         const tomorrow = moment.utc().add(1, 'days').format()
 
@@ -262,8 +262,8 @@ async function getHighsLows(query, timeZone, dateOffset) {
 
     filter = {'query': query, 'validTime': {$gte: morning, $lt: evening}}
     const checkHighLow = await collection.count(filter)
-    
-    if (checkHighLow == 24) {   
+
+    if (checkHighLow == 24) {
         // High
         options = {sort: {temperature: -1}, limit: 1} // Max = -1, Min = 1
         const high = await collection.find(filter).sort(options.sort).limit(options.limit).toArray()
