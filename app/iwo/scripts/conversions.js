@@ -75,7 +75,7 @@ function convertGridData(gridData, timeZone) {
         windGustValues = windGustValues.concat(convertValidTimeValues(gridData.windGust.values[i], timeZone))
     }
     const windGust = {'uom': gridData.windGust.uom, 'values': windGustValues}
-    
+
     // weather
     let weatherValues = []
     for (i = 0; i < gridData.weather.values.length; i++) {
@@ -150,9 +150,9 @@ function convertGridData(gridData, timeZone) {
         // 'minTemperature': minTemperature,
         // 'relativeHumidity': relativeHumidity,
         'apparentTemperature': apparentTemperature,
-        // 'wetBulbGlobeTemperature': 
+        // 'wetBulbGlobeTemperature':
         // 'heatIndex':
-        // 'windChill': 
+        // 'windChill':
         'skyCover': skyCover,
         'windDirection': windDirection,
         'windSpeed': windSpeed,
@@ -202,7 +202,7 @@ function convertGridData(gridData, timeZone) {
         // 'lowVisibilityOccurrenceRiskIndex':
         // 'stability':
         // 'redFlagThreatIndex':
-      
+
     }
 
     return forecast
@@ -254,7 +254,7 @@ function convertValidTimeValues(values, timeZone) {
     const indexH = parts[1].indexOf('H')
     const numberDays = parts[1].substring(indexP+1,indexD)
     let numberHours = parts[1].substring(indexT+1,indexH)
-    
+
     if (numberDays > 0) {
         const daysInHours = numberDays * 24
         numberHours = Number(numberHours) + Number(daysInHours)
@@ -265,16 +265,16 @@ function convertValidTimeValues(values, timeZone) {
         const newTimeValue = {'validTime': newTime, 'value': values.value}
         validTimeValues.push(newTimeValue)
     }
-    
+
     return validTimeValues
 }
 
 function formatUnitCode(unitcode) {
     let unit = unitcode.substring(unitcode.lastIndexOf(':') + 1)
-  
+
     if (unit == "degC") { unit = "C" }
     if (unit == "percent") { unit = "%"}
-  
+
     return unit
 }
 

@@ -1,0 +1,206 @@
+<%- include('inc/header.ejs') %>
+
+<%
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+const nextYear = new Date().getFullYear()
+
+
+newQueryString = 'make=' + queryString.make + '&model=' + queryString.model + '&postal=' + queryString.postal +
+    '&distance=' + queryString.distance + '&min_price=' + queryString.min_price + '&max_price=' + queryString.max_price +
+    '&min_year=' + queryString.min_year + '&max_year=' + queryString.max_year +
+    '&min_mileage=' + queryString.min_mileage + '&max_mileage=' + queryString.max_mileage +
+    '&pageSize=' + queryString.pageSize
+%>
+<div class="d-flex align-items-center justify-content-center">
+    <form method="GET" action="search">
+        <div class="row row-cols-lg-auto g-3 position-relative">
+            <label id="makes_label" for="make" class="col-auto col-form-label">Make</label>
+            <div class="col-auto">
+                <select id="makes_select" name="make" class="form-select" aria-label="Makes" >
+                    <option value="0">ALL MAKES</option>
+                    <% makes.forEach((make) => { %>
+                        <% if (make == queryString.make) { %>
+                            <option value="<%=make%>" selected><%=make%></option>
+                        <% } else { %>
+                            <option value="<%=make%>"><%=make%></option>
+                        <% } %>
+                    <% }) %>
+                </select>
+            </div>
+            <label id="models_label" for="model" class="col-auto col-form-label">Model</label>
+            <div class="col-auto">
+                <select id="models_select" name="model" class="form-select" aria-label="Models">
+                    <option value="0">ALL MODELS</option>
+                    <% models.forEach((model) => { %>
+                        <% if (model == queryString.model) { %>
+                            <option value="<%=model%>" selected><%=mamodelke%></option>
+                        <% } else { %>
+                            <option value="<%=model%>"><%=model%></option>
+                        <% } %>
+                    <% }) %>
+                </select>
+            </div>
+            <label id="postal_code_label" for="postal" class="col-auto col-form-label">Postal Code</label>
+            <div class="col-auto">
+                <input id="postal_code" name="postal" type="text" class="form-control" aria-label="Postal Code" size="7" value="<%=queryString.postal%>"required />
+            </div>
+            <div class="col-auto">
+                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                <a class="btn btn-primary text-right" data-bs-toggle="collapse" href="#filters" role="button" aria-expanded="false" aria-controls="filters">Filters</a>
+            </div>
+        </div>
+        <div class="row row-cols-lg-auto g-3 mt-0 pt-1 position-relative collapse" id="filters">
+            <label id="distance_label" for="distance" class="col-auto col-form-label">Distance</label>
+            <div class="col-auto">
+                <select id="distance" name="distance" class="form-select" aria-label="distance">
+                    <option value="10"<% if (queryString.distance == 10) { %> SELECTED <% }%>>10 miles</option>
+                    <option value="25"<% if (queryString.distance == 25) { %> SELECTED <% }%>>25 miles</option>
+                    <option value="50"<% if (queryString.distance == 50) { %> SELECTED <% }%>>50 miles</option>
+                    <option value="100"<% if (queryString.distance == 100) { %> SELECTED <% }%>>100 miles</option>
+                    <option value="500"<% if (queryString.distance == 500) { %> SELECTED <% }%>>500 miles</option>
+                    <option value="ANY"<% if (queryString.distance == 'ANY') { %> SELECTED <% }%>>Any</option>
+                </select>
+            </div>
+            <label id="min_price_label" for="min_price" class="col-auto col-form-label">Min Price</label>
+            <div class="col-auto"><input id="min_price" name="min_price" class="form-control" size="10" value="<%=queryString.min_price%>"/></div>
+            <label id="max_price_label" for="max_price" class="col-auto col-form-label">Max Price</label>
+            <div class="col-auto"><input id="max_price" name="max_price" class="form-control" size="10" value="<%=queryString.max_price%>"/></div>
+        </div>
+        <div class="row row-cols-lg-auto g-3 mt-0 pt-1 position-relative collapse" id="filters">
+            <label id="min_year_label" for="min_year" class="col-auto col-form-label">Min Year</label>
+            <div class="col-auto">
+                <select id="min_year_select" name="min_year" class="form-select" aria-label="Min Year">
+                <% for (let i = 1992; i < nextYear + 2; i++) { %>
+                    <% if (i == queryString.min_year) { %>
+                    <option value="<%=i%>" selected><%=i%></option>
+                    <% } else { %>
+                    <option value="<%=i%>"><%=i%></option>
+                    <% } %>
+                <% } %>
+                </select>
+            </div>
+            <label id="max_year_label" for="max_year" class="col-auto col-form-label">Max Year</label>
+            <div class="col-auto">
+                <select id="max_year_select" name="max_year" class="form-select" aria-label="Max Year">
+                <% for (let i = 1992; i < nextYear + 2; i++) { %>
+                    <% if (i == queryString.max_year || (null == queryString.maxYear && i == nextYear + 1)) { %>
+                    <option value="<%=i%>" selected><%=i%></option>
+                    <% } else { %>
+                    <option value="<%=i%>"><%=i%></option>
+                    <% } %>
+                <% } %>
+                </select>
+            </div>
+            <label id="min_mileage_label" for="min_mileage" class="col-auto col-form-label">Min Mileage</label>
+            <div class="col-auto"><input id="min_mileage" name="min_mileage" class="form-control" size="10" value="<%=queryString.min_mileage%>" /></div>
+            <label id="max_mileage_label" for="max_mileage" class="col-auto col-form-label">Max Mileage</label>
+            <div class="col-auto"><input id="max_mileage" name="max_mileage" class="form-control" size="10" value="<%=queryString.max_mileage%>" /></div>
+        </div><br />
+    </form>
+</div>
+<%  if (searchResults == 'empty') { %>
+    <div class="row">
+        <div class="col text-center">
+            <span class="badge rounded-pill bg-primary">No results</span>
+        </div>
+    </div>
+<%
+    } else {
+        adCount = searchResults[0].metadata[0].adCount
+        dealerCount = searchResults[0].metadata[0].dealerCount
+        page = searchResults[0].metadata[0].page
+        pageSize = searchResults[0].metadata[0].pageSize
+        pageCount = Math.floor(adCount / pageSize) + 1
+        previousPage = Number(page) - 1
+        nextPage = Number(page) + 1
+
+        results = searchResults[0].data
+%>
+
+    <div class="row">
+        <div class="col text-center">
+            <span class="badge rounded-pill bg-primary">
+                There <% if (adCount > 1) { %> are <%=adCount%> listings <% } else { %> is <%=adCount%> listing <% } %>
+                from <% if (dealerCount > 1) { %> <%=dealerCount%> dealers<% } else { %> <%=dealerCount%> dealer<% } %>.
+            </span>
+        </div>
+    </div><br />
+
+<%
+let num_of_col = 0
+let num_of_records = results.length
+let num_of_rows = Math.round(num_of_records / 3)
+
+results.forEach((result) => {
+%>
+
+    <% if (num_of_col == 0) { %>
+    <div class="row mb-3">
+        <div class="card-group">
+    <% } %>
+    <div class="col-sm d-flex align-items-stretch">
+            <div class="card border-primary">
+                <div class="card-img-top" style="min-height: 318px;">
+                    <a href="listing?id=<%=result._id%>"><img src="<%=result.images[0]%>" width="100%" /></a>
+                </div>
+
+                <div class="card-body">
+                    <a href="listing?id=<%=result._id%>">
+                        <h5 class="card-title"><%=result.year%> <%=result.make%> <%=result.model%></h5>
+                    </a>
+                    <p class="card-text">Mileage: <%=numberWithCommas(result.odometer)%><br />Price: $<%=numberWithCommas(result.price)%></p>
+                    <a href="listing?id=<%=result._id%>" class="btn btn-primary">More Info</a>
+                </div>
+
+            </div>
+        </div>
+    <% num_of_col += 1; num_of_records -= 1 %>
+    <% if (num_of_col == 3) { num_of_col = 0; num_of_rows -= 1 %></div></div><% } %>
+    <% if (num_of_col == 2 && num_of_rows == 1 && num_of_records < 1) { %><div class="col-sm"></div></div></div><% } %>
+    <% if (num_of_col == 1 && num_of_rows == 0 && num_of_records == 0) { %><div class="col-sm"></div><div class="col-sm"></div></div></div><% } %>
+
+<% }) %>
+
+<nav aria-label="search pagenation">
+    <ul class="pagination justify-content-center">
+<%  if (page == 1) { %>
+        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span class="sr-only">Previous</span></a></li>
+<%  } else { %>
+        <li class="page-item"><a class="page-link" href="search?<%=newQueryString%>&page=<%=previousPage%>" aria-label="Previous"><span class="sr-only">Previous</span></a></li>
+<% } %>
+
+<%
+    for (let i = 0; i < pageCount; i++) {
+        pageNumber = i + 1
+        if (page == pageNumber) {status = ' active'} else {status = ''}
+%>
+        <li class="page-item<%=status%>"><a class="page-link" href="search?<%=newQueryString%>&page=<%=pageNumber%>"><%=pageNumber%></a></li>
+<%  } %>
+
+<% if (page == pageCount) { %>
+        <li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><span class="sr-only">Next</span></a></li>
+<% } else { %>
+        <li class="page-item"><a class="page-link" href="search?<%=newQueryString%>&page=<%=nextPage%>" aria-label="Next"><span class="sr-only">Next</span></a></li>
+<% } %>
+    </ul>
+</nav>
+<div class="text-center" width="50%">
+    <form class="form-inline justify-content-center" method="GET" action="search">
+        Page Size
+        <input type="hidden" id="make" name="make" value="<%=queryString.make%>" />
+        <input type="hidden" id="model" name="model" value="<%=queryString.model%>" />
+        <input type="hidden" id="postal" name="postal" value="<%=queryString.postal%>" />
+        <select id="pageSize" name="pageSize" class="form" aria-label="pageSize" onchange="this.form.submit()">
+            <% if (queryString.pageSize == 24) { %> <option value="24" selected>24</option> <% } else { %> <option value="24">24</option> <% } %>
+            <% if (queryString.pageSize == 48) { %> <option value="48" selected>48</option> <% } else { %> <option value="48">48</option> <% } %>
+            <% if (queryString.pageSize == 72) { %> <option value="72" selected>72</option> <% } else { %> <option value="72">72</option> <% } %>
+        </select>
+    </form>
+</div>
+
+<% } %>
+
+<%- include('inc/footer.ejs') %>

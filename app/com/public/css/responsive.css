@@ -1,8 +1,8 @@
 .main-header {
-    width: 640px; 
-    margin: 0 auto; 
-    padding: 0px; 
-    border: 1px solid #ccc; 
+    width: 640px;
+    margin: 0 auto;
+    padding: 0px;
+    border: 1px solid #ccc;
     border-radius: 25px;
 }
 @media (max-width: 768px) {
@@ -12,10 +12,10 @@
 }
 
 .main-container {
-    width: 600px; 
-    margin: 0 auto; 
-    padding: 20px; 
-    border: 1px solid #ccc; 
+    width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
     border-radius: 25px;
 }
 @media (max-width: 768px) {

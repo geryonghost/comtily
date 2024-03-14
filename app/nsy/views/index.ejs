@@ -1,0 +1,86 @@
+<%- include('inc/header.ejs') %>
+
+<%
+const nextYear = new Date().getFullYear() + 1
+%>
+
+<div class="d-flex align-items-center justify-content-center">
+    <form class="row row-cols-lg-auto g-3 position-relative" method="GET" action="search">
+        <label id="makes_label" for="makes" class="col-sm-2 col-form-label">Make</label>
+        <div class="col-auto">
+
+            <select id="makes_select" name="make" class="form-select" aria-label="Makes" >
+                <option value="0">ALL MAKES</option>
+                <% autoMakes.forEach((makes) => { %>
+                <option value="<%=makes%>"><%=makes%></option>
+                <% }) %>
+            </select>
+        </div>
+        <label id="models_label" for="models" class="col-sm-2 col-form-label">Model</label>
+        <div class="col-auto">
+            <select id="models_select" name="model" class="form-select" aria-label="Models"><option value="0">ALL MODELS</option></select>
+        </div>
+        <label id="postal_code_label" for="postal_code" class="col-sm-2 col-form-label">Postal Code</label>
+        <div class="col-auto">
+            <input id="postal_code" name="postal" type="text" class="form-control" aria-label="Postal Code" size="7" maxlength="5" autocomplete="postal-code" pattern="^([0-9]{5})$" required />
+            </div>
+        <div class="col-auto">
+            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <input type="hidden" id="distance" name="distance" value="10" />
+        <input type="hidden" id="min_price" name="min_price" value="0" />
+        <input type="hidden" id="max_price" name="max_price" value="9999999" />
+        <input type="hidden" id="min_year" name="min_year" value="1992" />
+        <input type="hidden" id="max_year" name="max_year" value="<%=nextYear%>" />
+        <input type="hidden" id="min_mileage" name="min_mileage" value="0" />
+        <input type="hidden" id="max_mileage" name="max_mileage" value="9999999" />
+    </form>
+</div><br />
+
+<div class="row">
+    <div class="col text-center">
+        <span class="badge rounded-pill bg-primary">
+            There <% if (adcount > 1) { %> are <%=adcount%> listings <% } else { %> is <%=adcount%> listing <% } %>
+            from <% if (dealercount > 1) { %> <%=dealercount%> dealers<% } else { %> <%=dealercount%> dealer<% } %>.
+        </span>
+    </div>
+</div><br />
+
+<%
+let col = 0
+results.forEach((result) => {
+%>
+    <% if (col == 0) { %>
+        <div class="row">
+            <div class="card-group">
+    <% } %>
+        <div class="col-sm d-flex align-items-stretch">
+            <div class="card border-primary">
+                <div class="card-img-top" style="min-height: 318px;">
+                    <a href="listing?id=<%=result._id%>"><img src="<%=result.images[0]%>" width="100%" /></a>
+                </div>
+
+                <div class="card-body">
+                    <a href="listing?id=<%=result._id%>">
+                        <h5 class="card-title"><%=result.year%> <%=result.make%> <%=result.model%></h5>
+                    </a>
+                    <p class="card-text">Mileage: <%=result.odometer%><br />Price: $ <%=result.price%></p>
+                    <a href="listing?id=<%=result._id%>" class="btn btn-primary">More Info</a>
+                </div>
+
+            </div>
+        </div>
+
+    <%
+    if (col == 2) {
+        col = 0;
+    %>
+        </div></div>
+    <%
+    } else {
+        col++
+    }
+    %>
+<% }) %>
+
+<%- include('inc/footer.ejs') %>
