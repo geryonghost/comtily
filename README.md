@@ -1,73 +1,18 @@
-# Configure Dev Environment
-```
-npm install express
-npm install ejs
-npm install axios
-npm install vhost
-npm install mongodb
-npm install multer
-npm install papaparse
-npm install nodemon
+# Comtily
+A business that I started many moons ago that comes and goes with the tides. I have never found just the right fit for me, but I keep it alive here to showcase my personal projects.  
+[www.comtily.com](https://www.comtily.com)
 
-#NSY
-npm install body-parser
-
-#IWO
-npm install moment-timezone
-```
-# Configure Dev Environment (Python)
-```
-python3 -m pip install pymongo
-python3 -m pip install undetected_chromedriver
-python3 -m pip install pyvirtualdisplay
-python3 -m pip install webdriver_manager
-python3 -m pip install numpy
-python3 -m pip install 'urllib3<2.0'
-```
-
-# NPM Dependency Check
-```
-npx depcheck
-```
-
-# Local Hosts
-## Mac
-`sudo nano /private/etc/hosts`
-
-## Windows
-`runas /user:<localmachinename>\administrator notepad c:\windows\systems\drivers\etc\hosts`
-```
-127.0.0.1   dev.comtily.com
-127.0.0.1   dev.itsweatheroutside.com
-127.0.0.1   dev.notscrapyet.com
-127.0.0.1   dev.skygatesecurity.com
-```
-
-# Viewing from Browser
-http://dev.comtily.com:3000
-http://dev.itsweatheroutside.com:3000
-http://dev.notscrapyet.com:3000
-http://dev.skygatesecurity.com:3000
+# It's Weather Outside
+Each weather app that I use, whether it is the latest and greatest default with my phone or the newest AI driven app. There are basic features that are non-existent or are hidden away. This app is designed to simplifiy delivery of basic weather forecasts.  
+[www.itsweatheroutside.com](https://www.itsweatheroutside.com)
 
 # Not Scrap Yet
-## Bootstrap
-https://bootswatch.com/pulse/
+When I shop for used cars, and I do this a lot. I struggle to use the big name websites. They don't have the same search criteria, they don't allow me to save my search, and they don't generally have the customer in mind (In my opinion). This site was designed to be simple, provide plenty of information, require key pieces of information (price, photos), and to not cost anything for dealers to post. This would entice as many dealers as possible to list on the platform.  
+[www.notscrapyet.com](https://www.notscrapyet.com)
 
-## Colors
-Primary: #593196
+# iSeeCoyotes
+In my neighborhood we have a lot of wildlife. It is a simple suburb of Chicago, but my social media feeds get blown up with people complaining that wildlife is going to harm their pets. I created this site (which is way not working) to help people submit and track sightings in their area.  
+[www.iseecoyotes.com](https://www.iseecoyotes.com)
 
-## Logo
-https://www.flaticon.com/free-icon/sport-car_12490019?term=sports+car&page=1&position=31&origin=search&related_id=12490019
-
-## List of Zip Codes
-https://raw.githubusercontent.com/millbj92/US-Zip-Codes-JSON/master/USCities.json
-
-## Python Script Requirements
-```
-python3 -m pip install pymongo
-python3 -m pip install pytz
-python3 -m pip install undetected_chromedriver
-python3 -m pip install pyvirtualdisplay
-python3 -m pip install webdriver_manager
-python3 -m pip install numpy
-```
+# My Personal Homepage
+[steven.thehillden.us](https://steven.thehillden.us)
