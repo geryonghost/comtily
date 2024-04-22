@@ -22,26 +22,26 @@ if (appEnvironment == 'dev') {
     app.use(vhost('dev.thehillden.us', appSWH))
 
 } else {
-    app.use(vhost('www.comtily.com', appCOM))
-    app.use(vhost('www.iseecoyotes.com', appISC))
-    app.use(vhost('www.itsweatheroutside.com', appIWO))
-    app.use(vhost('www.notscrapyet.com', appNSY))
+    app.use(vhost('comtily.com', appCOM))
+    app.use(vhost('iseecoyotes.com', appISC))
+    app.use(vhost('itsweatheroutside.com', appIWO))
+    app.use(vhost('notscrapyet.com', appNSY))
     app.use(vhost('steven.thehillden.us', appSWH))
 
-    app.use(vhost('comtily.com', function(req, res){
-      res.set('location', 'https://www.comtily.com');
+    app.use(vhost('www.comtily.com', function(req, res){
+      res.set('location', 'https://comtily.com');
       res.status(301).send()
     }))
-    app.use(vhost('iseecoyotes.com', function(req, res){
-      res.set('location', 'https://www.iseecoyotes.com');
+    app.use(vhost('www.iseecoyotes.com', function(req, res){
+      res.set('location', 'https://iseecoyotes.com');
       res.status(301).send()
     }))
-    app.use(vhost('itsweatheroutside.com', function(req, res){
-      res.set('location', 'https://www.itsweatheroutside.com');
+    app.use(vhost('www.itsweatheroutside.com', function(req, res){
+      res.set('location', 'https://itsweatheroutside.com');
       res.status(301).send()
     }))
-    app.use(vhost('notscrapyet.com', function(req, res){
-      res.set('location', 'https://www.notscrapyet.com');
+    app.use(vhost('www.notscrapyet.com', function(req, res){
+      res.set('location', 'https://notscrapyet.com');
       res.status(301).send()
     }))
 }

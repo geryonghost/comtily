@@ -1,54 +1,64 @@
 <%- include('inc/header.ejs') %>
 
 <div class="container-fluid">
-  <div class="row">
+  <div class="row d-none d-print-block">
     <div class="col">
       <div class="card">
-        <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">Cityblock Health, Inc.</h5>
-            <p style="float:right;">February 2022 - Present</p>
+        <div class="card-header text-white bg-primary text-center">
+          <div style="font-size:larger;"><strong>Steven Hill</strong></div>
+        </div>
+        <div class="card-body text-center">
+          <div class="row">
+            <div class="col">
+              <i class="fa-solid fa-envelope"></i> 
+              <script language="javaScript">
+                user = 'steven';
+                site = 'thehillden.us';
+                document.write('<a href=\"mailto:' + user + '@' + site + '\">');
+                document.write(user + '@' + site + '</a>');
+              </script><br />
+              <i class="fa-solid fa-link"></i> <a href="https://steven.thehillden.us">steven.thehillden.us</a>
+            </div>
+            <div class="col">
+              <i class="fa-brands fa-linkedin-in"></i> <a href="https://www.linkedin.com/in/steven-hill-lisle/">steven-hill-lisle</a><br />
+              <i class="fa-brands fa-github"></i> <a href="https://github.com/geryonghost">geryonghost</a>
+            </div>
           </div>
-          <div style="clear: both;"></div>
-          <p style="font-weight:bold;">Staff DevOps Engineer</p>
-          <p style="font-weight:bold;">Senior DevOps Engineer</p>
-          <p style="font-weight:bold;">Senior Security Engineer</p>
         </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card">
-        <div class="card-body">
-          <h5>DevOps Skills</h5>
-          <ul>
-            <li>Kubernetes (GKE, Cloudrun)</li>
-            <li>Helm</li>
-            <li>Git / GitHub</li>
-            <li>GitHub Actions</li>
-            <li>Spacelift</li>
-            <li>Google Cloud Platform (GCP)</li>
-            <li>Amazon Web Services (AWS)</li>
-            <li>Microsoft Azure</li>
-            <li>Synk</li>
-            <li>SonarCloud</li>
-            <li>Ansible</li>
-            <li>Crossplane</li>
-          </ul>
-        </div>
-      </div>
+      </div><br />
     </div>
   </div>
-
   <div class="row">
     <div class="col">
       <div class="card">
+        <div class="card-header text-white bg-primary">
+            <div style="font-size:larger; float:left;"><strong>Cityblock Health, Inc.</strong></div>
+            <div style="float:right;">February 2022 - Present</div>
+        </div>
         <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">Comtily</h5>
-            <p style="float:right;">January 2015 - Present</p>
-          </div>
-          <div style="clear: both;"></div>
-          <p style="font-weight:bold;">Founder and CEO</p>
+          <p style="font-weight:bold;">Staff DevOps Engineer</p>
+          <ul>
+            <li>Analyze challenges, collaborate on potential solutions, and implement resolutions as a staff engineer.</li>
+            <li>Led the proof-of-concept (PoC) and subsequent implementation of Just-in-Time (JIT) access.</li>
+            <li>Conducted a proof-of-concept (PoC) for Backstage by developing a custom plugin to retrieve GCP project information.</li>
+            <li>Designed and authored Terraform modules for constructing GCP projects.</li>
+            <li>Provide support for the Data Platform team in Terraform, Kubernetes, and GitHub Actions.</li>
+            <li>Ensured high availability and scalability of applications by configuring and managing Kubernetes clusters.</li>
+            <li>Validate fix requests from various security tools including Snyk, SonarCloud, GCP Container Security, and GitHub.</li>
+            <li>Efficiently manage ticket queues by assigning tasks based on priority.</li>
+            <li>Testing solutions for remote workstations, including Google Cloud Workstations, GitHub Codespaces, and Skaffold.</li>
+          </ul>
+          <p style="font-weight:bold;">Senior DevOps Engineer</p>
+          <ul>
+            <li>Led the proof-of-concept (PoC) and subsequent implementation of Terraform CI/CD.</li>
+            <li>Conducted a proof-of-concept (PoC) of Ansible via Spacelift utilizing Identity-Aware Proxy (IAP).</li>
+            <li>Developed custom scripts in Bash and Python for generating both ad-hoc and scheduled reports.</li>
+          </ul>
+          <p style="font-weight:bold;">Senior Security Engineer</p>
+          <ul>
+            <li>Enhanced security compliance by 82% through the development and implementation of strategic security policies and procedures.</li>
+            <li>Led proof-of-concept (POC) initiatives for edge firewall and hub-spoke architecture.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -57,24 +67,95 @@
         <div class="card-body">
           <h5>Skills</h5>
           <ul>
+            <li>Ansible</li>
+            <li>Bash</li>
+            <li>Crossplane</li>
+            <li>Datadog</li>
+            <li>Google Cloud Platform (GCP)</li>
+            <li>Git / GitHub</li>
+            <li>GitHub Actions</li>
+            <li>Helm</li>
             <li>Kubernetes (GKE, Cloudrun)</li>
+            <li>PagerDuty</li>
+            <li>Python</li>
+            <li>SonarCloud</li>
+            <li>Spacelift</li>
+            <li>Synk</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
-
+  <br />
   <div class="row">
     <div class="col">
       <div class="card">
+        <div class="card-header text-white bg-primary">
+          <div style="font-size:larger; float:left;"><strong>Comtily</strong></div>
+          <div style="float:right;">January 2010 - Present</div>
+        </div>
         <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">TrueBlue Inc.</h5>
-            <p style="float:right;">February 2019 - February 2022</p>
-          </div>
-          <div style="clear: both;"></div>
-          <p style="font-weight:bold;">Manager, Cybersecurity Operations</p>
+          <p style="font-weight:bold;">Founder and CEO</p>
+          <p>
+            Comtily is an incubator for my personal endevours. I am trying to solve some my most basic lifestyle challenges through technology. But I am trying to 
+            do this with the mindset of solving a problem and not making money.
+          </p>
+          <ul>
+            <li><a href="https://iseecoyotes.com">I See Coyotes</a> - This project was initially run on AWS using S3, Lambda, and DynamoDB, but cost overruns and moderation 
+            became a problem. I am re-architecting and hope to re-release in 2024.</li>
+            <li><a href="https://itsweatheroutside.com">It's Weather Outside</a> - This project was initially started to help me learn Node.js, but led to trying to 
+              solve my biggest pet peeves with modern weather apps.
+            </li>
+            <li><a href="https://notscrapyet.com">Not Scrap Yet</a> - This project was very lofty. I was hoping to build a simple platform that could scrap every 
+              used car dealer website and make it easier to find and compare based on vehicle options. I keep running into issues with web scraping and the potential
+              costs behind this method of data retrieval.</li>
+            <li>A PHP platform that interfaces with PowerShell to manage the then named Microsoft Virtual Desktops in Azure. This platform would allow my client to 
+              create a new client, build out Active Directory, add users, and build the necessary Azure Virtual Desktops all from an easy to use PHP web portal.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <h5>Skills</h5>
+          <ul>
+            <li>Amazon AWS</li>
+            <li>Digital Ocean</li>
+            <li>DynamoDB</li>
+            <li>Lambda</li>
+            <li>LAMP Stack</li>
+            <li>JumpCloud</li>
+            <li>MongoDB</li>
+            <li>Node.js</li>
+            <li>Python</li>
+            <li>Microsoft Azure</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <!-- <div class="pagebreak"></div> -->
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-header text-white bg-primary">
+          <div style="font-size:larger; float:left;"><strong>TrueBlue Inc.</strong></div>
+          <div style="float:right;">February 2019 - February 2022</div>
+        </div>
+        <div class="card-body">
           <p style="font-weight:bold;">Senior Security Engineer</p>
+          <ul>
+            <li>Architected a Palo Alto GlobalProtect infrastructure on AWS, replacing Palo Alto Prisma Access on AWS compute resulting in significant cost savings.</li>
+            <li>Conducted a proof-of-concept (PoC) and implemented mobile device management solutions for Windows, Mac, Android, and iOS devices.</li>
+            <li>Developed custom scripts to facilitate seamless onboarding and offboarding of users by interfacing between internal systems.</li>
+            <li>Conducted a PoC and successfully implemented CyberArk for enhanced security measures.</li>
+            <li>Devised and executed a cost-saving plan on AWS during the COVID crisis, ensuring employee retention.</li>
+            <li>Successfully led a small team located in Tacoma, WA, and India to achieve security directives.</li>
+            <li>Managed the migration of ADFS to Okta, ensuring smooth transition and improved authentication processes.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -83,23 +164,45 @@
         <div class="card-body">
           <h5> Skills</h5>
           <ul>
-            <li>Enter skills here</li>
+            <li>Amazon Web Services (AWS)</li>
+            <li>Cortex XDR</li>
+            <li>CyberArk</li>
+            <li>GlobalProtect</li>
+            <li>Microsoft ADFS</li>
+            <li>Nessus</li>
+            <li>Okta</li>
+            <li>Palo Alto Networks</li>
+            <li>Proofpoint</li>
+            <li>Python</li>
+            <li>Rapid7</li>
+            <li>Varonis</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
-
+  <br />
   <div class="row">
     <div class="col">
       <div class="card">
+        <div class="card-header text-white bg-primary">
+          <div style="font-size:larger; float:left;"><strong>OneSpan (Formerly Vasco Data Security)</strong></div>
+          <div style="float:right;">October 2014 - February 2019</div>
+        </div>
         <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">OneSpan (Formerly Vasco Data Security)</h5>
-            <p style="float:right;">October 2014 - February 2019</p>
-          </div>
-          <div style="clear: both;"></div>
           <p style="font-weight:bold;">IT Operational Security Engineer</p>
+          <ul>
+            <li>Designed, implemented, and maintained secure AWS corporate cloud environment.</li>
+            <li>Independently deployed Single Sign-On solutions using ADFS, Okta, and MFA globally.</li>
+            <li>Implemented network segmentation and perimeter security utilizing Palo Alto firewalls.</li>
+            <li>Conducted audits to ensure accurate user access rights and permissions.</li>
+            <li>Executed policy audits and optimized Palo Alto firewall and McAfee IDS/IPS policies.</li>
+            <li>Coordinated vulnerability scanning and remediation using Nessus.</li>
+            <li>Researched and implemented an email encryption solution.</li>
+            <li>Audited security of network infrastructure, proposing remediation plans.</li>
+            <li>Assisted in scoping, proposing, and implementing Business Continuity and Disaster Recovery Solutions.</li>
+            <li>Configured, monitored, and troubleshooted company-wide routers, switches, firewalls, and wireless equipment, optimizing routing bandwidth and performance.</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -108,23 +211,35 @@
         <div class="card-body">
           <h5> Skills</h5>
           <ul>
-            <li>Enter skills here</li>
+            <li>Amazon AWS</li>
+            <li>McAfee Endpoint Security</li>
+            <li>McAfee IDS/IPS</li>
+            <li>Microsoft Azure</li>
+            <li>Palo Alto Networks</li>
+            <li>Exabeam</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
-
+  <br />
   <div class="row">
     <div class="col">
       <div class="card">
+        <div class="card-header text-white bg-primary">
+          <div style="font-size:larger; float:left;"><strong>Google / Motorola Mobility (Astreya Partners)</strong></div>
+          <div style="float:right;">October 2013 - September 2014</div>
+        </div>
         <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">Google / Motorola Mobility (Astreya Partners)</h5>
-            <p style="float:right;">October 2013 - September 2014</p>
-          </div>
-          <div style="clear: both;"></div>
           <p style="font-weight:bold;">Network Security Engineer</p>
+          <ul>
+            <li>Led global migration efforts for 39 locations across the Americas, Asia, and Europe as primary network security engineer.</li>
+            <li>Directed network and network security engineering teams as team lead, overseeing task delegation and progress monitoring.</li>
+            <li>Managed, implemented, and resolved issues related to firewalls, security appliances, routers, switches, proxies, and load balancers.</li>
+            <li>Handled tickets concerning MPLS, dark fiber, and Google Fiber network connections, as well as OSPF and BGP protocols.</li>
+            <li>Implemented redundancy measures including Juniper Chassis Cluster Redundant Ethernet Interface Link Aggregation, MC-LAG 
+              (multi-chassis link aggregation), and VRRP (virtual router redundancy protocol).</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -133,87 +248,18 @@
         <div class="card-body">
           <h5> Skills</h5>
           <ul>
-            <li>Enter skills here</li>
+            <li>Arista Networks (HPE)</li>
+            <li>Barracuda</li>
+            <li>Cisco</li>
+            <li>F5 Networks</li>
+            <li>Ixia</li>
+            <li>Juniper</li>
+            <li>Palo Alto Networks</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">Department of Veteran Affairs (Adams Communication & Engineering Technology, Inc.)</h5>
-            <p style="float:right;">June 2013 - October 2013</p>
-          </div>
-          <div style="clear: both;"></div>
-          <p style="font-weight:bold;">Network Security Analyst II</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card">
-        <div class="card-body">
-          <h5> Skills</h5>
-          <ul>
-            <li>Enter skills here</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">National University of Health Sciences</h5>
-            <p style="float:right;">May 2007 - May 2013</p>
-          </div>
-          <div style="clear: both;"></div>
-          <p style="font-weight:bold;">Systems Administrator</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card">
-        <div class="card-body">
-          <h5> Skills</h5>
-          <ul>
-            <li>Enter skills here</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="card-body">
-          <div>
-            <h5 style="float:left; font-weight:bold;">Online Data Corp</h5>
-            <p style="float:right;">April 2006 - September 2006</p>
-          </div>
-          <div style="clear: both;"></div>
-          <p style="font-weight:bold;">Network Administrator</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-3">
-      <div class="card">
-        <div class="card-body">
-          <h5> Skills</h5>
-          <ul>
-            <li>Enter skills here</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>                  
 
 </div><br />
 

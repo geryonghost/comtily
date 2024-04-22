@@ -4,4 +4,4 @@ Disallow: /
 User-agent: *
 Disallow: /cdn-cgi/l/email-protection
 
-Sitemap: https://www.notscrapyet.com/sitemap.xml
+Sitemap: https://notscrapyet.com/sitemap.xml

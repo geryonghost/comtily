@@ -1,9 +1,9 @@
 /*!
-  * iseecoyotes v1.0.1 (https://www.iseecoyotes.com)
+  * I See Coyotes v1.0.1 (https://iseecoyotes.com)
 */
 
 var map, infoWindow, geocoder;
-var siteURL = "https://www.iseecoyotes.com";
+var siteURL = "https://iseecoyotes.com";
 var apiURL = "https://9no00wsnwh.execute-api.us-east-2.amazonaws.com/prod/";
 var apiHeaders = {
 		"x-api-key": "kAB6Qwjsmz82vcdJ4VxLs4axxrLEz7Pu1nrFjmnn"

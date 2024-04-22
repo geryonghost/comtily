@@ -16,5 +16,13 @@ app.get('', async (req, res) => {
         res.render('maintenance')
     }
 })
+app.get('/printable', async (req, res) => {
+    if (statusSWH != 'maintenance') {
+        const pageTitle = "Printable Resume"
+        res.render('printable', {pageTitle})
+    } else {
+        res.render('maintenance')
+    }
+})
 
 module.exports = app

@@ -4,4 +4,4 @@ Disallow: /
 User-agent: *
 Disallow: /cdn-cgi/l/email-protection
 
-Sitemap: https://www.itsweatheroutside.com/sitemap.xml
+Sitemap: https://itsweatheroutside.com/sitemap.xml
