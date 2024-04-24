@@ -85,14 +85,14 @@ async function getGridData(dbCoordinates, variables) {
     if (results.status == 200) {
       forecast = await results.data.properties, dbCoordinates.timeZone.zoneName
     } else if (results.status == 500) {
-      console.log('IWO:Error Error getting Forecast Grid Data, 500')
+      console.log('IWO:Error getting Forecast Grid Data, 500')
       forecast = 'error'
     } else {
-      console.log('IWO:Error Error getting Forecast Grid Data, Other')
+      console.log('IWO:Error getting Forecast Grid Data', error)
       forecast = 'error'
     }
   } catch (error) {
-    console.log('IWO:Error Error getting Forecast Grid Data')
+    console.log('IWO:Error getting Forecast Grid Data', error)
     forecast = 'error'
   }
   if (forecast != 'error') {
