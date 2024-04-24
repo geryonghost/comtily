@@ -36,7 +36,7 @@ newQueryString = 'make=' + queryString.make + '&model=' + queryString.model + '&
                     <option value="0">ALL MODELS</option>
                     <% models.forEach((model) => { %>
                         <% if (model == queryString.model) { %>
-                            <option value="<%=model%>" selected><%=mamodelke%></option>
+                            <option value="<%=model%>" selected><%=model%></option>
                         <% } else { %>
                             <option value="<%=model%>"><%=model%></option>
                         <% } %>

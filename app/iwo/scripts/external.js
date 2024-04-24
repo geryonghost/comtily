@@ -81,7 +81,7 @@ async function getGridData(dbCoordinates, variables) {
   let forecast
   try {
     const userAgent = variables.userAgent
-    const results = await axios.get(dbCoordinates.forecastURL, {headers: {userAgent}})
+    const results = await axios.get(dbCoordinates.forecastURL, {headers: userAgent})
     if (results.status == 200) {
       forecast = await results.data.properties, dbCoordinates.timeZone.zoneName
     } else if (results.status == 500) {
