@@ -503,11 +503,11 @@ async function parseFileContent(fileContent) {
 
 //         } else {
 //             console.log("Query results in bad response status")
-//             return 'Error: ' + auto_vin + ' | ' + auto_year
+//             return 'Error ' + auto_vin + ' | ' + auto_year
 //         }
 //     } catch (err) {
 //         console.error('Error fetching NHTSA results', err)
-//         return 'Error: ' + auto_vin + ' | ' + auto_year
+//         return 'Error ' + auto_vin + ' | ' + auto_year
 //     }
 // }
 

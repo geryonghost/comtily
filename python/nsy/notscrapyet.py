@@ -53,7 +53,7 @@ def db_conn():
 #   return list(dict.fromkeys(array))
 
 def gatherContent(document):
-    currentDate = datetime.now()
+    # currentDate = datetime.now()
     if document['vin'] != '' and int(document['year']) > 1991 and document['price'] != '' and len(document['images']) != 0:
         nhtsa = nhtsa_get(document['vin'])
         if nhtsa == None:
@@ -64,7 +64,7 @@ def gatherContent(document):
         # print(nhtsa)
         adsDocument = {**document, **nhtsa, **{'status': 'active'}}
         ads_update(adsDocument)
-        dealer_billable({'delaer_id': document['dealer_id'], 'vin': document['vin'], 'date': currentDate.date()})
+        # dealer_billable({'delaer_id': document['dealer_id'], 'vin': document['vin'], 'date': currentDate.date()})
 
     else:
         ads_errors(document)
@@ -510,7 +510,7 @@ def selenium_get(driver,url,delay=0,scroll=0):
                 time.sleep(delay)
         time.sleep(delay)
     except Exception as err:
-        print('Error: ' + str(err))
+        print('Error ' + str(err))
         ads_errors({'url': url, 'error': err})
     return driver
 

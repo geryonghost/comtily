@@ -9,7 +9,7 @@ let client
 async function connectToDatabase() {
   client = new MongoClient(databaseConnectionString)
   await client.connect();
-  console.log('NSY:Info: Connected to MongoDB');
+  console.log('NSY:Info Connected to MongoDB');
 }
 
 function getClient() {

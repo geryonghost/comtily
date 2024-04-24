@@ -17,11 +17,11 @@ async function getAlerts(dbCoordinates, variables) {
         forecast = await results.data.properties
         return forecast
     } else {
-        console.log('IWO:Error: Error getting Forecast Alerts')
+        console.log('IWO:Error Error getting Forecast Alerts')
         return 'e003'
     }
   } catch (error) {
-    console.log('IWO:Error: Error getting Forecast Alerts', error)
+    console.log('IWO:Error Error getting Forecast Alerts', error)
     return'e003'
   }
 }
@@ -85,19 +85,18 @@ async function getGridData(dbCoordinates, variables) {
     if (results.status == 200) {
       forecast = await results.data.properties, dbCoordinates.timeZone.zoneName
     } else if (results.status == 500) {
-      console.log('IWO:Error: Error getting Forecast Grid Data, 500')
+      console.log('IWO:Error Error getting Forecast Grid Data, 500')
       forecast = 'error'
     } else {
-      console.log('IWO:Error: Error getting Forecast Grid Data, Other')
+      console.log('IWO:Error Error getting Forecast Grid Data, Other')
       forecast = 'error'
     }
   } catch (error) {
-    console.log('IWO:Error: Error getting Forecast Grid Data')
+    console.log('IWO:Error Error getting Forecast Grid Data')
     forecast = 'error'
-    pause
   }
   if (forecast != 'error') {
-    console.log('IWO:Info: Convert griddata')
+    console.log('IWO:Info Convert griddata')
     forecast = conversions.convertGridData(forecast, dbCoordinates.timeZone.zoneName)
   }
   return forecast
@@ -127,7 +126,7 @@ async function getSunriseSunset(lat, lon) {
           createMap.push(mapResults)
 
         } else {
-          console.log('IWO:Error: Error getting sunrise and sunset')
+          console.log('IWO:Error Error getting sunrise and sunset')
           return 'e003'
         }
       }
@@ -156,7 +155,7 @@ async function getTimeZone(lat, lon) {
       }
       return timeZone
     } else if (results.status == 400) {
-      console.log('IWO:Error: Error getting time zone, status 400')
+      console.log('IWO:Error Error getting time zone, status 400')
       return 'e003'
     }
   } catch (error) {

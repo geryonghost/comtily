@@ -728,7 +728,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, coverage, intensity,
     )
 
     if (subForecast.shortForecast == 'Unknown') {
-        console.log('IWO:Warn:', index, 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'coverage:', coverage, 'Weather:', weather, 'Intensity', intensity)
+        console.log('IWO:Warn', index, 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'coverage:', coverage, 'Weather:', weather, 'Intensity', intensity)
     }
     return subForecast
 }

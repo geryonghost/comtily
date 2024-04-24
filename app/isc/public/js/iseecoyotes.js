@@ -182,7 +182,7 @@ function postDB() {
 					contentType: isc_filetype,
 					data: isc_file,
 					success: function(json) { },
-					error: function (XMLHttpRequest, textStatus, errorThrown) {	}
+					Error function (XMLHttpRequest, textStatus, errorThrown) {	}
 				}
 				$.ajax(settings).done(function (response) { });
 			}
@@ -260,8 +260,8 @@ function initMapReport() {
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 	infoWindow.setPosition(pos);
 	infoWindow.setContent(browserHasGeolocation ?
-	'Error: The Geolocation service failed.' :
-	'Error: Your browser doesn\'t support geolocation.');
+	'Error The Geolocation service failed.' :
+	'Error Your browser doesn\'t support geolocation.');
 	infoWindow.open(map);
 }
 
