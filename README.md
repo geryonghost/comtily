@@ -10,7 +10,7 @@ Each weather app that I use, whether it is the latest and greatest default with 
 When I shop for used cars, and I do this a lot. I struggle to use the big name websites. They don't have the same search criteria, they don't allow me to save my search, and they don't generally have the customer in mind (In my opinion). This site was designed to be simple, provide plenty of information, require key pieces of information (price, photos), and to not cost anything for dealers to post. This would entice as many dealers as possible to list on the platform.  
 [notscrapyet.com](https://notscrapyet.com)
 
-# I See Coyotes
+# iseecoyotes
 In my neighborhood we have a lot of wildlife. It is a simple suburb of Chicago, but my social media feeds get blown up with people complaining that wildlife is going to harm their pets. I created this site (which is way not working) to help people submit and track sightings in their area.  
 [iseecoyotes.com](https://iseecoyotes.com)
 

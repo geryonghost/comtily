@@ -1,5 +1,5 @@
 /*!
-  * I See Coyotes v1.0.1 (https://iseecoyotes.com)
+  * iseecoyotes v1.0.1 (https://iseecoyotes.com)
 */
 
 var map, infoWindow, geocoder;
