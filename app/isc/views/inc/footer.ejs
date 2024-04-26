@@ -1,23 +1,24 @@
 <footer class="text-muted">
     <div class="container">
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-            <p>
-                Our other ventures...<br />
-                <a href="https://notscrapyet.com" target="_new">Not Scrap Yet</a><br />
-                <a href="https://itsweatheroutside.com" target="_new">It's Weather Outside</a>
-            </p>
-        </div><br />
-        <div class="text-center">
-            <% const currentYear = new Date().getFullYear() %>
-            &#169; <%=currentYear%> iseecoyotes
-        </div>
-
+    <div class="alert alert-warning text-center" role="alert">
+        This site is in beta an has missing features. For more information on recent changes, visit <a href="/releases" class="alert-link">releases</a>.<br />
+        To provide <a href="/feedback" class="alert-link">feedback/feature requests</a>.
     </div>
-</footer>
+    <div class="text-center" style="background-color: rgba(0, 0, 0, 0.05);">
+        <p>
+            Some of our other ventures...
+            <a href="https://itsweatheroutside.com" target="_new">It's Weather Outside</a>,
+            <a href="https://notscrapyet.com" target="_new">Not Scrap Yet</a><br />
+            <% const currentYear = new Date().getFullYear() %>
+            &#169; <%=currentYear%> iseecoyotes, a <a href="https://comtily.com">Comtily</a> product.
+        </p>
+    </div>
+</div>
+</footer><br />
 <p class="text-center">
     <a href="https://www.freeiconspng.com/img/2878">coyote baying at the moon silhouette</a>
 </p>
 </body>
-<script src="js/markerclusterer.js"></script>
+<!-- <script src="js/markerclusterer.js"></script> -->
 <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCobJ_2GW9sobsqyyNmn6Ph5zoCfUE_UE&callback=initMapIndex"></script> -->
 </html>

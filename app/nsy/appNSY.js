@@ -59,6 +59,13 @@ app.get('/listing', async (req, res) => {
   res.render('listing', { pageTitle: pageTitle, listing: listing, dealer: dealer })
 })
 
+// Displays the feedback page
+app.get('/feedback', async (req, res) => {
+  const pageTitle = 'Feedback / Feature Requests'
+
+  res.render('feedback', { pageTitle: pageTitle })
+})
+
 // Displays the releases page
 app.get('/releases', async (req, res) => {
   const pageTitle = 'Release Notes'
@@ -99,10 +106,10 @@ app.get('/search', async (req, res) => {
 })
 
 // Displays the dealers index page
-app.get('/dealers', async (req, res) => {
-  const pageTitle = 'Dealers'
-  res.render('dealers', {pageTitle: pageTitle})
-})
+// app.get('/dealers', async (req, res) => {
+//   const pageTitle = 'Dealers'
+//   res.render('dealers', {pageTitle: pageTitle})
+// })
 
 // Displays the dealers/upload/csv page
 // app.get('/dealers/upload/csv2', async (req, res) => {
