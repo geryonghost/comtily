@@ -2,7 +2,7 @@ const databaseConnectionString = process.env.databaseConnectionString
 
 const { MongoClient } = require('mongodb')
 
-const dbName = 'weather'
+const dbName = 'iwo'
 
 let client
 

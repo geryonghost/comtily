@@ -38,7 +38,7 @@ database_connection_string = os.environ['DATABASE_CONNECTION_STRING']
 
 def db_conn():
     client = MongoClient(database_connection_string)
-    dbname = client['notscrapyet']
+    dbname = client['nsy']
     return dbname
 
 

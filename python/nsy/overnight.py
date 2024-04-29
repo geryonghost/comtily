@@ -11,7 +11,7 @@ database_connection_string = os.environ['DATABASE_CONNECTION_STRING']
 start_time = datetime.now()
 
 client = MongoClient(database_connection_string)
-dbName = client['notscrapyet']
+dbName = client['nsy']
 dbDealers = dbName['dealers']
 dbAds = dbName['ads']
 dbAdsErrors = dbName['ads_errors']
