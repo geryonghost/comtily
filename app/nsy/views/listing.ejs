@@ -43,7 +43,7 @@ function numberWithCommas(x) {
                     <p class="card-text">
                         Price: <strong>$<%=numberWithCommas(listing.price)%></strong><br />
                         <% if (listing.base_price != '') { %>
-                            Base price: $<%=listing.numberWithCommas(listing.base_price)%><br />
+                            Base price: $<%=numberWithCommas(listing.base_price)%><br />
                         <% } %>
                         Mileage: <%=numberWithCommas(listing.odometer)%><br />
                         VIN: <%=listing.vin%><br />
