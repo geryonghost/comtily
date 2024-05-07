@@ -59,6 +59,8 @@ def gatherContent(document):
         if nhtsa == None:
             nhtsa = decode_vin(document['vin'], document['year'])
             nhtsa_update(nhtsa)
+        else:
+            nhtsa.pop('_id')
 
         # print(document)
         # print(nhtsa)
