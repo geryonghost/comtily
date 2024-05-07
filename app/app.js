@@ -23,7 +23,7 @@ if (appEnvironment == 'dev') {
     app.use(vhost('dev.notscrapyet.com', appNSY))
     app.use(vhost('dev.thehillden.us', appSWH))
 } else {
-    app.use(vhost('behaivio.comtily.com', appBEH))
+    app.use(vhost('behavio.comtily.com', appBEH))
     app.use(vhost('comtily.com', appCOM))
     app.use(vhost('iseecoyotes.com', appISC))
     app.use(vhost('itsweatheroutside.com', appIWO))
