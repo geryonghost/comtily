@@ -13,7 +13,7 @@ const database = require('./scripts/database')
 const forecasts = require('./scripts/forecasts')
 
 // Connect to MongoDB when the application starts
-const { connectToDatabase, closeDatabase } = require('./scripts/db')
+const { connectToDatabase } = require('./scripts/db')
 connectToDatabase()
 
 // Set express environment

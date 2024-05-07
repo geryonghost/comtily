@@ -9,5 +9,6 @@ chromedriver
 
 **/nodemon.json
 
-
 **/local.notes
+
+**/db
