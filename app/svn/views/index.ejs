@@ -1,0 +1,23 @@
+<%- include('inc/header.ejs') %>
+
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <form action="/addentry" method="post">
+          Date: <input type="date" name="date" required><br />
+          Rating: 
+          1 <input type="radio" name="rating" value="1" required/>
+          2 <input type="radio" name="rating" value="2" />
+          3 <input type="radio" name="rating" value="3" />
+          4 <input type="radio" name="rating" value="4" />
+          5 <input type="radio" name="rating" value="5" /><br />
+          Zip Code: <input type="text" name="zipcode" inputmode="numeric" required /><br /><br />
+          <input class="btn btn-primary" type="submit" value="Submit">
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%- include('inc/footer.ejs') %>

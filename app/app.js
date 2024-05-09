@@ -12,6 +12,7 @@ const appCOM = require('./com/appCOM')
 const appISC = require('./isc/appISC')
 const appIWO = require('./iwo/appIWO')
 const appNSY = require('./nsy/appNSY')
+const appSVN = require('./svn/appSVN')
 const appSWH = require('./swh/appSWH')
 
 // Use vhost middleware to route requests based on domain
@@ -21,6 +22,7 @@ if (appEnvironment == 'dev') {
     app.use(vhost('dev.iseecoyotes.com', appISC))
     app.use(vhost('dev.itsweatheroutside.com', appIWO))
     app.use(vhost('dev.notscrapyet.com', appNSY))
+    app.use(vhost('dev.svenhillier.com', appSVN))
     app.use(vhost('dev.thehillden.us', appSWH))
 } else {
     app.use(vhost('behavio.comtily.com', appBEH))
@@ -28,22 +30,27 @@ if (appEnvironment == 'dev') {
     app.use(vhost('iseecoyotes.com', appISC))
     app.use(vhost('itsweatheroutside.com', appIWO))
     app.use(vhost('notscrapyet.com', appNSY))
+    app.use(vhost('svenhillier.com', appSVN))
     app.use(vhost('steven.thehillden.us', appSWH))
 
     app.use(vhost('www.comtily.com', function(req, res){
-      res.set('location', 'https://comtily.com');
+      res.set('location', 'https://comtily.com')
       res.status(301).send()
     }))
     app.use(vhost('www.iseecoyotes.com', function(req, res){
-      res.set('location', 'https://iseecoyotes.com');
+      res.set('location', 'https://iseecoyotes.com')
       res.status(301).send()
     }))
     app.use(vhost('www.itsweatheroutside.com', function(req, res){
-      res.set('location', 'https://itsweatheroutside.com');
+      res.set('location', 'https://itsweatheroutside.com')
       res.status(301).send()
     }))
     app.use(vhost('www.notscrapyet.com', function(req, res){
-      res.set('location', 'https://notscrapyet.com');
+      res.set('location', 'https://notscrapyet.com')
+      res.status(301).send()
+    }))
+    app.use(vhost('www.svenhillier.com', function(req, res){
+      res.set('location', 'https://svenhillier.com')
       res.status(301).send()
     }))
 }
@@ -51,4 +58,4 @@ if (appEnvironment == 'dev') {
 
 app.listen(3000, appHost, () => {
   console.log('Server is running on port 3000')
-});
+})

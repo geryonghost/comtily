@@ -45,7 +45,8 @@ app.get('/feedback', async (req, res) => {
 
 app.get('/login', (req, res) => {
   const pageTitle = "Login"
-  res.render('login', { pageTitle: pageTitle })
+  const isLoggedOut = true
+  res.render('login', { pageTitle: pageTitle, isLoggedOut })
 
 })
 
@@ -64,7 +65,7 @@ app.post('/addentry', async (req, res) => {
   query = {
     'date':req.body.date,
     'rating':req.body.rating,
-    'zipcode':req.body.zipcode,
+    'zipcode':req.session.zipcode,
     'team':req.session.team
   }
 
@@ -87,6 +88,7 @@ app.post('/auth', async (req, res) => {
         if (user != null ) {
           req.session.loggedin = true
           req.session.team = user.team
+          req.session.zipcode = user.zipcode
           res.redirect('/')
         } else {
           const error = 'Bad login'
