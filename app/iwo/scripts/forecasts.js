@@ -179,8 +179,8 @@ function buildHourlyForecast(location, forecast, twilight, units) {
 }
 
 function buildDailyForecast(location, forecast, twilight, units) {
-    const currentDate = moment().tz(timeZone).format('YYYY-MM-DD')
     const timeZone = location.timeZone.zoneName
+    const currentDate = moment().tz(timeZone).format('YYYY-MM-DD')
     
     let sunrise, sunset
     let dailyForecast = []
