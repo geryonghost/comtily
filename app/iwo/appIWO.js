@@ -1,6 +1,5 @@
 const statusIWO = process.env.statusIWO
 
-const mongoDb = require('mongodb')
 const express = require('express')
 const app = express()
 
@@ -8,13 +7,18 @@ const appDomain = "itsweatheroutside.com"
 const appEmail = "webmaster@itsweatheroutside.com"
 const userAgent = "(" + appDomain + "," + appEmail + ")"
 
+const variables = {
+    'units': 'us',
+    'appEmail': appEmail,
+    'userAgent': userAgent,
+}
+
 // Custom functions
-const database = require('./scripts/database')
+const db = require('./scripts/db.js')
 const forecasts = require('./scripts/forecasts')
 
 // Connect to MongoDB when the application starts
-const { connectToDatabase } = require('./scripts/db')
-connectToDatabase()
+db.connectToDatabase()
 
 // Set express environment
 app.set('view engine', 'ejs')
@@ -24,52 +28,37 @@ app.use(express.static(`${__dirname}/public`))
 // Default view of the site
 app.get('', async (req, res) => {
     if (statusIWO != 'maintenance') {
-        // const acceptlanguageheader = req.get('Accept-Language')
-        // const preferredlocales = parseAcceptLanguageHeader(acceptlanguageheader)
-        // clientlocale = preferredlocales[0] || 'en-US'
-        let forecast
         const query = req.query.q;
-
+        
         if (query == "" || query == undefined) {
             res.render('index', {})
         } else {
-            const units = 'us' // us (imperial) or si (metric)
+            const location = await db.getLocation(query, variables)
+            const forecast = await db.getForecast(location, variables)
+            const twilight = await db.getTwilight(location, variables)
+            const weather = await forecasts.getWeather(location, forecast, twilight, variables)
 
-            const variables = {
-                'units': units,
-                'appEmail': appEmail,
-                'userAgent': userAgent,
-            }
+            const currentForecast = weather.currentForecast
+            const hourlyForecast = weather.hourlyForecast
+            const dailyForecast = weather.dailyForecast
 
-            forecast = await database.getAll(query, variables)
-
-            if (forecast == 'e001' || forecast == 'e002' || forecast == 'e003' || forecast == 'e004' || forecast == 'error') {
-                res.render('error', {query})
-            } else {
-                const currentForecast = await forecasts.currentForecast(units, forecast)
-                const hourlyForecast = await forecasts.hourlyForecast(units, forecast)
-                const dailyForecast = await forecasts.dailyForecast(units, forecast)
-
-                res.render('index', {
-                    currentForecast,
-                    hourlyForecast,
-                    dailyForecast,
-                })
-            }
+            res.render('index', {
+                currentForecast,
+                hourlyForecast,
+                dailyForecast,
+            })
         }
     } else {
         res.render('maintenance')
     }
 })
 
-// Displays the feedback page
 app.get('/feedback', async (req, res) => {
     const pageTitle = 'Feedback / Feature Requests'
 
     res.render('feedback', { pageTitle: pageTitle })
 })
 
-// Displays the releases page
 app.get('/releases', async (req, res) => {
     const pageTitle = 'Release Notes'
 
