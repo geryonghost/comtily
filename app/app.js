@@ -33,22 +33,30 @@ if (appEnvironment == 'dev') {
     // app.use(vhost('svenhillier.com', appSVN))
     app.use(vhost('steven.thehillden.us', appSWH))
 
-    app.use(vhost('www.comtily.com', function(req, res){
-      res.set('location', 'https://comtily.com')
-      res.status(301).send()
-    }))
-    app.use(vhost('www.iseecoyotes.com', function(req, res){
-      res.set('location', 'https://iseecoyotes.com')
-      res.status(301).send()
-    }))
-    app.use(vhost('www.itsweatheroutside.com', function(req, res){
-      res.set('location', 'https://itsweatheroutside.com')
-      res.status(301).send()
-    }))
-    app.use(vhost('www.notscrapyet.com', function(req, res){
-      res.set('location', 'https://notscrapyet.com')
-      res.status(301).send()
-    }))
+    app.use(
+        vhost('www.comtily.com', function (req, res) {
+            res.set('location', 'https://comtily.com')
+            res.status(301).send()
+        })
+    )
+    app.use(
+        vhost('www.iseecoyotes.com', function (req, res) {
+            res.set('location', 'https://iseecoyotes.com')
+            res.status(301).send()
+        })
+    )
+    app.use(
+        vhost('www.itsweatheroutside.com', function (req, res) {
+            res.set('location', 'https://itsweatheroutside.com')
+            res.status(301).send()
+        })
+    )
+    app.use(
+        vhost('www.notscrapyet.com', function (req, res) {
+            res.set('location', 'https://notscrapyet.com')
+            res.status(301).send()
+        })
+    )
     // app.use(vhost('www.svenhillier.com', function(req, res){
     //   res.set('location', 'https://svenhillier.com')
     //   res.status(301).send()
@@ -57,5 +65,5 @@ if (appEnvironment == 'dev') {
 // Add a default route or handle unrecognized domains
 
 app.listen(3000, appHost, () => {
-  console.log('Server is running on port 3000')
+    console.log('Server is running on port 3000')
 })

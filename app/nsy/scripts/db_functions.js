@@ -29,7 +29,7 @@ async function getMakes() {
         const makes = await dbTable.distinct('make')
         return makes
     } catch (error) {
-        console.error('Error in getMakes function', error);
+        console.error('Error in getMakes function', error)
         return 'Error'
     }
 }
@@ -41,15 +41,15 @@ async function getModels(make) {
     const db = client.db(dbName)
     try {
         const dbTable = await db.collection('ads')
-        const models = await dbTable.distinct('model', { 'make': make })
+        const models = await dbTable.distinct('model', { make: make })
         return models
     } catch (error) {
-        console.error('Error in getMakes function', error);
+        console.error('Error in getMakes function', error)
         return 'Error'
     }
 }
 
-async function getAdCount(filter={}) {
+async function getAdCount(filter = {}) {
     console.log('NSY:Info Get Ad Count')
 
     const client = getClient()
@@ -85,14 +85,14 @@ async function getDealerCount() {
     try {
         // filter.status = 1
         const dbTable = await db.collection('dealers')
-        const filter = {'status': 'active'}
+        const filter = { status: 'active' }
         const dealercount = await dbTable.countDocuments(filter)
         return dealercount
     } catch (error) {
         console.error('Error in the getAdCount function', error)
         return 'Error'
     }
-  }
+}
 
 async function getDealer(id) {
     console.log('NSY:Info Get Results')
@@ -101,9 +101,8 @@ async function getDealer(id) {
     const db = client.db(dbName)
     try {
         const dbTable = await db.collection('dealers')
-        const results = await dbTable.find({'_id': new ObjectId(id)}).toArray()
+        const results = await dbTable.find({ _id: new ObjectId(id) }).toArray()
         return results
-
     } catch (error) {
         console.error('Error in the getDealer function', error)
         return 'Error'
@@ -124,17 +123,16 @@ async function getListing(id) {
         //     ]).toArray()
         //     return results
         // } else {
-            // const results = await dbTable.find({'_id': new ObjectId(id)}).toArray()
-            const filter = {_id: new ObjectId(id)}
-            const results = await dbTable.findOne(filter)
-            return results
+        // const results = await dbTable.find({'_id': new ObjectId(id)}).toArray()
+        const filter = { _id: new ObjectId(id) }
+        const results = await dbTable.findOne(filter)
+        return results
         // }
-
     } catch (error) {
         console.log('NSY:Error Error in the getListing function')
         return 'Error'
     }
-  }
+}
 
 async function getSearchResults(page = 1, pageSize = 24, queryString) {
     console.log('NSY:Info Get Search Results')
@@ -145,57 +143,85 @@ async function getSearchResults(page = 1, pageSize = 24, queryString) {
 
     try {
         if (queryString == 0) {
-            const results = await dbAds.aggregate([
-                { $sample: { size: 12 }}
-            ]).toArray()
+            const results = await dbAds
+                .aggregate([{ $sample: { size: 12 } }])
+                .toArray()
             return results
         }
 
-        const nearbyLocations = await getNearbyLocations(queryString.postal, queryString.distance)
+        const nearbyLocations = await getNearbyLocations(
+            queryString.postal,
+            queryString.distance
+        )
 
         if (nearbyLocations != 'empty') {
             const dealerCount = nearbyLocations.length
             const skip = (page - 1) * pageSize
 
-            if (queryString.model == 0) {}
+            if (queryString.model == 0) {
+            }
             const filter = {
-                'year': { $gte: queryString.min_year, $lte: queryString.max_year },
-                'price': { $gte: Number(queryString.min_price), $lt: Number(queryString.max_price) },
-                'odometer': { $gte: Number(queryString.min_mileage), $lt: Number(queryString.max_mileage) },
-                'dealer_id':{ $in: nearbyLocations },
+                year: {
+                    $gte: queryString.min_year,
+                    $lte: queryString.max_year,
+                },
+                price: {
+                    $gte: Number(queryString.min_price),
+                    $lt: Number(queryString.max_price),
+                },
+                odometer: {
+                    $gte: Number(queryString.min_mileage),
+                    $lt: Number(queryString.max_mileage),
+                },
+                dealer_id: { $in: nearbyLocations },
             }
             if (queryString.make != 0) {
-                filter['make'] = queryString.make;
+                filter['make'] = queryString.make
             }
             if (queryString.model != 0) {
-                filter['model'] = queryString.model;
+                filter['model'] = queryString.model
             }
             console.log(filter)
 
-            const results = await dbAds.aggregate([
-                { $match: filter },
-                { $facet: {
-                    metadata: [{ $count: 'adCount'}, { $addFields: { 'dealerCount': dealerCount, 'page': page, 'pageSize': pageSize }}],
-                    data: [{ $skip: skip}, {$limit: Number(pageSize)}]
-                }}
-            ]).toArray()
+            const results = await dbAds
+                .aggregate([
+                    { $match: filter },
+                    {
+                        $facet: {
+                            metadata: [
+                                { $count: 'adCount' },
+                                {
+                                    $addFields: {
+                                        dealerCount: dealerCount,
+                                        page: page,
+                                        pageSize: pageSize,
+                                    },
+                                },
+                            ],
+                            data: [
+                                { $skip: skip },
+                                { $limit: Number(pageSize) },
+                            ],
+                        },
+                    },
+                ])
+                .toArray()
 
-        if (results.length == 0) {
-            return 'empty'
+            if (results.length == 0) {
+                return 'empty'
+            } else {
+                return results
+            }
         } else {
-            return results
+            return 'empty'
         }
-    } else {
-        return 'empty'
-    }
-
     } catch (error) {
         console.error('Error in the getSearchResults function', error)
         return 'Error'
     }
 }
 
-async function getNearbyLocations(postal, distance=10) {
+async function getNearbyLocations(postal, distance = 10) {
     console.log('NSY:Info Get nearby locations')
 
     const client = getClient()
@@ -206,31 +232,31 @@ async function getNearbyLocations(postal, distance=10) {
 
         // Get Postal Code location for geospatial
         if (postal != '') {
-            const filter = {'zip_code': Number(postal)}
+            const filter = { zip_code: Number(postal) }
             const location = await dbLocations.findOne(filter)
 
             if (!location) {
                 console.log('Postal code not found')
                 return 'Postal code not found'
             } else {
-                const coordinates = [location.longitude,location.latitude]
+                const coordinates = [location.longitude, location.latitude]
                 const filter = {
                     location: {
                         $near: {
                             $geometry: {
                                 type: 'Point',
-                                coordinates: coordinates
+                                coordinates: coordinates,
                             },
-                            $maxDistance: distance * 1609.34  // Convert miles to meters
-                        }
+                            $maxDistance: distance * 1609.34, // Convert miles to meters
+                        },
                     },
-                    status: 'active'
+                    status: 'active',
                 }
 
-                let nearbyLocations = await dbDealers.distinct('_id',filter)
+                let nearbyLocations = await dbDealers.distinct('_id', filter)
                 if (nearbyLocations.length != 0) {
                     nearbyLocations = nearbyLocations.toString()
-                    nearbyLocations = nearbyLocations.split(",")
+                    nearbyLocations = nearbyLocations.split(',')
                     return nearbyLocations
                 } else {
                     return 'empty'

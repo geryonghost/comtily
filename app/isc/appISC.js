@@ -31,8 +31,8 @@ app.get('/releases', async (req, res) => {
 })
 
 //The 404 Route (ALWAYS Keep this as the last route)
-app.get('*', function(req, res){
+app.get('*', function (req, res) {
     res.redirect('/')
-  });
+})
 
 module.exports = app

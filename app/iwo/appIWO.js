@@ -3,14 +3,14 @@ const statusIWO = process.env.statusIWO
 const express = require('express')
 const app = express()
 
-const appDomain = "itsweatheroutside.com"
-const appEmail = "webmaster@itsweatheroutside.com"
-const userAgent = "(" + appDomain + "," + appEmail + ")"
+const appDomain = 'itsweatheroutside.com'
+const appEmail = 'webmaster@itsweatheroutside.com'
+const userAgent = '(' + appDomain + ',' + appEmail + ')'
 
 const variables = {
-    'units': 'us',
-    'appEmail': appEmail,
-    'userAgent': userAgent,
+    units: 'us',
+    appEmail: appEmail,
+    userAgent: userAgent,
 }
 
 // Custom functions
@@ -28,15 +28,20 @@ app.use(express.static(`${__dirname}/public`))
 // Default view of the site
 app.get('', async (req, res) => {
     if (statusIWO != 'maintenance') {
-        const query = req.query.q;
-        
-        if (query == "" || query == undefined) {
+        const query = req.query.q
+
+        if (query == '' || query == undefined) {
             res.render('index', {})
         } else {
             const location = await db.getLocation(query, variables)
             const forecast = await db.getForecast(location, variables)
             const twilight = await db.getTwilight(location, variables)
-            const weather = await forecasts.getWeather(location, forecast, twilight, variables)
+            const weather = await forecasts.getWeather(
+                location,
+                forecast,
+                twilight,
+                variables
+            )
 
             const currentForecast = weather.currentForecast
             const hourlyForecast = weather.hourlyForecast
@@ -66,8 +71,8 @@ app.get('/releases', async (req, res) => {
 })
 
 //The 404 Route (ALWAYS Keep this as the last route)
-app.get('*', function(req, res){
-  res.redirect('/')
+app.get('*', function (req, res) {
+    res.redirect('/')
 })
 
 module.exports = app

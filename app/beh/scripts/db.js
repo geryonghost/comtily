@@ -7,13 +7,13 @@ const dbName = 'beh'
 let client
 
 async function connectToDatabase() {
-  client = new MongoClient(databaseConnectionString)
-  await client.connect();
-  console.log('BEH:Info Connected to MongoDB');
+    client = new MongoClient(databaseConnectionString)
+    await client.connect()
+    console.log('BEH:Info Connected to MongoDB')
 }
 
 function getClient() {
-  return client;
+    return client
 }
 
 module.exports = { connectToDatabase, getClient, dbName }

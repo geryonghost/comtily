@@ -3,7 +3,7 @@ const papa = require('papaparse')
 
 async function readFileContent(filePath) {
     try {
-        const content = fs.readFileSync(filePath, 'utf8');
+        const content = fs.readFileSync(filePath, 'utf8')
         return content
     } catch (error) {
         console.error('Error reading file:', error)
@@ -13,9 +13,12 @@ async function readFileContent(filePath) {
 
 async function parseFileContent(fileContent) {
     try {
-        const content = papa.parse(fileContent, {header: true, dynamicTyping: true, skipEmptyLines: true})
+        const content = papa.parse(fileContent, {
+            header: true,
+            dynamicTyping: true,
+            skipEmptyLines: true,
+        })
         return content.data
-
     } catch (error) {
         console.error('Error reading file:', error)
         return error
@@ -25,7 +28,6 @@ async function parseFileContent(fileContent) {
     //           // Respond with parsed data
     //           // res.json(results.data)
     //           // console.log(results.data)
-
 
     //       },
     //       header: true,
@@ -513,6 +515,6 @@ async function parseFileContent(fileContent) {
 
 module.exports = {
     readFileContent,
-    parseFileContent
+    parseFileContent,
     // db_conn,
-};
+}
