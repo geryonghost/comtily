@@ -1,226 +1,5 @@
 const moment = require('moment-timezone')
 
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-function convertDirection(units, data) {
-    const directionArr = ["N","NNE","NE","ENE","E","ESE", "SE", "SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
-    const math = Math.floor((data / 22.5) + 0.5)
-    const unit = directionArr[(math % 16)]
-
-    return unit
-}
-
-function convertGridData(gridData, timeZone) {
-    // const id = gridData['@id']
-    // const type = gridData['@type']
-    // const updateTime = gridData.updateTime
-    // const validTimes = gridData.validTimes
-    const elevation = gridData.elevation
-    // const forecastOffice = gridData.forecastOffice
-    // const gridId = gridData.gridId
-    // const gridX = gridData.gridX
-    // const gridY = gridData.gridY
-    // temperature
-    let temperatureValues = []
-    for (i = 0; i < gridData.temperature.values.length; i++) {
-        temperatureValues = temperatureValues.concat(convertValidTimeValues(gridData.temperature.values[i], timeZone))
-    }
-    const temperature = {'uom': gridData.temperature.uom, 'values': temperatureValues}
-    // // dewpoint
-    // let dewPointValues = []
-    // for (i = 0; i < gridData.dewpoint.values.length; i++) {
-    //     dewPointValues = dewPointValues.concat(convertValidTimeValues(gridData.dewpoint.values[i]))
-    // }
-    // const dewpoint = {'uom': gridData.dewpoint.uom, 'values': dewPointValues}
-    // const maxTemperature = gridData.maxTemperature
-    // const minTemperature = gridData.minTemperature
-    // // relativeHumidity
-    // let relativeHumidityValues = []
-    // for (i = 0; i < gridData.relativeHumidity.values.length; i++) {
-    //     relativeHumidityValues = relativeHumidityValues.concat(convertValidTimeValues(gridData.relativeHumidity.values[i]))
-    // }
-    // const relativeHumidity = {'uom': gridData.relativeHumidity.uom, 'values': relativeHumidityValues}
-    // apparentTemperature
-    let apparentTemperatureValues = []
-    for (i = 0; i < gridData.apparentTemperature.values.length; i++) {
-        apparentTemperatureValues = apparentTemperatureValues.concat(convertValidTimeValues(gridData.apparentTemperature.values[i], timeZone))
-    }
-    const apparentTemperature = {'uom': gridData.apparentTemperature.uom, 'values': apparentTemperatureValues}
-    // wetBulbGlobeTemperature
-    // heatIndex
-    // windChill
-    // skyCover
-    let skyCoverValues = []
-    for (i = 0; i < gridData.skyCover.values.length; i++) {
-        skyCoverValues = skyCoverValues.concat(convertValidTimeValues(gridData.skyCover.values[i], timeZone))
-    }
-    const skyCover = {'uom': gridData.skyCover.uom, 'values': skyCoverValues}
-
-    let windDirectionValues = []
-    for (i = 0; i < gridData.windDirection.values.length; i++) {
-        windDirectionValues = windDirectionValues.concat(convertValidTimeValues(gridData.windDirection.values[i], timeZone))
-    }
-    const windDirection = {'uom': gridData.windDirection.uom, 'values': windDirectionValues}
-
-    let windSpeedValues = []
-    for (i = 0; i < gridData.windSpeed.values.length; i++) {
-        windSpeedValues = windSpeedValues.concat(convertValidTimeValues(gridData.windSpeed.values[i], timeZone))
-    }
-    const windSpeed = {'uom': gridData.windSpeed.uom, 'values': windSpeedValues}
-
-    let windGustValues = []
-    for (i = 0; i < gridData.windGust.values.length; i++) {
-        windGustValues = windGustValues.concat(convertValidTimeValues(gridData.windGust.values[i], timeZone))
-    }
-    const windGust = {'uom': gridData.windGust.uom, 'values': windGustValues}
-
-    // weather
-    let weatherValues = []
-    for (i = 0; i < gridData.weather.values.length; i++) {
-        weatherValues = weatherValues.concat(convertValidTimeValues(gridData.weather.values[i], timeZone))
-    }
-    const weather = {'uom': gridData.weather.uom, 'values': weatherValues}
-    // hazards
-    // probabilityOfPrecipitation
-    let probabilityOfPrecipitationValues = []
-    for (i = 0; i < gridData.probabilityOfPrecipitation.values.length; i++) {
-        probabilityOfPrecipitationValues = probabilityOfPrecipitationValues.concat(convertValidTimeValues(gridData.probabilityOfPrecipitation.values[i], timeZone))
-    }
-    const probabilityOfPrecipitation = {'uom': gridData.probabilityOfPrecipitation.uom, 'values': probabilityOfPrecipitationValues}
-    // quantitativePrecipitation
-    // iceAccumulation
-    // snowfallAmount
-    // snowLevel
-    // ceilingHeight
-    // visibility
-    // transportWindSpeed
-    // transportWindDirection
-    // mixingHeight
-    // hainesIndex
-    // lightningActivityLevel
-    // twentyFootWindSpeed
-    // twentyFootWindDirection
-    // waveHeight
-    // wavePeriod
-    // waveDirection
-    // primarySwellHeight
-    // primarySwellDirection
-    // secondarySwellHeight
-    // secondarySwellDirection
-    // wavePeriod2
-    // windWaveHeight
-    // dispersionIndex
-    // pressure
-    // probabilityOfTropicalStormWinds
-    // probabilityOfHurricaneWinds
-    // potentialOf15mphWinds
-    // potentialOf25mphWinds
-    // potentialOf35mphWinds
-    // potentialOf45mphWinds
-    // potentialOf20mphWindGusts
-    // potentialOf30mphWindGusts
-    // potentialOf40mphWindGusts
-    // potentialOf50mphWindGusts
-    // potentialOf60mphWindGusts
-    // grasslandFireDangerIndex
-    // probabilityOfThunder
-    // davisStabilityIndex
-    // atmosphericDispersionIndex
-    // lowVisibilityOccurrenceRiskIndex
-    // stability
-    // redFlagThreatIndex
-
-    // console.log(dewPoint)
-// console.log(gridData)
-    forecast = {
-        // '@id': id,
-        // '@type': type,
-        // 'updateTime': updateTime,
-        // 'validTimes': validTimes,
-        'elevation': elevation,
-        // 'forecastOffice': forecastOffice,
-        // 'gridId': gridId,
-        // 'gridX': gridX,
-        // 'gridY': gridY,
-        'temperature': temperature,
-        // 'dewpoint': dewpoint,
-        // 'maxTemperature': maxTemperature,
-        // 'minTemperature': minTemperature,
-        // 'relativeHumidity': relativeHumidity,
-        'apparentTemperature': apparentTemperature,
-        // 'wetBulbGlobeTemperature':
-        // 'heatIndex':
-        // 'windChill':
-        'skyCover': skyCover,
-        'windDirection': windDirection,
-        'windSpeed': windSpeed,
-        'windGust': windGust,
-        'weather': weather,
-        // 'hazards':
-        'probabilityOfPrecipitation': probabilityOfPrecipitation,
-        // 'quantitativePrecipitation':
-        // 'iceAccumulation':
-        // 'snowfallAmount':
-        // 'snowLevel':
-        // 'ceilingHeight':
-        // 'visibility':
-        // 'transportWindSpeed':
-        // 'transportWindDirection':
-        // 'mixingHeight':
-        // 'hainesIndex':
-        // 'lightningActivityLevel':
-        // 'twentyFootWindSpeed':
-        // 'twentyFootWindDirection':
-        // 'waveHeight':
-        // 'wavePeriod':
-        // 'waveDirection':
-        // 'primarySwellHeight':
-        // 'primarySwellDirection':
-        // 'secondarySwellHeight':
-        // 'secondarySwellDirection':
-        // 'wavePeriod2':
-        // 'windWaveHeight':
-        // 'dispersionIndex':
-        // 'pressure':
-        // 'probabilityOfTropicalStormWinds':
-        // 'probabilityOfHurricaneWinds':
-        // 'potentialOf15mphWinds':
-        // 'potentialOf25mphWinds':
-        // 'potentialOf35mphWinds':
-        // 'potentialOf45mphWinds':
-        // 'potentialOf20mphWindGusts':
-        // 'potentialOf30mphWindGusts':
-        // 'potentialOf40mphWindGusts':
-        // 'potentialOf50mphWindGusts':
-        // 'potentialOf60mphWindGusts':
-        // 'grasslandFireDangerIndex':
-        // 'probabilityOfThunder':
-        // 'davisStabilityIndex':
-        // 'atmosphericDispersionIndex':
-        // 'lowVisibilityOccurrenceRiskIndex':
-        // 'stability':
-        // 'redFlagThreatIndex':
-
-    }
-
-    return forecast
-
-}
-
-function convertLength(units, data) {
-    let math, unit
-    if (units == 'us') {
-        math  = Math.round(data * 3.2808399)
-        unit = math + 'ft'
-    }
-    if (units == 'metric') {
-        unit = data + 'm'
-    }
-    return unit
-}
-
 function convertSpeed(units, data) {
     let math, unit
     if (units == 'us') {
@@ -236,7 +15,7 @@ function convertSpeed(units, data) {
 function convertTemperature(units, data) {
     let math, unit
     if (units == 'us') {
-        math = Math.round((data * 1.8) + 32)
+        math = Math.round(data * 1.8 + 32)
         unit = math + '&#176;F'
     }
     if (units == 'metric') {
@@ -247,44 +26,79 @@ function convertTemperature(units, data) {
 
 function convertValidTimeValues(values, timeZone) {
     let validTimeValues = []
-    const parts = values.validTime.split('/')
-    const indexP = parts[1].indexOf('P')
-    const indexD = parts[1].indexOf('D')
-    const indexT = parts[1].indexOf('T')
-    const indexH = parts[1].indexOf('H')
-    const numberDays = parts[1].substring(indexP+1,indexD)
-    let numberHours = parts[1].substring(indexT+1,indexH)
+    for (let a = 0; a < values.length; a++) {
+        const parts = values[a].validTime.split('/')
+        const indexP = parts[1].indexOf('P')
+        const indexD = parts[1].indexOf('D')
+        const indexT = parts[1].indexOf('T')
+        const indexH = parts[1].indexOf('H')
+        const numberDays = parts[1].substring(indexP + 1, indexD)
+        let numberHours = parts[1].substring(indexT + 1, indexH)
 
-    if (numberDays > 0) {
-        const daysInHours = numberDays * 24
-        numberHours = Number(numberHours) + Number(daysInHours)
+        if (numberDays > 0) {
+            const daysInHours = numberDays * 24
+            numberHours = Number(numberHours) + Number(daysInHours)
+        }
+
+        for (let i = 0; i < numberHours; i++) {
+            const newTime = moment(parts[0])
+                .add(i, 'hours')
+                .tz(timeZone)
+                .format()
+            const newTimeValue = { validTime: newTime, value: values[a].value }
+            validTimeValues.push(newTimeValue)
+        }
     }
-
-    for (let i = 0; i < numberHours; i++) {
-        const newTime = moment(parts[0]).add(i, 'hours').tz(timeZone).format() //.format('LT')
-        const newTimeValue = {'validTime': newTime, 'value': values.value}
-        validTimeValues.push(newTimeValue)
-    }
-
     return validTimeValues
 }
 
-function formatUnitCode(unitcode) {
-    let unit = unitcode.substring(unitcode.lastIndexOf(':') + 1)
+function processGridData(gridData, location) {
+    const timeZone = location.timeZone.zoneName
 
-    if (unit == "degC") { unit = "C" }
-    if (unit == "percent") { unit = "%"}
+    const apparentTemperature = convertValidTimeValues(
+        gridData.apparentTemperature.values,
+        timeZone
+    )
+    const probabilityOfPrecipitation = convertValidTimeValues(
+        gridData.probabilityOfPrecipitation.values,
+        timeZone
+    )
+    const skyCover = convertValidTimeValues(gridData.skyCover.values, timeZone)
+    const temperature = convertValidTimeValues(
+        gridData.temperature.values,
+        timeZone
+    )
+    const weather = convertValidTimeValues(gridData.weather.values, timeZone)
+    const windDirection = convertValidTimeValues(
+        gridData.windDirection.values,
+        timeZone
+    )
+    const windGust = convertValidTimeValues(gridData.windGust.values, timeZone)
+    const windSpeed = convertValidTimeValues(
+        gridData.windSpeed.values,
+        timeZone
+    )
 
-    return unit
+    let processedGridData = []
+    for (let i = 0; i < temperature.length; i++) {
+        processedGridData.push({
+            query: location.query,
+            validTime: apparentTemperature[i].validTime,
+            apparentTemperature: apparentTemperature[i],
+            probabilityOfPrecipitation: probabilityOfPrecipitation[i],
+            skyCover: skyCover[i],
+            temperature: temperature[i],
+            weather: weather[i],
+            windDirection: windDirection[i],
+            windGust: windGust[i],
+            windSpeed: windSpeed[i],
+        })
+    }
+    return processedGridData
 }
 
-
 module.exports = {
-    capitalizeFirstLetter,
-    convertDirection,
-    convertGridData,
-    convertLength,
+    processGridData,
     convertSpeed,
     convertTemperature,
-    formatUnitCode,
 }

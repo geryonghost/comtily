@@ -46,6 +46,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
             <div class="card-header text-white bg-primary">Current</div>
             <div class="card-body">
                 <div class="text-center">
+                    <h6 class="card-title"><%=currentForecast.temperatureTime%></h6>
                     <img class="img-fluid" src="<%=currentForecast.icon%>" />
                     <h3><%-currentForecast.temperature%> <%-currentForecast.temperaturetrend%></h3>
                     <% if (currentForecast.apparentTemperature != currentForecast.temperature) { %>
@@ -60,7 +61,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     <% } %>
                     <h5><%=currentForecast.shortForecast%></h5>
                     <%if (currentForecast.precipitation != 0 && currentForecast.weather != null && currentForecast.weather != 'fog') { %>
-                        <p class="card-text"><%=currentForecast.precipitation%> chance of precipitation</p>
+                        <p class="card-text"><%=currentForecast.precipitation%>% chance of precipitation</p>
                     <% } %>
                     <% if (currentForecast.highTemp != 999) { %>
                     <p class="card-text">
@@ -70,6 +71,8 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     <% } else { %>
                     <p class="card-text"><font size="1">High and Low times are not currently available</font></p>
                     <% } %>
+                    <div class="badge bg-warning">Sunrise <%=currentForecast.sunrise%></div>
+                    <div class="badge bg-dark">Sunset <%=currentForecast.sunset%></div>
                 </div>
             </div>
         </div>
@@ -97,9 +100,9 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                                 <% } else { %>
                                     <br />
                                 <% } %>
-                                <h5><%=hourly.shortForecast%></h5>
+                                <h6><%=hourly.shortForecast%></h6>
                                 <%if (hourly.precipitation != 0 && hourly.weather != null && hourly.weather != 'fog') { %>
-                                    <p class="card-text"><%=hourly.precipitation%></p>
+                                    <p class="card-text"><%=hourly.precipitation%>%</p>
                                 <% } %>
                             </div>
                             <%

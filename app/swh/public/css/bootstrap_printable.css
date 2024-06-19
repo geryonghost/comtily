@@ -1,90 +1,92 @@
 @media print {
-
     *,
     ::after,
     ::before {
         text-shadow: none !important;
-        box-shadow: none !important
+        box-shadow: none !important;
     }
 
     a:not(.btn) {
-        text-decoration: underline
+        text-decoration: underline;
     }
 
     abbr[title]::after {
-        content: " (" attr(title) ")"
+        content: ' (' attr(title) ')';
     }
 
     pre {
-        white-space: pre-wrap !important
+        white-space: pre-wrap !important;
     }
 
     blockquote,
     pre {
         border: 1px solid #adb5bd;
-        page-break-inside: avoid
+        page-break-inside: avoid;
     }
 
     img,
     tr {
-        page-break-inside: avoid
+        page-break-inside: avoid;
     }
 
     h2,
     h3,
     p {
         orphans: 3;
-        widows: 3
+        widows: 3;
     }
 
     h2,
     h3 {
-        page-break-after: avoid
+        page-break-after: avoid;
     }
 
     @page {
-        size: a3
+        size: a3;
     }
 
     body {
-        min-width: 1036px !important
+        min-width: 1036px !important;
     }
 
     .container {
-        min-width: 1036px !important
+        min-width: 1036px !important;
     }
 
     .badge {
-        border: 1px solid #000
+        border: 1px solid #000;
     }
 
     .table {
-        border-collapse: collapse !important
+        border-collapse: collapse !important;
     }
 
     .table td,
     .table th {
-        background-color: #fff !important
+        background-color: #fff !important;
     }
 
     .table-bordered td,
     .table-bordered th {
-        border: 1px solid #dee2e6 !important
+        border: 1px solid #dee2e6 !important;
     }
 
     .table-dark {
-        color: inherit
+        color: inherit;
     }
 
-    .table-dark tbody+tbody,
+    .table-dark tbody + tbody,
     .table-dark td,
     .table-dark th,
     .table-dark thead th {
-        border-color: #dee2e6
+        border-color: #dee2e6;
     }
 
     .bg-primary {
         --bs-bg-opacity: 1;
-        background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important
+        background-color: rgba(
+            var(--bs-primary-rgb),
+            var(--bs-bg-opacity)
+        ) !important;
     }
 }

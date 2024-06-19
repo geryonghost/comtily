@@ -22,7 +22,7 @@ async function insertCsvContent(dealer_id, csvContent) {
         const db_name = await db_conn()
         const db_collection = await db_name.collection('ads_upload')
 
-        db_insert_data = csvContent.map(v => ({'dealer_id': dealer_id, ...v}))
+        db_insert_data = csvContent.map((v) => ({ dealer_id: dealer_id, ...v }))
 
         const results = db_collection.insertMany(db_insert_data)
 
