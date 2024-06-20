@@ -2,6 +2,6 @@ User-agent: ChatGPT-User
 Disallow: /
 
 User-agent: *
-Disallow: /cdn-cgi/l/email-protection
+Disallow: /
 
-Sitemap: https://behavio.thehillden.com/sitemap.xml
+Sitemap: https://behavio.comtily.com/sitemap.xml
