@@ -73,8 +73,8 @@ function buidlCurrentForecast(location, forecast, twilight, units) {
         currentTemperatureTrend = '<span class="text-danger";>&#8593;</span>'
     }
 
-    const todaySunrise = moment(twilight.values[indexDay].sunrise).format()
-    const todaySunset = moment(twilight.values[indexDay].sunset).format()
+    const todaySunrise = moment(twilight.values[indexDay].sunrise).tz(timeZone).format()
+    const todaySunset = moment(twilight.values[indexDay].sunset).tz(timeZone).format()
 
     let timeOfDay
     if (currentTime > todaySunrise && currentTime < todaySunset) {
@@ -248,55 +248,28 @@ function buildDailyForecast(location, forecast, twilight, units) {
 
         for (let j = 0; j < forecast.length; j++) {
             if (moment(forecast[j].weather.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].weather.validTime).format() < sunrise) {
-                const coverage = forecast[j].weather.value[0].coverage
-                const intensity = forecast[j].weather.value[0].intensity
                 const precipitation = forecast[j].probabilityOfPrecipitation.value
                 const skyCover = forecast[j].skyCover.value
                 const weather = forecast[j].weather.value[0].weather
-
-                if (weather != null) {
-                    morningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                } else if (morningWeather[3] < skyCover) {
-                    morningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                } else if (morningWeather[3] == undefined) {
-                    morningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                }
+                morningWeather = [precipitation, skyCover, weather]
             }
             if (moment(forecast[j].temperature.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].temperature.validTime).format() > sunrise && moment(forecast[j].temperature.validTime).format() < sunset) {
-                const coverage = forecast[j].weather.value[0].coverage
-                const intensity = forecast[j].weather.value[0].intensity
                 const precipitation = forecast[j].probabilityOfPrecipitation.value
                 const skyCover = forecast[j].skyCover.value
                 const weather = forecast[j].weather.value[0].weather
-
-                if (weather != null) {
-                    dayWeather = [coverage, intensity, precipitation, skyCover,weather]
-                } else if (dayWeather[3] < skyCover) {
-                    dayWeather = [coverage, intensity, precipitation, skyCover, weather]
-                } else if (dayWeather[3] == undefined) {
-                    dayWeather = [coverage, intensity, precipitation, skyCover, weather]
-                }
+                dayWeather = [precipitation, skyCover,weather]
             }
             if (moment(forecast[j].temperature.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].temperature.validTime).format() > sunset) {
-                const coverage = forecast[j].weather.value[0].coverage
-                const intensity = forecast[j].weather.value[0].intensity
                 const precipitation = forecast[j].probabilityOfPrecipitation.value
                 const skyCover = forecast[j].skyCover.value
                 const weather = forecast[j].weather.value[0].weather
-
-                if (weather != null) {
-                    eveningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                } else if (eveningWeather[3] < skyCover) {
-                    eveningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                } else if (eveningWeather[3] == undefined) {
-                    eveningWeather = [coverage, intensity, precipitation, skyCover, weather]
-                }
+                eveningWeather = [precipitation, skyCover, weather]
             }
         }
 
-        const morningForecast = getSubForecast('night', morningWeather[2], morningWeather[3], morningWeather[0], morningWeather[1], morningWeather[4])
-        const dayForecast = getSubForecast('day', dayWeather[2], dayWeather[3], dayWeather[0], dayWeather[1], dayWeather[4])
-        const eveningForecast = getSubForecast('night', eveningWeather[2], eveningWeather[3], eveningWeather[0], eveningWeather[1], eveningWeather[4])
+        const morningForecast = getSubForecast('night', morningWeather[0], morningWeather[1], morningWeather[2])
+        const dayForecast = getSubForecast('day', dayWeather[0], dayWeather[1], dayWeather[2])
+        const eveningForecast = getSubForecast('night', eveningWeather[0], eveningWeather[1], eveningWeather[2])
 
         const dailyMap = {
             dayOfWeek: dayOfWeek,
@@ -335,8 +308,8 @@ function buildDailyForecast(location, forecast, twilight, units) {
     return dailyForecast
 }
 
-function getSubForecast(timeOfDay, precipitation, skyCover, weather, index) {
-    let coverage = (intensity = weather_type = null)
+function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
+    let coverage = null, intensity = null, weather_type = null
     let subForecast = {}
 
     if (weather != null) {
@@ -557,16 +530,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather, index) {
         }
     }
     if (subForecast.shortForecast == 'Unknown') {
-        console.log(
-            'IWO:Warn',
-            index,
-            'Precipitation:',
-            precipitation,
-            'Sky Cover:',
-            skyCover,
-            'Weather',
-            weather
-        )
+        console.log('IWO:Warn', 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'Weather', weather)
     }
     return subForecast
 }
