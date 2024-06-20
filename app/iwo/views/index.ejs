@@ -71,8 +71,10 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
                     <% } else { %>
                     <p class="card-text"><font size="1">High and Low times are not currently available</font></p>
                     <% } %>
+                    <% if (currentForecast.sunrise != null && currentForecast.sunset != null) { %>
                     <div class="badge bg-warning">Sunrise <%=currentForecast.sunrise%></div>
                     <div class="badge bg-dark">Sunset <%=currentForecast.sunset%></div>
+                    <% } %>
                 </div>
             </div>
         </div>

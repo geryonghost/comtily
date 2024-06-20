@@ -74,8 +74,12 @@ function buidlCurrentForecast(location, forecast, twilight, units) {
         currentTemperatureTrend = '<span class="text-danger";>&#8593;</span>'
     }
 
-    const todaySunrise = moment(twilight.values[indexDay].sunrise).tz(timeZone).format()
-    const todaySunset = moment(twilight.values[indexDay].sunset).tz(timeZone).format()
+    let todaySunrise = null, todaySunset = null
+    if (indexDay != -1) {
+        todaySunrise = moment(twilight.values[indexDay].sunrise).tz(timeZone).format('LT')
+        todaySunset = moment(twilight.values[indexDay].sunset).tz(timeZone).format('LT')
+    }
+
 
     let timeOfDay
     if (currentTime > todaySunrise && currentTime < todaySunset) {
@@ -107,8 +111,8 @@ function buidlCurrentForecast(location, forecast, twilight, units) {
         icon: 'icons/' + subForecast.icon + '_large.png',
         precipitation: precipitation,
         shortForecast: subForecast.shortForecast,
-        sunrise: moment(todaySunrise).format('LT'),
-        sunset: moment(todaySunset).format('LT'),
+        sunrise: todaySunrise,
+        sunset: todaySunset,
         temperature: temperature,
         temperatureTime: moment(temperatureTime).tz(timeZone).format('LT'),
         temperaturetrend: currentTemperatureTrend,
@@ -198,15 +202,25 @@ function buildDailyForecast(location, forecast, twilight, units) {
         let morningTemps = [], dayTemps = [], eveningTemps = []
         let morningTimes = [], dayTimes = [], eveningTimes = []
         for (let j = 0; j < forecast.length; j++) {
-            if (moment(forecast[j].temperature.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].temperature.validTime).format() < sunrise) {
+            if (
+                moment(forecast[j].temperature.validTime).tz(timeZone).format('YYYY-MM-DD') == moment(sunrise).tz(timeZone).format('YYYY-MM-DD') && 
+                moment(forecast[j].temperature.validTime).tz(timeZone).format() < moment(sunrise).tz(timeZone).format()
+            ) {
                 morningTemps.push(forecast[j].temperature.value)
                 morningTimes.push(forecast[j].temperature.validTime)
             }
-            if (moment(forecast[j].temperature.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].temperature.validTime).format() > sunrise && moment(forecast[j].temperature.validTime).format() < sunset) {
+            if (
+                moment(forecast[j].temperature.validTime).tz(timeZone).format('YYYY-MM-DD') == moment(sunrise).tz(timeZone).format('YYYY-MM-DD') && 
+                moment(forecast[j].temperature.validTime).tz(timeZone).format() > moment(sunrise).tz(timeZone).format() && 
+                moment(forecast[j].temperature.validTime).tz(timeZone).format() < moment(sunset).tz(timeZone).format()
+            ) {
                 dayTemps.push(forecast[j].temperature.value)
                 dayTimes.push(forecast[j].temperature.validTime)
             }
-            if (moment(forecast[j].temperature.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].temperature.validTime).format() > sunset) {
+            if (
+                moment(forecast[j].temperature.validTime).tz(timeZone).format('YYYY-MM-DD') == moment(sunrise).tz(timeZone).format('YYYY-MM-DD') && 
+                moment(forecast[j].temperature.validTime).tz(timeZone).format() > moment(sunset).tz(timeZone).format()
+            ) {
                 eveningTemps.push(forecast[j].temperature.value)
                 eveningTimes.push(forecast[j].temperature.validTime)
             }
@@ -218,10 +232,6 @@ function buildDailyForecast(location, forecast, twilight, units) {
         const morningLowTime = moment(morningTimes[morningLowIndex]).tz(timeZone).format('LT')
         const morningHigh = convert.convertTemperature(units, morningTemps[morningHighIndex])
         const morningHighTime = moment(morningTimes[morningHighIndex]).tz(timeZone).format('LT')
-        let morningHide
-        if (morningTemps.length == 0) {
-            morningHide = true
-        }
 
         const dayLowIndex = dayTemps.indexOf(Math.min(...dayTemps))
         const dayHighIndex = dayTemps.indexOf(Math.max(...dayTemps))
@@ -229,10 +239,6 @@ function buildDailyForecast(location, forecast, twilight, units) {
         const dayLowTime = moment(dayTimes[dayLowIndex]).tz(timeZone).format('LT')
         const dayHigh = convert.convertTemperature(units,dayTemps[dayHighIndex])
         const dayHighTime = moment(dayTimes[dayHighIndex]).tz(timeZone).format('LT')
-        let dayHide
-        if (dayTemps.length == 0) {
-            dayHide = true
-        }
 
         const eveningLowIndex = eveningTemps.indexOf(Math.min(...eveningTemps))
         const eveningHighIndex = eveningTemps.indexOf(Math.max(...eveningTemps))
@@ -240,27 +246,33 @@ function buildDailyForecast(location, forecast, twilight, units) {
         const eveningLowTime = moment(eveningTimes[eveningLowIndex]).tz(timeZone).format('LT')
         const eveningHigh = convert.convertTemperature(units, eveningTemps[eveningHighIndex])
         const eveningHighTime = moment(eveningTimes[eveningHighIndex]).tz(timeZone).format('LT')
-        let eveningHide
-        if (eveningTemps.length == 0) {
-            eveningHide = true
-        }
 
         let morningWeather = [], dayWeather = [], eveningWeather = []
 
         for (let j = 0; j < forecast.length; j++) {
-            if (moment(forecast[j].weather.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].weather.validTime).format() < sunrise) {
+            if (
+                moment(forecast[j].weather.validTime).tz(timeZone).format('YYYY-MM-DD') == moment(sunrise).tz(timeZone).format('YYYY-MM-DD') && 
+                moment(forecast[j].weather.validTime).tz(timeZone).format() < moment(sunrise).tz(timeZone).format()
+            ) {
                 const precipitation = forecast[j].probabilityOfPrecipitation.value
                 const skyCover = forecast[j].skyCover.value
                 const weather = forecast[j].weather.value[0].weather
                 morningWeather = [precipitation, skyCover, weather]
             }
-            if (moment(forecast[j].temperature.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].temperature.validTime).format() > sunrise && moment(forecast[j].temperature.validTime).format() < sunset) {
+            if (
+                moment(forecast[j].temperature.validTime).tz(timeZone).format('YYYY-MM-DD') == moment(sunrise).tz(timeZone).format('YYYY-MM-DD') && 
+                moment(forecast[j].temperature.validTime).tz(timeZone).format() > moment(sunrise).tz(timeZone).format() && 
+                moment(forecast[j].temperature.validTime).tz(timeZone).format() < moment(sunset).tz(timeZone).format()
+            ) {
                 const precipitation = forecast[j].probabilityOfPrecipitation.value
                 const skyCover = forecast[j].skyCover.value
                 const weather = forecast[j].weather.value[0].weather
                 dayWeather = [precipitation, skyCover,weather]
             }
-            if (moment(forecast[j].temperature.validTime).format('YYYY-MM-DD') == moment(sunrise).format('YYYY-MM-DD') && moment(forecast[j].temperature.validTime).format() > sunset) {
+            if (
+                moment(forecast[j].temperature.validTime).tz(timeZone).format('YYYY-MM-DD') == moment(sunrise).tz(timeZone).format('YYYY-MM-DD') && 
+                moment(forecast[j].temperature.validTime).tz(timeZone).format() > moment(sunset).tz(timeZone).format()
+            ) {
                 const precipitation = forecast[j].probabilityOfPrecipitation.value
                 const skyCover = forecast[j].skyCover.value
                 const weather = forecast[j].weather.value[0].weather
@@ -278,17 +290,14 @@ function buildDailyForecast(location, forecast, twilight, units) {
             morningLowTime: morningLowTime,
             morningHigh: morningHigh,
             morningHighTime: morningHighTime,
-            morningHide: morningHide,
             dayLow: dayLow,
             dayLowTime: dayLowTime,
             dayHigh: dayHigh,
             dayHighTime: dayHighTime,
-            dayHide: dayHide,
             eveningLow: eveningLow,
             eveningLowTime: eveningLowTime,
             eveningHigh: eveningHigh,
             eveningHighTime: eveningHighTime,
-            eveningHide: eveningHide,
             sunrise: moment(sunrise).tz(timeZone).format('LT'),
             sunset: moment(sunset).tz(timeZone).format('LT'),
             morningForecast: {
