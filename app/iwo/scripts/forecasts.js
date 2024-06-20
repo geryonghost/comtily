@@ -19,9 +19,11 @@ async function getWeather(location, forecast, twilight, variables) {
 }
 
 function buidlCurrentForecast(location, forecast, twilight, units) {
-    const currentTime = moment().tz(location.timeZone.zoneName).startOf('hour').format()
-    const currentDay = moment().tz(location.timeZone.zoneName).format('YYYY-MM-DD')
     const timeZone = location.timeZone.zoneName
+    
+    const currentTime = moment().tz(timeZone).startOf('hour').format()
+    const currentDay = moment().tz(timeZone).format('YYYY-MM-DD')
+    
 
     let indexTime = -1
     for (let i = 0; i < forecast.length; i++) {
@@ -32,17 +34,16 @@ function buidlCurrentForecast(location, forecast, twilight, units) {
     }
     let indexDay = -1
     for (let i = 0; i < twilight.values.length; i++) {
-        if (moment(twilight.values[i].sunrise).startOf('day').format('YYYY-MM-DD') == currentDay) {
+        if (moment(twilight.values[i].sunrise).tz(timeZone).startOf('day').format('YYYY-MM-DD') == currentDay) {
             indexDay = i
             break
         }
     }
-
     let highTemp = -999
     let lowTemp = 999
     let highTime, lowTime
     for (let i = 0; i < forecast.length; i++) {
-        if (moment(forecast[i].temperature.validTime).format('YYYY-MM-DD') == currentDay) {
+        if (moment(forecast[i].temperature.validTime).tz(timeZone).format('YYYY-MM-DD') == currentDay) {
             if (forecast[i].temperature.value > highTemp) {
                 highTemp = forecast[i].temperature.value
                 highTime = forecast[i].temperature.validTime
