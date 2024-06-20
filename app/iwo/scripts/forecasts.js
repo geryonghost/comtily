@@ -82,7 +82,7 @@ function buidlCurrentForecast(location, forecast, twilight, units) {
 
 
     let timeOfDay
-    if (currentTime > todaySunrise && currentTime < todaySunset) {
+    if (moment(currentTime).format('LT') > todaySunrise && moment(currentTime).format('LT') < todaySunset) {
         timeOfDay = 'day'
     } else {
         timeOfDay = 'night'
