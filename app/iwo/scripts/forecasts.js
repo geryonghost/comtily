@@ -184,7 +184,7 @@ function buildDailyForecast(location, forecast, twilight, units) {
     
     let sunrise, sunset
     let dailyForecast = []
-    for (let i = 1; i < 8; i++) {
+    for (let i = 1; i < 7; i++) {
         const dailyDate = moment(currentDate).add(i, 'day').format('YYYY-MM-DD')
         const dayOfWeek = moment(dailyDate).format('dddd')
         for (let j = 0; j < twilight.values.length; j++) {
