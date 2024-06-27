@@ -61,11 +61,7 @@ async function getCoordinates(query, variables) {
 
 async function getForecastUrl(coordinates, variables) {
     console.log('IWO:Info', 'requesting forecasturl from weather.gov')
-    const weatherForecastUrl =
-        'https://api.weather.gov/points/' +
-        coordinates.lat +
-        ',' +
-        coordinates.lon
+    const weatherForecastUrl = 'https://api.weather.gov/points/' + coordinates.lat + ',' + coordinates.lon
     const userAgent = variables.userAgent
 
     try {
@@ -86,60 +82,36 @@ async function getForecastUrl(coordinates, variables) {
 }
 
 async function getGridData(location, variables) {
-    console.log('IWO:Info', 'Getting GridData for ', location.query)
+    console.log('IWO:Info', 'Getting GridData for', location.query)
 
     try {
-        const results = await axios.get(location.forecastUrl, {
-            headers: variables.userAgent,
-        })
+        const results = await axios.get(location.forecastUrl, {headers: variables.userAgent})
         if (results.status == 200) {
             const gridData = await results.data.properties
             return gridData
         } else {
-            console.log(
-                'IWO:Error',
-                'getting forecast griddata',
-                location.orecastUrl
-            )
+            console.log('IWO:Error', 'getting forecast griddata', location.orecastUrl)
             return 'error'
         }
     } catch (error) {
-        console.log(
-            'IWO:Error',
-            'getting forecast griddata',
-            location.forecastUrl,
-            error
-        )
+        console.log('IWO:Error', 'getting forecast griddata', location.forecastUrl, error)
         return 'error'
     }
 }
 
 async function getTwilight(location) {
     try {
-        const currentTime = moment.tz(location.timeZone.zoneName).format()
+        const currentDate = moment().tz(location.timeZone.zoneName)
         let createMap = []
 
         for (let i = 0; i < 7; i++) {
-            const useDate = moment(currentTime)
-                .add(i, 'day')
-                .format('YYYY-MM-DD')
-            const apiURL =
-                'https://api.sunrise-sunset.org/json?formatted=0&lat=' +
-                location.lat +
-                '&lng=' +
-                location.lon +
-                '&date=' +
-                useDate
-
+            const useDate = moment(currentDate).add(i, 'day').format('YYYY-MM-DD')
+            const apiURL = 'https://api.sunrise-sunset.org/json?formatted=0&lat=' + location.lat + '&lng=' + location.lon + '&date=' + useDate
             const results = await axios.get(apiURL)
 
             if (results.status == 200) {
-                const sunrise = moment(results.data.results.sunrise)
-                    .tz(location.timeZone.zoneName)
-                    .format()
-                const sunset = moment(results.data.results.sunset)
-                    .tz(location.timeZone.zoneName)
-                    .format()
+                const sunrise = results.data.results.sunrise
+                const sunset = results.data.results.sunset
                 const dayLength = results.data.results.day_length
 
                 const mapResults = {
@@ -154,10 +126,9 @@ async function getTwilight(location) {
             }
         }
         const twilight = {
-            validTime: currentTime,
+            validTime: currentDate,
             values: createMap,
         }
-
         return twilight
     } catch (error) {
         console.log('IWO:Error', 'getting sunrise and sunset', error)
@@ -168,12 +139,7 @@ async function getTwilight(location) {
 async function getTimeZone(coordinates) {
     try {
         const apiURL =
-            'http://api.timezonedb.com/v2.1/get-time-zone?key=' +
-            timezonedb_key +
-            '&format=json&by=position&fields=zoneName,abbreviation&lat=' +
-            coordinates.lat +
-            '&lng=' +
-            coordinates.lon
+            'http://api.timezonedb.com/v2.1/get-time-zone?key=' + timezonedb_key + '&format=json&by=position&fields=zoneName,abbreviation&lat=' + coordinates.lat + '&lng=' + coordinates.lon
         const results = await axios.get(apiURL)
 
         if (results.status == 200) {
