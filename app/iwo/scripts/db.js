@@ -26,22 +26,12 @@ async function getLocation(query, variables) {
         const filter = { query: query }
         let location = await collection.findOne(filter)
         if (location == null) {
-            console.log(
-                'IWO:Info',
-                'Query does not exist in locations collection'
-            )
+            console.log('IWO:Info', 'Query does not exist in locations collection')
             const coordinates = await apis.getCoordinates(query, variables)
-            const forecastUrl = await apis.getForecastUrl(
-                coordinates,
-                variables
-            )
+            const forecastUrl = await apis.getForecastUrl(coordinates, variables)
             const timeZone = await apis.getTimeZone(coordinates, variables)
 
-            if (
-                coordinates != 'error' &&
-                forecastUrl != 'error' &&
-                timeZone != 'error'
-            ) {
+            if (coordinates != 'error' && forecastUrl != 'error' && timeZone != 'error') {
                 location = {
                     query: query,
                     addressName: coordinates.addressname,
@@ -52,7 +42,6 @@ async function getLocation(query, variables) {
                     timeZone: timeZone,
                 }
             }
-
             updateLocation(query, location)
         }
         return location
@@ -83,10 +72,7 @@ async function getForecast(location, variables) {
             // Get GridData
             gridData = await apis.getGridData(location, variables)
             // Process GridData
-            const processedGridData = convert.processGridData(
-                gridData,
-                location
-            )
+            const processedGridData = convert.processGridData(gridData, location)
 
             console.log('IWO:Info', 'Updating forecast in DB')
             for (let i = 0; i < processedGridData.length; i++) {

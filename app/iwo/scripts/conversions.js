@@ -24,7 +24,7 @@ function convertTemperature(units, data) {
     return unit
 }
 
-function convertValidTimeValues(values, timeZone) {
+function convertValidTimeValues(values) {
     let validTimeValues = []
     for (let a = 0; a < values.length; a++) {
         const parts = values[a].validTime.split('/')
@@ -41,10 +41,7 @@ function convertValidTimeValues(values, timeZone) {
         }
 
         for (let i = 0; i < numberHours; i++) {
-            const newTime = moment(parts[0])
-                .add(i, 'hours')
-                .tz(timeZone)
-                .format()
+            const newTime = moment(parts[0]).add(i, 'hours').format()
             const newTimeValue = { validTime: newTime, value: values[a].value }
             validTimeValues.push(newTimeValue)
         }
@@ -55,35 +52,20 @@ function convertValidTimeValues(values, timeZone) {
 function processGridData(gridData, location) {
     const timeZone = location.timeZone.zoneName
 
-    const apparentTemperature = convertValidTimeValues(
-        gridData.apparentTemperature.values,
-        timeZone
-    )
-    const probabilityOfPrecipitation = convertValidTimeValues(
-        gridData.probabilityOfPrecipitation.values,
-        timeZone
-    )
-    const skyCover = convertValidTimeValues(gridData.skyCover.values, timeZone)
-    const temperature = convertValidTimeValues(
-        gridData.temperature.values,
-        timeZone
-    )
-    const weather = convertValidTimeValues(gridData.weather.values, timeZone)
-    const windDirection = convertValidTimeValues(
-        gridData.windDirection.values,
-        timeZone
-    )
-    const windGust = convertValidTimeValues(gridData.windGust.values, timeZone)
-    const windSpeed = convertValidTimeValues(
-        gridData.windSpeed.values,
-        timeZone
-    )
+    const apparentTemperature = convertValidTimeValues(gridData.apparentTemperature.values)
+    const probabilityOfPrecipitation = convertValidTimeValues(gridData.probabilityOfPrecipitation.values)
+    const skyCover = convertValidTimeValues(gridData.skyCover.values)
+    const temperature = convertValidTimeValues(gridData.temperature.values)
+    const weather = convertValidTimeValues(gridData.weather.values)
+    const windDirection = convertValidTimeValues(gridData.windDirection.values)
+    const windGust = convertValidTimeValues(gridData.windGust.values)
+    const windSpeed = convertValidTimeValues(gridData.windSpeed.values)
 
     let processedGridData = []
     for (let i = 0; i < temperature.length; i++) {
         processedGridData.push({
             query: location.query,
-            validTime: apparentTemperature[i].validTime,
+            validTime: temperature[i].validTime,
             apparentTemperature: apparentTemperature[i],
             probabilityOfPrecipitation: probabilityOfPrecipitation[i],
             skyCover: skyCover[i],

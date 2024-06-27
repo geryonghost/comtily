@@ -36,12 +36,7 @@ app.get('', async (req, res) => {
             const location = await db.getLocation(query, variables)
             const forecast = await db.getForecast(location, variables)
             const twilight = await db.getTwilight(location, variables)
-            const weather = await forecasts.getWeather(
-                location,
-                forecast,
-                twilight,
-                variables
-            )
+            const weather = await forecasts.getWeather(location, forecast, twilight, variables)
 
             const currentForecast = weather.currentForecast
             const hourlyForecast = weather.hourlyForecast
