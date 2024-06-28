@@ -20,7 +20,7 @@ async function getWeather(location, forecast, twilight, variables) {
 
 function buidlCurrentForecast(location, forecast, twilight, units) {
     const timeZone = location.timeZone.zoneName
-    const currentTime = moment().startOf('hour').format()
+    const currentTime = moment().format()
     const currentDay = moment().tz(timeZone).format('YYYY-MM-DD')
 
     let indexTime = -1
@@ -74,12 +74,12 @@ function buidlCurrentForecast(location, forecast, twilight, units) {
 
     let todaySunrise = null, todaySunset = null
     if (indexDay != -1) {
-        todaySunrise = twilight.values[indexDay].sunrise
-        todaySunset = twilight.values[indexDay].sunset
+        todaySunrise = moment(twilight.values[indexDay].sunrise).format()
+        todaySunset = moment(twilight.values[indexDay].sunset).format()
     }
 
     let timeOfDay
-    if (moment(currentTime).format('LT') > todaySunrise && moment(currentTime).format('LT') < todaySunset) {
+    if (currentTime > todaySunrise && currentTime < todaySunset) {
         timeOfDay = 'day'
     } else {
         timeOfDay = 'night'
@@ -111,7 +111,7 @@ function buidlCurrentForecast(location, forecast, twilight, units) {
         sunrise: moment(todaySunrise).tz(timeZone).format('LT'),
         sunset: moment(todaySunset).tz(timeZone).format('LT'),
         temperature: temperature,
-        temperatureTime: moment(temperatureTime).tz(timeZone).format('LT'),
+        temperatureTime: moment(currentTime).tz(timeZone).format('LT'),
         temperaturetrend: currentTemperatureTrend,
         weather: weather[0].weather,
         windGust: windGust,
