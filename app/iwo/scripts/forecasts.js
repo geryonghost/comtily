@@ -351,7 +351,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
         transporter.sendMail({
             from: 'noreply@comtily.com',
             to: 'cyb3rsteven@gmail.com',
-            subject: 'IWO: Multiple Weather Types',
+            subject: 'IWO: Multiple Weather Types ' + moment.format(),
             html: (
                 'Precipitation: ' + precipitation + '<br />' + 
                 'Sky Cover: ' + skyCover + '<br />' + 
@@ -584,7 +584,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
         transporter.sendMail({
             from: 'noreply@comtily.com',
             to: 'cyb3rsteven@gmail.com',
-            subject: 'IWO: Short Forecast Error',
+            subject: 'IWO: Short Forecast Error ' + moment.format(),
             html: (
                 'Precipitation: ' + precipitation + '<br />' + 
                 'Sky Cover: ' + skyCover + '<br />' + 
