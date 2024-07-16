@@ -1,19 +1,6 @@
-const smtpPass = process.env.smtpPass
-
 const moment = require('moment-timezone')
-const nodemailer = require("nodemailer");
 
 const convert = require('./conversions')
-
-const transporter = nodemailer.createTransport({
-    host: "smtp.mailwip.com",
-    port: 587,
-    secure: false, // Use `true` for port 465, `false` for all other ports
-    auth: {
-        user: "noreply@comtily.com",
-        pass: smtpPass,
-    },
-});
 
 async function getWeather(location, forecast, twilight, variables) {
     console.log('IWO:Info', 'Building Current Forecast')
@@ -339,25 +326,17 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
         intensity = weather[0].intensity
         weather_type = weather[0].weather
 
-        let weather_error = ''
-        for (let i = 0; i < weather.length; i++) {
-            weather_error += (
-                'Coverage: ' + JSON.stringify(weather[i].coverage) + '\n' +
-                'Intensity: ' + JSON.stringify(weather[i].intensity) + '\n' +
-                'Weather Type: ' + JSON.stringify(weather[i].weather) + '\n\n'
-            )
+        if (weather.length > 1) {
+            let weather_error = ''
+            for (let i = 0; i < weather.length; i++) {
+                weather_error += (
+                    'Coverage: ' + JSON.stringify(weather[i].coverage) + '\n' +
+                    'Intensity: ' + JSON.stringify(weather[i].intensity) + '\n' +
+                    'Weather Type: ' + JSON.stringify(weather[i].weather) + '\n\n'
+                )
+            }
+            console.log('IWO:Warn', 'Multiple weather types', weather_error)
         }
-        
-        transporter.sendMail({
-            from: 'noreply@comtily.com',
-            to: 'cyb3rsteven@gmail.com',
-            subject: 'IWO: Multiple Weather Types ' + moment().format(),
-            html: (
-                'Precipitation: ' + precipitation + '<br />' + 
-                'Sky Cover: ' + skyCover + '<br />' + 
-                'Weather:<br />' + weather_error
-            )
-        });
     }
 
     // Precipitation > 0
@@ -580,19 +559,7 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
                 'Weather Type: ' + JSON.stringify(weather[i].weather) + '\n\n'
             )
         }
-        
-        transporter.sendMail({
-            from: 'noreply@comtily.com',
-            to: 'cyb3rsteven@gmail.com',
-            subject: 'IWO: Short Forecast Error ' + moment().format(),
-            html: (
-                'Precipitation: ' + precipitation + '<br />' + 
-                'Sky Cover: ' + skyCover + '<br />' + 
-                'Weather:<br />' + weather_error
-            )
-        });
-        console.log('IWO:Info', 'IWO Email Sent')
-        console.log('IWO:Warn', 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'Weather', weather_error)
+        console.log('IWO:Error', 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'Weather', weather_error)
     }
     return subForecast
 }
