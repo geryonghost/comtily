@@ -2,17 +2,6 @@
 
 **/node_modules
 *.env
-chromedriver
-
-**_old
-**/uploads
-
 **/nodemon.json
-
 **/local.notes
-
 **/db
-
-**/app/svn
-
-**/venv
