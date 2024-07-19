@@ -21,8 +21,8 @@ app.get('', (req, res) => {
 app.use('/tictactoe', appTTT)
 
 //The 404 Route (ALWAYS Keep this as the last route)
-// app.get('*', function (req, res) {
-//     res.redirect('/')
-// })
+app.get('*', function (req, res) {
+    res.redirect('/')
+})
 
 module.exports = app

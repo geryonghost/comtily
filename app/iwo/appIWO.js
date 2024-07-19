@@ -53,17 +53,9 @@ app.get('', async (req, res) => {
     }
 })
 
-app.get('/feedback', async (req, res) => {
-    const pageTitle = 'Feedback / Feature Requests'
-
-    res.render('feedback', { pageTitle: pageTitle })
-})
-
-app.get('/releases', async (req, res) => {
-    const pageTitle = 'Release Notes'
-
-    res.render('releases', { pageTitle: pageTitle })
-})
+// React Tic Tac Toe
+const appTTT = require('../ttt/appTTT')
+app.use('/tictactoe', appTTT)
 
 //The 404 Route (ALWAYS Keep this as the last route)
 app.get('*', function (req, res) {

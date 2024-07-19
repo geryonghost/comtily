@@ -325,18 +325,6 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
         coverage = weather[0].coverage
         intensity = weather[0].intensity
         weather_type = weather[0].weather
-
-        if (weather.length > 1) {
-            let weather_error = ''
-            for (let i = 0; i < weather.length; i++) {
-                weather_error += (
-                    'Coverage: ' + JSON.stringify(weather[i].coverage) + '\n' +
-                    'Intensity: ' + JSON.stringify(weather[i].intensity) + '\n' +
-                    'Weather Type: ' + JSON.stringify(weather[i].weather) + '\n\n'
-                )
-            }
-            console.log('IWO:Warn', 'Multiple weather types', weather_error)
-        }
     }
 
     // Precipitation > 0

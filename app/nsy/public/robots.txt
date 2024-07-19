@@ -1,9 +1,0 @@
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: *
-Disallow: /cdn-cgi/l/email-protection
-Disallow: /listing
-Disallow: /search
-
-Sitemap: https://notscrapyet.com/sitemap.xml
