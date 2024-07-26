@@ -1,6 +1,7 @@
 const moment = require('moment-timezone')
 
 const convert = require('./conversions')
+const db = require('./db')
 
 async function getWeather(location, forecast, twilight, variables) {
     console.log('IWO:Info', 'Building Current Forecast')
@@ -539,15 +540,12 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
         }
     }
     if (subForecast.shortForecast == 'Unknown') {
-        let weather_error = ''
-        for (let i = 0; i < weather.length; i++) {
-            weather_error += (
-                'Coverage: ' + JSON.stringify(weather[i].coverage) + '\n' +
-                'Intensity: ' + JSON.stringify(weather[i].intensity) + '\n' +
-                'Weather Type: ' + JSON.stringify(weather[i].weather) + '\n\n'
-            )
+        const unknownForecast = {
+            'precipitation': precipitation, 
+            'sky_cover': skyCover, 
+            'weather': weather,
         }
-        console.log('IWO:Error', 'Precipitation:', precipitation, 'Sky Cover:', skyCover, 'Weather', weather_error)
+        db.insertUnknown(unknownForecast)
     }
     return subForecast
 }
