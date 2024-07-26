@@ -3,27 +3,8 @@ const timezonedb_key = process.env.timezonedb_key
 const axios = require('axios')
 const moment = require('moment-timezone')
 
-// async function getAlerts(coordinates, variables) {
-//   try {
-//     const location = coordinates.lat + ',' + coordinates.lon
-//     const userAgent = variables.userAgent
-//     const results = await axios.get('https://api.weather.gov/alerts/active?point=' + location, {headers: {userAgent}})
-
-//     if (results.status == 200) {
-//         const forecast = await results.data.properties
-//         return forecast
-//     } else {
-//         console.log('IWO:Error', 'getting forecast alerts')
-//         return 'error'
-//     }
-//   } catch (error) {
-//     console.log('IWO:Error', 'getting forecast alerts', error)
-//     return 'error'
-//   }
-// }
-
 async function getCoordinates(query, variables) {
-    console.log('IWO:Info', 'requesting coordinates from openstreetmap')
+    console.log('IWO:Info', 'Requesting coordinates from openstreetmap', query)
     try {
         const results = await axios.get(
             'https://nominatim.openstreetmap.org/search',
@@ -41,7 +22,7 @@ async function getCoordinates(query, variables) {
 
         if (results.status == 200) {
             if (results.data.length == 0) {
-                console.log('IWO:Error', 'getting coordinates')
+                console.log('IWO:Error', 'Getting coordinates')
                 return 'error'
             } else {
                 const coordinates = {
@@ -54,7 +35,7 @@ async function getCoordinates(query, variables) {
             }
         }
     } catch (error) {
-        console.log('IWO:Error', 'fetching openstreetmap data', error)
+        console.log('IWO:Error', 'Fetching openstreetmap data', error)
         return 'error'
     }
 }
@@ -81,11 +62,31 @@ async function getForecastUrl(coordinates, variables) {
     }
 }
 
+async function getAlerts(location, variables) {
+    console.log('IWO:Info', 'Getting alerts for', location.query)
+    try {
+        const coordinates = location.lat + ',' + location.lon
+        const userAgent = variables.userAgent
+        const results = await axios.get('https://api.weather.gov/alerts/active?point=' + coordinates, { headers: { userAgent } })
+
+        if (results.status == 200) {
+            const forecast = await results.data.features
+            return forecast
+        } else {
+            console.log('IWO:Error', 'getting forecast alerts')
+            return 'error'
+        }
+    } catch (error) {
+        console.log('IWO:Error', 'getting forecast alerts', error)
+        return 'error'
+    }
+}
+
 async function getGridData(location, variables) {
-    console.log('IWO:Info', 'Getting GridData for', location.query)
+    console.log('IWO:Info', 'Getting griddata for', location.query)
 
     try {
-        const results = await axios.get(location.forecastUrl, {headers: variables.userAgent})
+        const results = await axios.get(location.forecastUrl, { headers: variables.userAgent })
         if (results.status == 200) {
             const gridData = await results.data.properties
             return gridData
@@ -126,7 +127,7 @@ async function getTwilight(location) {
             }
         }
         const twilight = {
-            validTime: currentDate,
+            validTime: moment(currentDate).format(),
             values: createMap,
         }
         return twilight
@@ -161,6 +162,7 @@ async function getTimeZone(coordinates) {
 module.exports = {
     getCoordinates,
     getForecastUrl,
+    getAlerts,
     getGridData,
     getTwilight,
     getTimeZone,

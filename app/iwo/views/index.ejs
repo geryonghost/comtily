@@ -1,4 +1,7 @@
 <%
+if (locals.locationError) {locationError = true} else {locationError = false}
+if (locals.forecastError) {forecastError = true} else {forecastError = false}
+
 if (locals.currentForecast != "" && locals.currentForecast != undefined) {
     currentForecast = locals.currentForecast
     hourlyForecast=locals.hourlyForecast
@@ -33,6 +36,22 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
             Chicago IL (More accurate) <br />
             233 S Wacker Dr Chicago IL (Most accurate)
         </small>
+    </div>
+    <% } %>
+
+    <!-- Location Error -->
+    <% if (locationError) { %>
+    <br />
+    <div class="alert alert-dismissible alert-warning text-center">
+        <p class="mb-0">There was an issue finding your location, please double check your entry.</p>
+    </div>
+    <% } %>
+
+    <!-- Forecast Error -->
+    <% if (forecastError) { %>
+    <br />
+    <div class="alert alert-dismissible alert-warning text-center">
+        <p class="mb-0">There was an issue obtaining your forecast, please refresh.</p>
     </div>
     <% } %>
 

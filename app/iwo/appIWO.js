@@ -34,7 +34,13 @@ app.get('', async (req, res) => {
             res.render('index', {})
         } else {
             const location = await db.getLocation(query, variables)
+            if (location == 'error') {
+                res.render('index', { 'locationError': true })
+            }
             const forecast = await db.getForecast(location, variables)
+            if (forecast == 'error') {
+                res.render('index', { 'forecastError': true })
+            }
             const twilight = await db.getTwilight(location, variables)
             const weather = await forecasts.getWeather(location, forecast, twilight, variables)
 
