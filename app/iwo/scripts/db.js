@@ -71,7 +71,7 @@ async function getForecast(location, variables) {
 
     try {
         const collection = db.collection('forecasts')
-        const filter = { query: location.query }
+        filter = { query: location.query, updateTime: { '$gt': moment().subtract(10,'minutes').format() } }
         let gridData
         let forecast = await collection.find(filter).toArray()
 
@@ -135,13 +135,18 @@ async function updateForecast(forecast) {
     const client = getClient()
     const db = client.db(dbName)
 
+    const forecastUpdate = {
+        updateTime: moment().format(),
+        ...forecast
+    }
+
     try {
         const filter = {
             query: forecast.query,
             validTime: forecast.validTime,
         }
         const collection = db.collection('forecasts')
-        await collection.updateOne(filter, { $set: forecast }, { upsert: true })
+        await collection.updateOne(filter, { $set: forecastUpdate }, { upsert: true })
     } catch (error) {
         console.log('IWO:Error', 'Adding forecast to the DB', error)
     }
