@@ -12,7 +12,7 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
     currentForecast = ""
     hourlyForecast = ""
     dailyForecast = ""
-    totalTimer = ""
+    timerTotal = ""
 }
 %>
 
@@ -195,4 +195,4 @@ if (locals.currentForecast != "" && locals.currentForecast != undefined) {
     });
 </script>
 
-<%- include('inc/footer.ejs') %>
+<%- include('inc/footer.ejs', {timerTotal: timerTotal}) %>
