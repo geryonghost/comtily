@@ -13,7 +13,7 @@ const appSWH = require('./swh/appSWH')
 
 // Use vhost middleware to route requests based on domain
 if (appEnvironment == 'dev') {
-    app.use(vhost('dev.behaivio.cc', appBEH))
+    app.use(vhost('dev.behavio.cc', appBEH))
     app.use(vhost('dev.itsweatheroutside.com', appIWO))
     app.use(vhost('dev.thehillden.us', appSWH))
 } else {
