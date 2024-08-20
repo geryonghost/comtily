@@ -33,6 +33,8 @@ app.get('', async (req, res) => {
         if (query == '' || query == undefined) {
             res.render('index', {})
         } else {
+            const timerStart = new Date()
+
             const location = await db.getLocation(query, variables)
             if (location == 'error') {
                 res.render('index', { 'locationError': true })
@@ -48,10 +50,15 @@ app.get('', async (req, res) => {
             const hourlyForecast = weather.hourlyForecast
             const dailyForecast = weather.dailyForecast
 
+            const timerEnd = new Date()
+            const timerTotal = timerEnd - timerStart
+            console.log("IWO:Info", "The script took", timerTotal, "ms")
+
             res.render('index', {
                 currentForecast,
                 hourlyForecast,
                 dailyForecast,
+                timerTotal,
             })
         }
     } else {
