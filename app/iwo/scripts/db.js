@@ -1,3 +1,4 @@
+const environment = process.env.environment
 const databaseConnectionString = process.env.databaseConnectionString
 
 const { MongoClient } = require('mongodb')
@@ -80,7 +81,7 @@ async function getForecast(location, variables) {
             
             // Get Alerts
             alerts = await apis.getAlerts(location, variables)
-            if (alerts == 'error') { return 'error' } else if (alerts.length > 0) {
+            if (alerts == 'error') { return 'error' } else if (alerts.length > 0 && environment != 'dev') {
                mail.sendMail('cyb3rsteven@gmail.com','Alerts for ' + location.query, JSON.stringify(alerts, null, 2))
             }
             
@@ -192,6 +193,39 @@ async function insertUnknown(weather) {
     }
 }
 
+async function insertTimer(timer) {
+    const client = getClient()
+    const db = client.db(dbName)
+
+    try {
+        const collection = db.collection('timer')
+        await collection.insertOne({'timer':timer})
+    } catch (error) {
+        console.log('IWO:Error', 'Inserting timer in DB', error)
+    }
+}
+
+async function getTimer() {
+    const client = getClient()
+    const db = client.db(dbName)
+
+    try {
+        const collection = db.collection('timer')
+        const timer = await collection.aggregate([
+            {
+                $group: {
+                    "_id": null,
+                    'avgTimer': { $avg: "$timer" }
+                }
+            }
+        ]).toArray()
+        return timer[0].avgTimer
+    } catch (error) {
+        console.log('IWO:Error', 'Averagig timer', error)
+    }
+    
+}
+
 module.exports = {
     connectToDatabase,
     getClient,
@@ -200,4 +234,6 @@ module.exports = {
     getLocation,
     getTwilight,
     insertUnknown,
+    insertTimer,
+    getTimer,
 }

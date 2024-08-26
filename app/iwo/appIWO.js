@@ -52,13 +52,16 @@ app.get('', async (req, res) => {
 
             const timerEnd = new Date()
             const timerTotal = timerEnd - timerStart
+            db.insertTimer(timerTotal)
             console.log("IWO:Info", "The script took", timerTotal, "ms")
+            const avgTimer = await db.getTimer()
+            console.log('IWO:Info', 'The script average is', avgTimer, 'ms')
 
             res.render('index', {
                 currentForecast,
                 hourlyForecast,
                 dailyForecast,
-                timerTotal,
+                avgTimer,
             })
         }
     } else {
