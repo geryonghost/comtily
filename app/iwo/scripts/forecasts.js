@@ -10,6 +10,7 @@ async function getWeather(location, forecast, twilight, variables) {
     const hourlyForecast = buildHourlyForecast(location, forecast, twilight, variables.units)
     console.log('IWO:Info', 'Bulding Daily Forecast')
     const dailyForecast = buildDailyForecast(location, forecast, twilight, variables.units)
+    console.log('IWO:Info', 'Building Alerts Forecast')
 
     const weather = {
         currentForecast: currentForecast,
@@ -386,7 +387,8 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
     // '11030': 'Partly Cloudy and Mostly Clear',
     // '21000': 'Light Fog',
     else if (
-        coverage == 'Patchy' &&
+        skyCover == 0 &&
+        coverage == 'patchy' &&
         weather_type == 'fog' &&
         intensity == null
     ) {
@@ -397,10 +399,46 @@ function getSubForecast(timeOfDay, precipitation, skyCover, weather) {
     }
     // '21010': 'Mostly Clear and Light Fog',
     // '21020': 'Partly Cloudy and Light Fog',
+    else if (
+        skyCover > 25 &&
+        skyCover < 51 &&
+        coverage == 'patchy' &&
+        weather_type == 'fog' &&
+        intensity == null
+    ) {
+        subForecast = {
+            shortForecast: 'Partly Cloudy and Light Fog',
+            icon: '21020_' + timeOfDay + '_fog_light_partly_cloudy',
+        }
+    }
     // '21030': 'Mostly Cloudy and Light Fog',
+    else if (
+        skyCover > 50 &&
+        skyCover < 76 &&
+        coverage == 'patchy' &&
+        weather_type == 'fog' &&
+        intensity == null
+    ) {
+        subForecast = {
+            shortForecast: 'Mostly Cloudy and Light Fog',
+            icon: '21030_' + timeOfDay + '_fog_light_mostly_cloudy',
+        }
+    }
     // '21060': 'Mostly Clear and Fog',
     // '21070': 'Partly Cloudy and Fog',
     // '21080': 'Mostly Cloudy and Fog',
+    // else if (
+    //     skyCover > 50 &&
+    //     skyCover < 76 &&
+    //     coverage == 'patchy' &&
+    //     weather_type == 'fog' &&
+    //     intensity == null
+    // ) {
+    //     subForecast = {
+    //         shortForecast: 'Mostly Cloudy and Fog',
+    //         icon: '21080_' + timeOfDay + '_fog_mostly_cloudy',
+    //     }
+    // }
     // '20000': 'Fog',
     // '42040': 'Partly Cloudy and Drizzle',
     // '42030': 'Mostly Clear and Drizzle',
