@@ -8,6 +8,7 @@ const apis = require('./apis')
 const convert = require('./conversions')
 const mail = require('./mail')
 const dbName = 'iwo'
+
 let client
 
 async function connectToDatabase() {
@@ -72,7 +73,7 @@ async function getForecast(location, variables) {
 
     try {
         const collection = db.collection('forecasts')
-        filter = { query: location.query, updateTime: { '$gt': moment().subtract(10,'minutes').format() } }
+        filter = { query: location.query, updateTime: { '$gt': moment().subtract(0,'minutes').format() } }
         let gridData
         let forecast = await collection.find(filter).toArray()
 
@@ -97,7 +98,8 @@ async function getForecast(location, variables) {
             for (let i = 0; i < processedGridData.length; i++) {
                 await updateForecast(processedGridData[i])
             }
-            forecast = processedGridData
+
+            forecast = {'gridData': processedGridData, 'alerts': alerts}
         }
         return forecast
     } catch (error) {
@@ -182,6 +184,7 @@ async function updateTwilight(query, twilight) {
 }
 
 async function insertUnknown(weather) {
+    console.log('IWO:Info', 'Inserting unknowns into DB')
     const client = getClient()
     const db = client.db(dbName)
 

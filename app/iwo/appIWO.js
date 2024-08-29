@@ -44,11 +44,12 @@ app.get('', async (req, res) => {
                 res.render('index', { 'forecastError': true })
             }
             const twilight = await db.getTwilight(location, variables)
-            const weather = await forecasts.getWeather(location, forecast, twilight, variables)
+            const weather = await forecasts.getWeather(location, forecast.gridData, twilight, variables)
 
             const currentForecast = weather.currentForecast
             const hourlyForecast = weather.hourlyForecast
             const dailyForecast = weather.dailyForecast
+            const alertsForecast = forecast.alerts
 
             const timerEnd = new Date()
             const timerTotal = timerEnd - timerStart
@@ -61,6 +62,7 @@ app.get('', async (req, res) => {
                 currentForecast,
                 hourlyForecast,
                 dailyForecast,
+                alertsForecast,
                 avgTimer,
             })
         }
