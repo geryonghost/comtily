@@ -7,7 +7,7 @@ const moment = require('moment-timezone')
 const apis = require('./apis')
 const convert = require('./conversions')
 const mail = require('./mail')
-const dbName = 'iwo'
+const dbName = 'itsweatheroutside'
 
 let client
 
